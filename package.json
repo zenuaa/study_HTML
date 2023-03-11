@@ -1,0 +1,25 @@
+{
+  "name": "study_html",
+  "version": "1.0.0",
+  "description": "study HTML",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/zenuaa/study_HTML.git"
+  },
+  "keywords": [
+    "html"
+  ],
+  "author": "zenua",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zenuaa/study_HTML/issues"
+  },
+  "homepage": "https://github.com/zenuaa/study_HTML#readme",
+  "dependencies": {
+    "eslint": "^8.36.0"
+  }
+}
