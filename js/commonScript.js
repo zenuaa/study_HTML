@@ -58,3 +58,46 @@ const verge = void 0;
 // }
 // getTime(150);
 
+const opt = {
+    name: 'test',
+    width: 1024,
+    height: 1025, 
+    colors: {
+        border: 'black',
+        bg: 'red'
+    },
+    test: function(x){
+        console.log(x);
+        return this;
+    },
+    testt: (x)=>{
+        console.log(x);
+        return this;
+    }
+};
+
+   const bigArr = [];
+
+   for(let i = 1; i < 100; i ++){
+        bigArr.push(i)
+   };
+
+   const show = (item, index) =>{
+    console.log(item +' has index - ' + index);
+
+   }
+
+   bigArr.forEach(show)
+
+   console.log(bigArr);
+   
+    
+    
+
+
+    // for (const key in opt) {
+    //     if (Object.hasOwnProperty.call(opt, key)) {
+    //         const element = object[key];
+            
+    //     }
+    // }
