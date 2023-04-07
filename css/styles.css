@@ -1,4 +1,4 @@
-* {
+/* * {
   margin:0px;
   padding:0px;
 }
@@ -14,4 +14,108 @@ p {
   width: 400px;
   margin: 50px auto;
   font: 30px Monaco,"Courier New","DejaVu Sans Mono","Bitstream Vera Sans Mono",monospace;
+} */
+* {
+  box-sizing: border-box;
+}
+
+/* коректне відображення підпунктів списку */
+ol {
+  list-style-type: none;
+  counter-reset: item;
+}
+
+ol>li {
+  counter-increment: item;
+  margin-bottom: 0.6em;
+}
+
+ol>li:before {
+  content: counters(item, ".") ". ";
+  padding-right: 0.6em;
+}
+
+li ol>li {
+  margin: 0;
+}
+
+li ol>li:before {
+  content: counters(item, ".") " ";
+}
+
+/* коректне відображення підпунктів списку */
+
+
+header,
+main,
+footer {
+  /* width: 1200px; */
+  margin: 0 auto;
+  border: dotted 1px black;
+  margin-bottom: 5px;
+
+}
+
+header {
+  height: 200px;
+
+}
+
+
+main {
+  padding: 10px;
+
+}
+
+footer {
+  height: 200px;
+
+
+}
+
+.container_flex {
+  display: flex;
+  justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  flex-direction: row;
+  flex-wrap: wrap;
+  border: solid 1px red;
+}
+
+.item_flex {
+  /* width: 200px; */
+  /* align-items: baseline ; */
+  /* min-width: min-content; */
+  /* max-width:200px; */
+  /* width: 100px;
+  height: 200px; */
+  /* height: 600px; */
+  margin: 10px;
+  padding: 10px;
+  border: 1px blue solid;
+}
+
+
+
+.flex_container2 {
+  border: solid 2px black;
+  margin: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+    
+  align-items: stretch;
+    min-height: 400px;
+  /* min-width: 500px; */
+  flex-wrap: wrap;
+  align-content: stretch  ;
+}
+
+.item_flex2 {
+  /* text-align: center; */
+  min-width: 50px;
+  border: solid 2px green;
+  margin: 1px;
+  /* flex-grow: 1; */
 }
