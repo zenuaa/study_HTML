@@ -1,5 +1,9 @@
-'use strict' 
+'use strict'
 const verge = void 0;
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
 
 // function caclVolume(x) {
 //     if (Number.isFinite(x) && !isNaN(+ x) && x > 0) {
@@ -15,89 +19,28 @@ const verge = void 0;
 
 // caclVolume(-7);
 
-// const train = [[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16],[17,18,19,20],[21,22,23,24],[25,26,27,28],[29,30,31,32],[33,34,35,36]];
 
-
-
-
-
-// function getComp(x){
-//     if(Number.isFinite(x) || isNaN(+x) || x < 1 ){
-//         console.log("Ошибка. Проверьте правильность введенного номера места");
-//         return;
-//     }
-//     let t;
-// train.forEach((item, index, arr)=>{
-//     let f = item.find((item)=>{
-//         return item === x;
-//     }) 
-//     if(f){
-//         console.log(index+1);
-//         t = index+1;
-//         return index;
-//     };
-   
-// })
-// if(!t){
-//     console.log("Таких мест в вагоне не существует");
-//        }
-// }
-// getComp(1.2);
-
-// function getTime(min){
-//     if(min < 0 ){
-//         throw new Error('Check the data');
-//     }
-//         let hours,
-//         minets;
-
-//         hours = parseInt(min / 60);
-//         minets = min % 60;
-//         console.log(`It\'s ${hours} hours and ${minets} minets`);
-    
-// }
-// getTime(150);
-
-const opt = {
-    name: 'test',
-    width: 1024,
-    height: 1025, 
-    colors: {
-        border: 'black',
-        bg: 'red'
-    },
-    test: function(x){
-        console.log(x);
-        return this;
-    },
-    testt: (x)=>{
-        console.log(x);
-        return this;
+const mob = {
+    class: 'mage',
+    whoami: function () {
+    const str = this.name;
+    return capitalizeFirstLetter(str);
     }
-};
+}
 
-   const bigArr = [];
+let rasta = Object.create(mob, {
+    name: {
+        value: 'rasta'
+    },
+    lvl: {
+        value: 1
+    },
+    health: {
+        value: 500
+    },
+    mana: {
+        value: 600
+    }
+});
 
-   for(let i = 1; i < 100; i ++){
-        bigArr.push(i)
-   };
-
-   const show = (item, index) =>{
-    console.log(item +' has index - ' + index);
-
-   }
-
-   bigArr.forEach(show)
-
-   console.log(bigArr);
-   
-    
-    
-
-
-    // for (const key in opt) {
-    //     if (Object.hasOwnProperty.call(opt, key)) {
-    //         const element = object[key];
-            
-    //     }
-    // }
+console.log(rasta.whoami());
