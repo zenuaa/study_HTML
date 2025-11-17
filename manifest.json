@@ -3,12 +3,12 @@
   "short_name": "Calk",
   "icons": [
     {
-      "src": "images/face",
+      "src": "images/face.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "images/face",
+      "src": "images/face.png",
       "sizes": "512x512",
       "type": "image/png"
     }

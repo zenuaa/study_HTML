@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <title>Розрахунок часу та здачі</title>
 <!-- Favicon для браузера -->
-<link rel="icon" href="images/face" sizes="32x32" type="image/png">
+<link rel="icon" href="images/face.png" sizes="32x32" type="image/png">
 
 <!-- Apple Touch Icon для iPhone/iPad -->
-<link rel="apple-touch-icon" href="images/face" sizes="180x180">
+<link rel="apple-touch-icon" href="images/face.png" sizes="180x180">
 
 <!-- Manifest для Android / PWA -->
 <link rel="manifest" href="/manifest.json">
@@ -30,7 +30,7 @@ button{ border-radius:5px; color:#feffff;background-color:#2d8fdd; font-size: 15
 .res-line { padding:6px 10px; border-radius:6px; font-weight:600; color:#fff; }
 .kp { background:#2d8fdd; }
 .zd { background:#6aa84f; }
-.end { background:#e06666; }
+.end { background:#e06666; }git
 .hr-divider {
     border: none;
     height: 1px;
@@ -314,31 +314,25 @@ function calculate() {
     // ---------------- Ніжин ----------------
    else if(city==='nizhin') {
     if(operation==='zdacha') {
-        kp = rules.nizhin.kp[place] || 0;
+        kp = 0; // КП завжди 0
         zdTime = rules.nizhin.zdacha[place]?.[wagons] || 0;
+        let endAdd = rules.nizhin.zdacha[place]?.endAdd || 20;
+        endTime = baseTime + zdTime + endAdd;
 
-        document.getElementById('result_kp').innerText = `КП: ${formatTimeCalc(kp + baseTime)}`;
-        document.getElementById('result_zd').innerText = `Здача: ${formatTimeCalc(baseTime + kp + zdTime)}`;
-
-        const endBlock = document.getElementById('result_end');
-
-        // Ховаємо кінець роботи тільки для лок. бригади
-        if(place === 'brigade') {
-            endBlock.style.display = 'none';
-        } else {
-            endTime = baseTime + kp + zdTime + (rules.nizhin.zdacha[place]?.endAdd || 20);
-            endBlock.style.display = 'block';
-            endBlock.innerText = `Кінець роботи: ${formatTimeCalc(endTime)}`;
-        }
+        document.getElementById('result_kp').innerText = `КП: 0`;
+        document.getElementById('result_zd').innerText = `Здача: ${formatTimeCalc(baseTime + zdTime)}`;
+        document.getElementById('result_end').style.display = 'block';
+        document.getElementById('result_end').innerText = `Кінець роботи: ${formatTimeCalc(endTime)}`;
     }
     else if(operation==='pryimannya') {
         const pryimTime = {4:84,6:95,8:105}[wagons] || 0;
-        const yavka = baseTime - pryimTime;        // час явки
-        const pryimannya = yavka + 20;             // явка + 20 хв
+        const yavka = baseTime - pryimTime;
+        const pryimannya = yavka + 20;
+
         document.getElementById('result_kp').innerText = `КП: 0`;
+        document.getElementById('result_zd').innerText = `Приймання: ${formatTimeCalc(pryimannya)}`;
         document.getElementById('result_end').style.display = 'block';
         document.getElementById('result_end').innerText = `Явка: ${formatTimeCalc(yavka)}`;
-        document.getElementById('result_zd').innerText = `Приймання: ${formatTimeCalc(pryimannya)}`;
     }
 }
 }
