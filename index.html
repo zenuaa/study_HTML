@@ -207,13 +207,15 @@ function formatTimeCalc(total){
 
 // -------- Розрахунок --------
 function calculate(){
+    
     const city = document.querySelector('input[name="city"]:checked').value;
     const operation = document.querySelector('input[name="operation"]:checked').value;
     const wagons = document.querySelector('input[name="wagons"]:checked').value;
     let place = document.querySelector('input[name="place"]:checked')?.value || 'brigade';
     let next = document.querySelector('input[name="next"]:checked')?.value;
-    const inputTime = document.getElementById('timeInputCalc').value;
-
+    const inputTime = document.getElementById('timeInputCalc').value.trim();
+    if(inputTime === "") return;  // нічого не робимо, якщо поле порожнє
+    
     const baseTime = parseTimeCalc(inputTime);
     if(baseTime === null){ alert('Неправильний формат часу'); return; }
 
