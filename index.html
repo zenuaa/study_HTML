@@ -7,65 +7,81 @@
 body { font-family: Arial, sans-serif; max-width:700px; margin:20px auto; background:#f7f7f7; padding:12px;}
 main, header { background:#fff; padding:16px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.06);}
 h3 { margin-top:0; }
-label { display:block; margin-top:8px; }
+label { display:block; margin-left: 10px; }
 .radio-group label { margin-right:12px; }
-input[type="text"], input[type="number"] { width:100%; padding:6px 8px; margin-top:6px; }
+.radio-group p {margin-bottom: 7px; font-weight: bold; color:#dd2d4a}
+input[type="text"], input[type="number"] { padding:6px 8px; margin-top:6px; border-radius:5px; margin-left: 5px; border-color: #6aa84f; }
+button{ border-radius:5px; color:#feffff;background-color:#2d8fdd; font-size: 15px;}
 #results { margin-top:14px; padding:10px; background:#eef5ff; border-radius:6px; display:flex; gap:12px; flex-wrap:wrap; }
+#tabl{display: flex; justify-content: center; }
+#table img {display: block;margin: 0 auto;max-width: 100%;}
+#resultSimple{margin-left: 10px; font-size: 17px; font-weight: bold; color:#dd2d4a}
 .res-line { padding:6px 10px; border-radius:6px; font-weight:600; color:#fff; }
 .kp { background:#2d8fdd; }
 .zd { background:#6aa84f; }
 .end { background:#e06666; }
+.hr-divider {
+    border: none;
+    height: 1px;
+    background-color: #2d8fdd; /* колір синій, як у кнопок/блоків */
+    opacity: 0.3;               /* трохи прозора */
+    margin: 20px 0;
+    border-radius: 2px;
+}
+.top_lab{font-weight: bold;}
+.top {color:#3e249c; background-color: rgba(45, 143, 221, 0.1); /* світло-синій прозорий фон */
+    border-right: 4px solid #2d8fdd; /* акцентна лінія зліва */
+    border-radius: 6px;
+    color: #2d8fdd;
+    font-weight: 600;
+    font-style: italic;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);}
+.res_simple{ margin-left: 20px;}
+.footer {
+    margin-top: 30px;
+    padding: 12px 20px;
+    background-color: rgba(45, 143, 221, 0.1); /* світло-синій прозорий фон */
+    border-left: 4px solid #2d8fdd; /* акцентна лінія зліва */
+    border-radius: 6px;
+    font-size: 14px;
+    color: #2d8fdd;
+    text-align: right;
+    font-weight: 600;
+    font-style: italic;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
 </style>
 </head>
 <body>
 
-<!-- Блок 1: Операції з часом -->
+<!-- Блок : Розрахунок здачі/явки -->
 <header>
-<h3>Операції з часом (год.хв)</h3>
+<h3 class="top">Розрахунок здачі, явки та кінця роботи лок. бригади.</h3>
 
-<label>Час (формат год.хв, можна . , : -):</label>
-<input type="text" id="timeInputSimple" placeholder="наприклад 5.45">
-
-<label>Хвилини:</label>
-<input type="number" id="minutesInputSimple" placeholder="наприклад 115">
-
-<button onclick="subtractTimeSimple()">Відняти хвилини</button>
-<button onclick="addTimeSimple()">Додати хвилини</button>
-
-<h3>Результат:</h3>
-<div id="resultSimple"></div>
-</header>
-
-<p>________________________________________________</p>
-
-<!-- Блок 2: Розрахунок здачі/явки -->
-<main>
-<h3>Розрахунок здачі/явки та кінця роботи лок. бригади</h3>
-
-<label>Час прибуття/відправлення (год.хв, можна . , : -)</label>
+<label class="top_lab">Введіть час прибуття або відправлення (год.хв, можна . , : -)</label>
 <input type="text" id="timeInputCalc" placeholder="наприклад 5.45">
 
 <div class="radio-group">
-  <p>Кількість вагонів</p>
+  <p>Кількість вагонів:</p>
   <label><input type="radio" name="wagons" value="4" checked> 4</label>
   <label><input type="radio" name="wagons" value="6"> 6</label>
   <label><input type="radio" name="wagons" value="8"> 8</label>
 </div>
 
 <div class="radio-group">
-  <p>Станція</p>
+  <p>Станція:</p>
   <label><input type="radio" name="city" value="chernihiv" checked> Чернігів</label>
   <label><input type="radio" name="city" value="nizhin"> Ніжин</label>
 </div>
 
 <div class="radio-group" id="operationGroup">
-  <p>Операція</p>
+  <p>Операція:</p>
   <label><input type="radio" name="operation" value="zdacha" checked> Здача</label>
   <label id="pryimannyaLabel"><input type="radio" name="operation" value="pryimannya"> Приймання (явка, розраховує тільки для Ніжина)</label>
 </div>
 
 <div class="radio-group" id="placeGroup">
-  <p>Місце / дія</p>
+  <p>Місце / дія:</p>
   <label><input type="radio" name="place" value="brigade" checked> На ст. лок. бригаді</label>
   <label><input type="radio" name="place" value="stay"> На ст. у відстій</label>
   <label id="depoCrossLabel"><input type="radio" name="place" value="depo_cross"> Заїзд в депо по з'їзду</label><br>
@@ -77,17 +93,17 @@ input[type="text"], input[type="number"] { width:100%; padding:6px 8px; margin-t
   <label><input type="radio" name="next" value="stay" checked> У відстій</label>
   <label><input type="radio" name="next" value="to"> На ТО</label>
 </div>
-
-<button style="display: none;" onclick="calculate()">Розрахувати</button>
+<br>
+<button  onclick="calculate()">Розрахувати</button>
 
 <div id="results">
   <div id="result_kp" class="res-line kp"></div>
   <div id="result_zd" class="res-line zd"></div>
   <div id="result_end" class="res-line end"></div>
 </div>
-</main>
+</header>
 <script>
-// -------- Блок 1: Операції з часом --------
+// -------- Блок : Операції з часом --------
 function parseTimeSimple(){
     let t = document.getElementById("timeInputSimple").value.replace(/[:,\-]/g,'.').trim();
     if(!t.includes('.')) return null;
@@ -273,13 +289,15 @@ function calculate() {
     // Ніжин
     else if(city==='nizhin') {
         if(operation==='zdacha') {
-            kp = rules.nizhin.kp[place] || 0;
-            zdTime = rules.nizhin.zdacha[place]?.[wagons] || 0;
-            endTime = baseTime + kp + zdTime + (rules.nizhin.zdacha[place]?.endAdd || 20);
-            document.getElementById('result_kp').innerText = `КП: ${formatTimeCalc(kp + baseTime)}`;
-            document.getElementById('result_zd').innerText = `Здача: ${formatTimeCalc(baseTime + kp + zdTime)}`;
-            document.getElementById('result_end').innerText = `Кінець роботи: ${formatTimeCalc(endTime)}`;
-        }
+    kp = 0;   // ← завжди 0 для Ніжина
+
+    zdTime = rules.nizhin.zdacha[place]?.[wagons] || 0;
+    const endAdd = rules.nizhin.zdacha[place]?.endAdd || 20;
+
+    document.getElementById('result_kp').innerText = `КП: 0`;
+    document.getElementById('result_zd').innerText = `Здача: ${formatTimeCalc(baseTime + zdTime)}`;
+    document.getElementById('result_end').innerText = `Кінець роботи: ${formatTimeCalc(baseTime + zdTime + endAdd)}`;
+}
         else if(operation==='pryimannya') {
             // Час приймання для вагонів
             const pryimTime = {4:84,6:95,8:105}[wagons] || 0;
@@ -298,6 +316,34 @@ updatePlaceVisibility();
 calculate();
 </script>
 
+<hr class="hr-divider">
+<main>
+<h3>Операції з часом (год.хв)</h3>
+
+<label>Час (формат год.хв, можна . , : -):</label>
+<input type="text" id="timeInputSimple" placeholder="наприклад 5.45">
+<br><br>
+<label>Хвилини:</label>
+<input type="number" id="minutesInputSimple" placeholder="наприклад 115"><br><br>
+
+<button onclick="subtractTimeSimple()">Відняти хвилини</button>
+<button onclick="addTimeSimple()">Додати хвилини</button><br><br>
+
+<h3 class="res_simple">Результат:</h3>
+<div id="resultSimple"></div>
+</main>
+<hr class="hr-divider">
+
+<p class="line"></p>
+<footer>
+    <div  id="table" >
+        <img src="images/time.jpg">
+    </div>
+    <div class="footer">
+    Розробник: Барташ Євгеній
+</div>
+
+</footer>
 
 </body>
 </html>
