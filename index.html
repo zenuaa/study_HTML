@@ -149,33 +149,72 @@ const depo21Label = document.getElementById('depo21Label');
 const pryimannyaLabel = document.getElementById('pryimannyaLabel');
 
 // -------- Оновлення видимості блоків --------
-function updatePlaceVisibility(){
-    const city = document.querySelector('input[name="city"]:checked').value;
-    const operation = document.querySelector('input[name="operation"]:checked').value;
-    const placeRadio = document.querySelector('input[name="place"]:checked');
+function updatePlaceVisibility() {
+    const city = document.querySelector('input[name="city"]:checked')?.value;
+    const operation = document.querySelector('input[name="operation"]:checked')?.value;
 
-    // Тимчасово: Чернігів + Приймання → ховаємо все і пишемо повідомлення
-    if(city==='chernihiv' && operation==='pryimannya'){
-        placeGroup.style.display='none';
-        nextGroup.style.display='none';
-        alert("Цей функціонал ще не дороблено для Чернігова (Приймання)");
+    // Приймання в Чернігові → ховаємо і повідомляємо
+    if (city === 'chernihiv' && operation === 'pryimannya') {
+        placeGroup.style.display = 'none';
+        nextGroup.style.display = 'none';
+        document.getElementById('results').innerHTML = "<p>Цей функціонал ще не дороблено</p>";
         return;
     }
 
-    placeGroup.style.display='block';
-
-    // Ніжин + здача → ховаємо депо
-    if(city==='nizhin' && operation==='zdacha'){
-        depoCrossLabel.style.display='none';
-        depo21Label.style.display='none';
-    } else {
-        depoCrossLabel.style.display='inline';
-        depo21Label.style.display='inline';
+    // Приймання в Ніжині → ховаємо блоки місце/дія і next, показуємо тільки результат
+    if (city === 'nizhin' && operation === 'pryimannya') {
+        placeGroup.style.display = 'none';
+        nextGroup.style.display = 'none';
+        document.getElementById('results').innerHTML = `
+            <div id="result_kp" class="res-line kp">КП: 0</div>
+            <div id="result_zd" class="res-line zd">Приймання: </div>
+            <div id="result_end" class="res-line end">З відстою</div>
+        `;
+        return;
     }
 
-    // Подальша дія → лише при депо
-    const placeVal = placeRadio?.value;
-    nextGroup.style.display = (placeVal==='depo_cross'||placeVal==='depo_21') ? 'block':'none';
+    // Для всіх інших випадків
+    placeGroup.style.display = 'block';
+
+    // За замовчуванням показуємо заїзди в депо
+    depoCrossLabel.style.display = 'inline';
+    depo21Label.style.display = 'inline';
+
+    // Якщо Ніжин + здача → ховаємо заїзди в депо
+    if (city === 'nizhin' && operation === 'zdacha') {
+        depoCrossLabel.style.display = 'none';
+        depo21Label.style.display = 'none';
+    }
+
+    // Отримуємо значення місця
+    let placeRadio = document.querySelector('input[name="place"]:checked');
+    if (!placeRadio) {
+        document.querySelector('input[name="place"][value="brigade"]').checked = true;
+        placeRadio = document.querySelector('input[name="place"]:checked');
+    }
+    const placeVal = placeRadio.value;
+
+    // Логіка показу nextGroup
+    if (city === 'chernihiv' && operation === 'zdacha') {
+        if (placeVal === 'brigade' || placeVal === 'stay') {
+            nextGroup.style.display = 'none'; // ховаємо для станцій
+        } else if (placeVal === 'depo_cross' || placeVal === 'depo_21') {
+            nextGroup.style.display = 'block'; // показуємо для депо
+        }
+    } else if (placeVal === 'depo_cross' || placeVal === 'depo_21') {
+        nextGroup.style.display = 'block'; // для всіх інших випадків депо
+    } else {
+        nextGroup.style.display = 'none';
+    }
+
+    // Показуємо блоки результатів, якщо він пустий
+    if (!document.getElementById('result_kp')) {
+        document.getElementById('results').innerHTML = `
+            <div id="result_kp" class="res-line kp"></div>
+            <div id="result_zd" class="res-line zd"></div>
+            <div id="result_end" class="res-line end"></div>
+        `;
+    }
 }
 
 // -------- Слухачі --------
@@ -206,49 +245,54 @@ function formatTimeCalc(total){
 }
 
 // -------- Розрахунок --------
-function calculate(){
-    
+function calculate() {
     const city = document.querySelector('input[name="city"]:checked').value;
     const operation = document.querySelector('input[name="operation"]:checked').value;
-    const wagons = document.querySelector('input[name="wagons"]:checked').value;
+    const wagons = parseInt(document.querySelector('input[name="wagons"]:checked').value);
     let place = document.querySelector('input[name="place"]:checked')?.value || 'brigade';
-    let next = document.querySelector('input[name="next"]:checked')?.value;
+    let next = document.querySelector('input[name="next"]:checked')?.value || 'to';
     const inputTime = document.getElementById('timeInputCalc').value.trim();
-    if(inputTime === "") return;  // нічого не робимо, якщо поле порожнє
-    
-    const baseTime = parseTimeCalc(inputTime);
-    if(baseTime === null){ alert('Неправильний формат часу'); return; }
+    if (inputTime === "") return;
 
-    let kp = 0;
-    let zdTime = 0;
-    let endTime = 0;
+    const baseTime = parseTimeCalc(inputTime);
+    if (baseTime === null){ alert('Неправильний формат часу'); return; }
+
+    let kp = 0, zdTime = 0, endTime = 0;
 
     // Чернігів
-    if(city==='chernihiv'){
-        // для депо та відстою додаємо _stay якщо потрібне
+    if(city==='chernihiv') {
         if((place==='depo_cross' || place==='depo_21') && next==='stay') place = place+'_stay';
         kp = rules.chernihiv.kp[place] || 0;
         zdTime = rules.chernihiv.zdacha[place][wagons] || 0;
         endTime = baseTime + kp + zdTime + rules.chernihiv.zdacha[place].endAdd;
+        document.getElementById('result_kp').innerText = `КП: ${formatTimeCalc(kp + baseTime)}`;
+        document.getElementById('result_zd').innerText = `Здача: ${formatTimeCalc(baseTime + kp + zdTime)}`;
+        document.getElementById('result_end').innerText = `Кінець роботи: ${formatTimeCalc(endTime)}`;
     }
+
     // Ніжин
-    else if(city==='nizhin'){
-        // тимчасово ховаємо все для приймання в Чернігові
-        if(operation==='pryimannya'){
-            document.getElementById('results').innerText = 'Цей функціонал ще не дороблено';
-            return;
+    else if(city==='nizhin') {
+        if(operation==='zdacha') {
+            kp = rules.nizhin.kp[place] || 0;
+            zdTime = rules.nizhin.zdacha[place]?.[wagons] || 0;
+            endTime = baseTime + kp + zdTime + (rules.nizhin.zdacha[place]?.endAdd || 20);
+            document.getElementById('result_kp').innerText = `КП: ${formatTimeCalc(kp + baseTime)}`;
+            document.getElementById('result_zd').innerText = `Здача: ${formatTimeCalc(baseTime + kp + zdTime)}`;
+            document.getElementById('result_end').innerText = `Кінець роботи: ${formatTimeCalc(endTime)}`;
         }
-
-        kp = rules.nizhin.kp[place] || 0;
-        zdTime = rules.nizhin.zdacha[place]?.[wagons] || 0;
-        endTime = baseTime + kp + zdTime + (rules.nizhin.zdacha[place]?.endAdd || 20); // +20 хв до кінця
+        else if(operation==='pryimannya') {
+            // Час приймання для вагонів
+            const pryimTime = {4:84,6:95,8:105}[wagons] || 0;
+            const yavka = baseTime - pryimTime;        // час явки
+            const pryimannya = yavka + 20;             // явка + 20 хв
+            kp = 0;
+            document.getElementById('result_kp').innerText = `КП: 0`;
+            document.getElementById('result_end').innerText = `Явка: ${formatTimeCalc(yavka)}`;
+            document.getElementById('result_zd').innerText = `Приймання: ${formatTimeCalc(pryimannya)}`;
+            
+        }
     }
-
-    document.getElementById('result_kp').innerText = `КП: ${formatTimeCalc(kp + baseTime)}`;
-    document.getElementById('result_zd').innerText = `Здача: ${formatTimeCalc(baseTime + kp + zdTime)}`;
-    document.getElementById('result_end').innerText = `Кінець роботи: ${formatTimeCalc(endTime)}`;
 }
-
 // -------- Ініціалізація --------
 updatePlaceVisibility();
 calculate();
