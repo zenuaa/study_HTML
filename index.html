@@ -312,24 +312,35 @@ function calculate() {
     }
 
     // ---------------- Ніжин ----------------
-    else if(city==='nizhin') {
-        if(operation==='zdacha') {
-            kp = rules.nizhin.kp[place] || 0;
-            zdTime = rules.nizhin.zdacha[place]?.[wagons] || 0;
+   else if(city==='nizhin') {
+    if(operation==='zdacha') {
+        kp = rules.nizhin.kp[place] || 0;
+        zdTime = rules.nizhin.zdacha[place]?.[wagons] || 0;
+
+        document.getElementById('result_kp').innerText = `КП: ${formatTimeCalc(kp + baseTime)}`;
+        document.getElementById('result_zd').innerText = `Здача: ${formatTimeCalc(baseTime + kp + zdTime)}`;
+
+        const endBlock = document.getElementById('result_end');
+
+        // Ховаємо кінець роботи тільки для лок. бригади
+        if(place === 'brigade') {
+            endBlock.style.display = 'none';
+        } else {
             endTime = baseTime + kp + zdTime + (rules.nizhin.zdacha[place]?.endAdd || 20);
-            document.getElementById('result_kp').innerText = `КП: ${formatTimeCalc(kp + baseTime)}`;
-            document.getElementById('result_zd').innerText = `Здача: ${formatTimeCalc(baseTime + kp + zdTime)}`;
-            document.getElementById('result_end').innerText = `Кінець роботи: ${formatTimeCalc(endTime)}`;
-        }
-        else if(operation==='pryimannya') {
-            const pryimTime = {4:84,6:95,8:105}[wagons] || 0;
-            const yavka = baseTime - pryimTime;        // час явки
-            const pryimannya = yavka + 20;             // явка + 20 хв
-            document.getElementById('result_kp').innerText = `КП: 0`;
-            document.getElementById('result_end').innerText = `Явка: ${formatTimeCalc(yavka)}`;
-            document.getElementById('result_zd').innerText = `Приймання: ${formatTimeCalc(pryimannya)}`;
+            endBlock.style.display = 'block';
+            endBlock.innerText = `Кінець роботи: ${formatTimeCalc(endTime)}`;
         }
     }
+    else if(operation==='pryimannya') {
+        const pryimTime = {4:84,6:95,8:105}[wagons] || 0;
+        const yavka = baseTime - pryimTime;        // час явки
+        const pryimannya = yavka + 20;             // явка + 20 хв
+        document.getElementById('result_kp').innerText = `КП: 0`;
+        document.getElementById('result_end').style.display = 'block';
+        document.getElementById('result_end').innerText = `Явка: ${formatTimeCalc(yavka)}`;
+        document.getElementById('result_zd').innerText = `Приймання: ${formatTimeCalc(pryimannya)}`;
+    }
+}
 }
 // -------- Ініціалізація --------
 updatePlaceVisibility();
