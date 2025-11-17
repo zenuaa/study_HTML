@@ -330,9 +330,10 @@ function calculate() {
         const pryimannya = yavka + 20;
 
         document.getElementById('result_kp').innerText = `КП: 0`;
-        document.getElementById('result_zd').innerText = `Приймання: ${formatTimeCalc(pryimannya)}`;
-        document.getElementById('result_end').style.display = 'block';
-        document.getElementById('result_end').innerText = `Явка: ${formatTimeCalc(yavka)}`;
+document.getElementById('result_zd').innerText = `Явка: ${formatTimeCalc(yavka)}`;
+document.getElementById('result_end').style.display = 'block';
+document.getElementById('result_end').innerText = `Приймання: ${formatTimeCalc(pryimannya)}`;
+
     }
 }
 }
