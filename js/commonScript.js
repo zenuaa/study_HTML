@@ -54,26 +54,30 @@ function rem() {
 //     }
 // }
 
-function factorial(x) {
-    if (x <= 0) {
-        return 1
-    }
-    else {
-        if (!Number.isInteger(x)) {
-            return 'error'
-        }
-        else {
-            let res = x;
-            for (x; x > 1; x--) {
-                res *= x - 1;
-            }
-            return res;
-        }
-    }
+const dedLine = new Date('2024-02-17');
+console.log(dedLine.getMonth());
 
-}
-console.log(factorial(1));
-console.log(factorial(2));
-console.log(factorial(3));
-console.log(factorial(4));
-console.log(factorial(5));
+const now = new Date();
+console.log(now.toLocaleString());
+
+let x = dedLine.getTime() -  now.getTime();
+function convertMilliseconds(milliseconds) {
+    const seconds = Math.floor(milliseconds / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+  
+    const remainingSeconds = seconds % 60;
+    const remainingMinutes = minutes % 60;
+    const remainingHours = hours % 24;
+  
+    return {
+      days: days,
+      hours: remainingHours,
+      minutes: remainingMinutes,
+      seconds: remainingSeconds
+    };
+  }
+  console.log( convertMilliseconds(x));
+
+
