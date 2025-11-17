@@ -275,39 +275,48 @@ function calculate() {
 
     let kp = 0, zdTime = 0, endTime = 0;
 
-    // Чернігів
+    // ---------------- Чернігів ----------------
     if(city==='chernihiv') {
-        if((place==='depo_cross' || place==='depo_21') && next==='stay') place = place+'_stay';
-        kp = rules.chernihiv.kp[place] || 0;
-        zdTime = rules.chernihiv.zdacha[place][wagons] || 0;
-        endTime = baseTime + kp + zdTime + rules.chernihiv.zdacha[place].endAdd;
-        document.getElementById('result_kp').innerText = `КП: ${formatTimeCalc(kp + baseTime)}`;
-        document.getElementById('result_zd').innerText = `Здача: ${formatTimeCalc(baseTime + kp + zdTime)}`;
-        document.getElementById('result_end').innerText = `Кінець роботи: ${formatTimeCalc(endTime)}`;
+        if(operation==='zdacha') {
+            // Станції: brigade / stay → КП = 0
+            if(place==='brigade' || place==='stay') {
+                kp = 0;
+                zdTime = rules.chernihiv.zdacha[place][wagons] || 0;
+                endTime = baseTime + zdTime + rules.chernihiv.zdacha[place].endAdd;
+                document.getElementById('result_kp').innerText = `КП: 0`;
+                document.getElementById('result_zd').innerText = `Здача: ${formatTimeCalc(baseTime + zdTime)}`;
+                document.getElementById('result_end').innerText = `Кінець роботи: ${formatTimeCalc(endTime)}`;
+            }
+            // Депо
+            else {
+                if((place==='depo_cross' || place==='depo_21') && next==='stay') place = place+'_stay';
+                kp = rules.chernihiv.kp[place] || 0;
+                zdTime = rules.chernihiv.zdacha[place][wagons] || 0;
+                endTime = baseTime + kp + zdTime + rules.chernihiv.zdacha[place].endAdd;
+                document.getElementById('result_kp').innerText = `КП: ${formatTimeCalc(kp + baseTime)}`;
+                document.getElementById('result_zd').innerText = `Здача: ${formatTimeCalc(baseTime + kp + zdTime)}`;
+                document.getElementById('result_end').innerText = `Кінець роботи: ${formatTimeCalc(endTime)}`;
+            }
+        }
     }
 
-    // Ніжин
+    // ---------------- Ніжин ----------------
     else if(city==='nizhin') {
         if(operation==='zdacha') {
-    kp = 0;   // ← завжди 0 для Ніжина
-
-    zdTime = rules.nizhin.zdacha[place]?.[wagons] || 0;
-    const endAdd = rules.nizhin.zdacha[place]?.endAdd || 20;
-
-    document.getElementById('result_kp').innerText = `КП: 0`;
-    document.getElementById('result_zd').innerText = `Здача: ${formatTimeCalc(baseTime + zdTime)}`;
-    document.getElementById('result_end').innerText = `Кінець роботи: ${formatTimeCalc(baseTime + zdTime + endAdd)}`;
-}
+            kp = rules.nizhin.kp[place] || 0;
+            zdTime = rules.nizhin.zdacha[place]?.[wagons] || 0;
+            endTime = baseTime + kp + zdTime + (rules.nizhin.zdacha[place]?.endAdd || 20);
+            document.getElementById('result_kp').innerText = `КП: ${formatTimeCalc(kp + baseTime)}`;
+            document.getElementById('result_zd').innerText = `Здача: ${formatTimeCalc(baseTime + kp + zdTime)}`;
+            document.getElementById('result_end').innerText = `Кінець роботи: ${formatTimeCalc(endTime)}`;
+        }
         else if(operation==='pryimannya') {
-            // Час приймання для вагонів
             const pryimTime = {4:84,6:95,8:105}[wagons] || 0;
             const yavka = baseTime - pryimTime;        // час явки
             const pryimannya = yavka + 20;             // явка + 20 хв
-            kp = 0;
             document.getElementById('result_kp').innerText = `КП: 0`;
             document.getElementById('result_end').innerText = `Явка: ${formatTimeCalc(yavka)}`;
             document.getElementById('result_zd').innerText = `Приймання: ${formatTimeCalc(pryimannya)}`;
-            
         }
     }
 }
