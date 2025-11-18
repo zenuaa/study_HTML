@@ -1,0 +1,220 @@
+body {
+    font-family: Arial, sans-serif;
+    min-width: 100%;
+    max-width: 700px;
+    margin: 20px auto;
+    background: #f7f7f7;
+    /* padding: 12px; */
+    display: flex;
+    flex-direction: column;
+    font-style: italic;
+}
+
+main,
+header {
+    background: #fff;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+h3 {
+    margin-top: 0;
+}
+
+label {
+    display: block;
+    margin-left: 10px;
+}
+
+.radio-group{
+    display: flex;
+    flex-direction: column; /* Вертикальне розташування */
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    gap: 3px;
+}
+
+.radio-group label {
+    margin-right: 12px;
+    font-size: 18px;
+}
+.radio-group label input {
+    margin-bottom: 9px;
+}
+.radio-group p {
+    margin-bottom: 7px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #dd2d4a
+}
+
+ input[type="text"],
+input[type="number"] {
+    padding: 8px 12px;                   /* трохи більше простору всередині */
+    margin-top: 6px;
+    margin-left: 5px;
+    border-radius: 8px;                  /* більш закруглені кути */
+    border: 2px solid #6aa84f;           /* зелений бордер */
+    outline: none;                        /* прибираємо стандартну обводку при фокусі */
+    font-size: 15px;
+    transition: all 0.2s ease;           /* плавні ефекти при ховері та фокусі */
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); /* легка внутрішня тінь */
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+    border-color: #2d8fdd;               /* змінюємо бордер при фокусі */
+    box-shadow: 0 0 8px rgba(45,143,221,0.5); /* зовнішня тінь при фокусі */
+    background-color: #f0fbff;           /* легкий підсвіт */
+}
+
+
+input[type="radio"] {
+  transform: scale(1.5); /* 1.5 = 150% від стандартного */
+  margin-right: 5px;     /* щоб текст не прилипав до радіо */
+}
+
+
+ button {
+    border-radius: 6px;              /* більш закруглені кути */
+    color: #ffffff;                    /* колір тексту */
+    background: linear-gradient(135deg, #2d8fdd, #1c6bb0); /* градієнт */
+    font-size: 16px;                   /* трохи більший шрифт */
+    font-weight: 600;                  /* трохи жирніше */
+    padding: 7px 10px;                /* відступи всередині */
+    border: none;                      /* прибираємо стандартний бордер */
+    cursor: pointer;                   /* курсор при наведенні */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* легка тінь */
+    transition: all 0.2s ease;         /* плавна анімація при ховері та натисканні */
+}
+
+button:hover {
+    background: linear-gradient(135deg, #1c6bb0, #2d8fdd); /* змінюємо градієнт при наведенні */
+    transform: translateY(-2px);      /* легке підняття */
+    box-shadow: 0 6px 12px rgba(0,0,0,0.25); /* сильніша тінь */
+}
+
+button:active {
+    transform: translateY(1px);       /* ефект натискання */
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}
+
+
+
+#results {
+    margin-top: 14px;
+    padding: 10px;
+    background: #eef5ff;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+#results div{
+    font-size: 18px;
+}
+#tabl {
+    display: flex;
+    justify-content: center;
+}
+
+#table img {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+}
+
+#resultSimple {
+    margin-left: 10px;
+    font-size: 17px;
+    font-weight: bold;
+    color: #dd2d4a
+}
+#timeInputSimple, #minutesInputSimple {
+    margin-bottom:7px ;
+}
+
+#addTimeSimple{
+    margin-top:;
+}
+.res-line {
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.kp {
+    background: #2d8fdd;
+}
+
+.zd {
+    background: #6aa84f;
+}
+
+.end {
+    background: #e06666;
+}
+
+.hr-divider {
+    border: none;
+    height: 1px;
+    background-color: #2d8fdd;
+    /* колір синій, як у кнопок/блоків */
+    opacity: 0.3;
+    /* трохи прозора */
+    margin: 5px 0;
+    border-radius: 2px;
+}
+
+.top_lab {
+    font-weight: bold;
+    font-size: 18px;
+    font-style: italic;
+}
+
+.top {
+    color: #3e249c;
+    background-color: rgba(45, 143, 221, 0.1);
+    /* світло-синій прозорий фон */
+    border-right: 4px solid #2d8fdd;
+    /* акцентна лінія зліва */
+    border-radius: 6px;
+    color: #2d8fdd;
+    font-weight: 600;
+    font-size: 20px;
+    font-style: italic;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.res_simple {
+    margin-bottom: 3px;
+
+}
+
+.footer {
+    margin-top: 30px;
+    padding: 12px 20px;
+    background-color: rgba(45, 143, 221, 0.1);
+    /* світло-синій прозорий фон */
+    border-left: 4px solid #2d8fdd;
+    /* акцентна лінія зліва */
+    border-radius: 6px;
+    font-size: 14px;
+    color: #2d8fdd;
+    text-align: right;
+    font-weight: 600;
+    font-style: italic;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+
+
+
