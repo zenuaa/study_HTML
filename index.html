@@ -18,13 +18,9 @@
     <meta name="theme-color" content="#ffffff">
 
     <link rel="stylesheet" href="css/styles.css">
-    <style>
-
-    </style>
 </head>
 
 <body>
-
     <!-- Блок : Розрахунок здачі/явки -->
     <header>
         <h3 class="top">Розрахунок здачі, явки та кінця роботи лок. бригади.</h3>
@@ -67,7 +63,6 @@
             <label><input type="radio" name="next" value="to"> На ТО</label>
         </div>
         <br>
-
         <button id="rozr" onclick="calculate()">Розрахувати</button>
         <div id="results">
             <div id="result_kp" class="res-line kp"></div>
@@ -75,27 +70,19 @@
             <div id="result_end" class="res-line end"></div>
         </div>
     </header>
-    <script>
-
-    </script>
-
     <hr class="hr-divider">
     <main>
         <h3>Операції з часом (год.хв)</h3>
-
         <label>Час (формат год.хв, можна . , : -):</label>
         <input type="text" id="timeInputSimple" placeholder="наприклад 5.45">
         <label>Хвилини:</label>
         <input type="number" id="minutesInputSimple" placeholder="наприклад 115">
-
         <button style="margin-bottom: 5px;" onclick="subtractTimeSimple()">Відняти хвилини</button>
         <button style="margin-bottom: 5px;" onclick="addTimeSimple()">Додати хвилини</button>
-
         <h3 class="res_simple">Результат:</h3>
         <div id="resultSimple"></div>
     </main>
     <hr class="hr-divider">
-
     <p class="line"></p>
     <footer>
         <div id="table">
@@ -104,7 +91,6 @@
         <div class="footer">
             Розробник: Барташ Євгеній
         </div>
-
     </footer>
     <script src="js/js.js"></script>
 </body>
