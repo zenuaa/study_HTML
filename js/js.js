@@ -56,7 +56,7 @@ const rules = {
             stay: { 4: 84, 6: 95, 8: 105 }
         },
         zdacha: {
-            brigade: { 4: 9, 6: 11, 8: 14, endAdd: 11},
+            brigade: { 4: 9, 6: 11, 8: 14, endAdd: 4},
             stay: { 4: 80, 6: 101, 8: 123, endAdd: 11 }
         },
         kp: { brigade: 0, stay: 0 }
@@ -84,6 +84,7 @@ const nextGroup = document.getElementById('nextGroup');
 const depoCrossLabel = document.getElementById('depoCrossLabel');
 const depo21Label = document.getElementById('depo21Label');
 const pryimannyaLabel = document.getElementById('pryimannyaLabel');
+const stVidstii = document.getElementById('st_vidstii');
 
 // -------- Оновлення видимості блоків --------
 function updatePlaceVisibility() {
@@ -94,7 +95,11 @@ function updatePlaceVisibility() {
     if (city === 'chernihiv' && operation === 'pryimannya') {
         placeGroup.style.display = 'none';
         nextGroup.style.display = 'none';
-        document.getElementById('results').innerHTML = "<p>Цей функціонал ще не дороблено</p>";
+
+         // Показуємо РАДІО приймання по НІЖИНУ бо нема данних ПРИБРАТИ ЯКЦО ЗРОБИШ ЯВКУ КОНОТОПА
+         pryimannyaLabel.style.display = 'block';
+       
+         document.getElementById('results').innerHTML = "<p>Цей функціонал ще не дороблено</p>";
         return;
     }
 
@@ -106,6 +111,9 @@ if (city === 'nizhin') {
     // Показуємо тільки станцію (бригаду/відстій)
     document.querySelector('input[value="brigade"]').parentElement.style.display = 'block';
     document.querySelector('input[value="stay"]').parentElement.style.display = 'block';
+
+        // Показуємо РАДІО приймання по НІЖИНУ бо нема данних ПРИБРАТИ ЯКЦО ЗРОБИШ ЯВКУ КОНОТОПА
+    pryimannyaLabel.style.display = 'block';
 
     // Ховаємо депо як у Конотопі
     depoCrossLabel.style.display = 'none';
@@ -143,6 +151,12 @@ if (city === 'nizhin') {
     document.querySelector('input[value="brigade"]').parentElement.style.display = 'block';
     document.querySelector('input[value="stay"]').parentElement.style.display = 'block';
     
+    // Ховаємо приймання по конотопу бо нема данних ДОРОБИТИ
+    pryimannyaLabel.style.display = 'none';
+
+    // Ховаємо здачу на станції по конотопу бо нема данних 
+    stVidstii.style.display = 'none';
+
     // Ховаємо депо
     depoCrossLabel.style.display = 'none';
     depo21Label.style.display = 'none';
