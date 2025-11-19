@@ -88,6 +88,17 @@ const stVidstii = document.getElementById('st_vidstii');
 
 // -------- Оновлення видимості блоків --------
 function updatePlaceVisibility() {
+    // --- Глобальний reset ---
+    // Станційні місця
+    document.querySelector('input[value="brigade"]').parentElement.style.display = 'block';
+    document.querySelector('input[value="stay"]').parentElement.style.display = 'block';
+
+    // Депо
+    depoCrossLabel.style.display = 'inline';
+    depo21Label.style.display = 'inline';
+
+    // Блок подальшої дії
+    nextGroup.style.display = 'block';
     const city = document.querySelector('input[name="city"]:checked')?.value;
     const operation = document.querySelector('input[name="operation"]:checked')?.value;
 
@@ -95,13 +106,20 @@ function updatePlaceVisibility() {
     if (city === 'chernihiv' && operation === 'pryimannya') {
         placeGroup.style.display = 'none';
         nextGroup.style.display = 'none';
-
-         // Показуємо РАДІО приймання по НІЖИНУ бо нема данних ПРИБРАТИ ЯКЦО ЗРОБИШ ЯВКУ КОНОТОПА
-         pryimannyaLabel.style.display = 'block';
+         
        
          document.getElementById('results').innerHTML = "<p>Цей функціонал ще не дороблено</p>";
         return;
     }
+     if (city === 'chernihiv' && operation === 'pryimannya') {
+        placeGroup.style.display = 'none';
+        nextGroup.style.display = 'none';
+       
+         document.getElementById('results').innerHTML = "<p>Цей функціонал ще не дороблено</p>";
+        return;
+    }
+
+
 
     // Приймання в Ніжині → ховаємо блоки місце/дія і показуємо тільки результат
     // ---------------- НІЖИН ----------------
@@ -111,9 +129,6 @@ if (city === 'nizhin') {
     // Показуємо тільки станцію (бригаду/відстій)
     document.querySelector('input[value="brigade"]').parentElement.style.display = 'block';
     document.querySelector('input[value="stay"]').parentElement.style.display = 'block';
-
-        // Показуємо РАДІО приймання по НІЖИНУ бо нема данних ПРИБРАТИ ЯКЦО ЗРОБИШ ЯВКУ КОНОТОПА
-    pryimannyaLabel.style.display = 'block';
 
     // Ховаємо депо як у Конотопі
     depoCrossLabel.style.display = 'none';
@@ -144,43 +159,33 @@ if (city === 'nizhin') {
     return; // дуже важливо!
 }
 
-    if (city === 'konotop') {
+   if (city === 'konotop') {
+
     placeGroup.style.display = 'block';
-    
-    // Показуємо станційні варіанти
+
+    // Показати станційні варіанти
     document.querySelector('input[value="brigade"]').parentElement.style.display = 'block';
     document.querySelector('input[value="stay"]').parentElement.style.display = 'block';
-    
-    // Ховаємо приймання по конотопу бо нема данних ДОРОБИТИ
-    pryimannyaLabel.style.display = 'none';
 
-    // Ховаємо здачу на станції по конотопу бо нема данних 
+    // ❌ Ховаємо "у відстій" (бо для Конотопа нема правил)
     stVidstii.style.display = 'none';
 
-    // Ховаємо депо
+    // ❌ Ховаємо депо
     depoCrossLabel.style.display = 'none';
     depo21Label.style.display = 'none';
 
-    // Ховаємо блок nextGroup (в депо ж не їдуть)
+    // ❌ Ховаємо подальшу дію (в депо не їдуть)
     nextGroup.style.display = 'none';
-    
-    // Якщо зараз вибрано депо — автоматично перемикаємо на "brigade"
+
+    // Якщо зараз вибрано депо — перемикаємо на "brigade"
     let place = document.querySelector('input[name="place"]:checked')?.value;
     if (place === 'depo_cross' || place === 'depo_21') {
         document.querySelector('input[value="brigade"]').checked = true;
     }
 
-    // Показуємо результатні блоки (на всяк випадок)
-    if (!document.getElementById('result_kp')) {
-        document.getElementById('results').innerHTML = `
-            <div id="result_kp" class="res-line kp"></div>
-            <div id="result_zd" class="res-line zd"></div>
-            <div id="result_end" class="res-line end"></div>
-        `;
-    }
-
-    return; // важливо!
+    return; // важливо — не запускаємо логіку інших станцій
 }
+
 
     // Для всіх інших випадків
     placeGroup.style.display = 'block';
