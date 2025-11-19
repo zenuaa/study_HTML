@@ -31,6 +31,14 @@ function subtractTimeSimple() {
 // -------- Блок 2: Розрахунок здачі/явки --------
 const rules = {
     chernihiv: {
+        pryimannya: {
+            brigade: { 4: 0, 6: 0, 8: 0 },  
+            stay: { 4: 0, 6: 0, 8: 0 },  
+            depo_cross: { 4: 0, 6: 0, 8: 0 },
+            depo_cross_stay: { 4: 0, 6: 0, 8: 0 },
+            depo_21: { 4: 0, 6: 0, 8: 0 },
+            depo_21_stay: { 4: 0, 6: 0, 8: 0 }
+        },
         zdacha: {
             brigade: { 4: 9, 6: 11, 8: 14, endAdd: 26 },
             stay: { 4: 11, 6: 16, 8: 21, endAdd: 26 },
@@ -41,14 +49,32 @@ const rules = {
         },
         kp: { brigade: 0, stay: 0, depo_cross: 20, depo_cross_stay: 20, depo_21: 27, depo_21_stay: 27 }
     },
+
     nizhin: {
+        pryimannya: {
+            brigade: { 4: 0, 6: 0, 8: 0 },
+            stay: { 4: 84, 6: 95, 8: 105 }
+        },
         zdacha: {
-            brigade: { 4: 9, 6: 11, 8: 14, endAdd: 11 },  // <-- Нова логіка як у Чернігова
-            stay: { 4: 91, 6: 112, 8: 134, endAdd: 11 }    // Можна аналогічно для відстою, якщо потрібно
+            brigade: { 4: 9, 6: 11, 8: 14, endAdd: 11},
+            stay: { 4: 80, 6: 101, 8: 123, endAdd: 11 }
+        },
+        kp: { brigade: 0, stay: 0 }
+    },
+
+    konotop: {
+        pryimannya: {
+            brigade: { 4: 0, 6: 0, 8: 0 },
+            stay: { 4: 0, 6: 0, 8: 0 }
+        },
+        zdacha: {
+            brigade: { 4: 9, 6: 11, 8: 14, endAdd: 20 },
+            stay: { 4: 11, 6: 16, 8: 21, endAdd: 20 }
         },
         kp: { brigade: 0, stay: 0 }
     }
 };
+
 
 // -------- Селектори --------
 const cityRadios = document.querySelectorAll('input[name="city"]');
@@ -72,17 +98,75 @@ function updatePlaceVisibility() {
         return;
     }
 
-    // Приймання в Ніжині → ховаємо блоки місце/дія і next, показуємо тільки результат
-    if (city === 'nizhin' && operation === 'pryimannya') {
+    // Приймання в Ніжині → ховаємо блоки місце/дія і показуємо тільки результат
+    // ---------------- НІЖИН ----------------
+if (city === 'nizhin') {
+    placeGroup.style.display = 'block';
+
+    // Показуємо тільки станцію (бригаду/відстій)
+    document.querySelector('input[value="brigade"]').parentElement.style.display = 'block';
+    document.querySelector('input[value="stay"]').parentElement.style.display = 'block';
+
+    // Ховаємо депо як у Конотопі
+    depoCrossLabel.style.display = 'none';
+    depo21Label.style.display = 'none';
+
+    // Ховаємо наступну дію
+    nextGroup.style.display = 'none';
+
+    // Якщо вибрано депо → автоматично перемикаємо на "brigade"
+    let place = document.querySelector('input[name="place"]:checked')?.value;
+    if (place === 'depo_cross' || place === 'depo_21') {
+        document.querySelector('input[value="brigade"]').checked = true;
+    }
+
+    // Якщо вибрано приймання → взагалі ховаємо group-и
+    if (operation === 'pryimannya') {
         placeGroup.style.display = 'none';
         nextGroup.style.display = 'none';
+
         document.getElementById('results').innerHTML = `
             <div id="result_kp" class="res-line kp">КП: 0</div>
-            <div id="result_zd" class="res-line zd">Приймання: </div>
-            <div id="result_end" class="res-line end">З відстою</div>
+            <div id="result_zd" class="res-line zd">Явка:</div>
+            <div id="result_end" class="res-line end">Приймання:</div>
         `;
         return;
     }
+
+    return; // дуже важливо!
+}
+
+    if (city === 'konotop') {
+    placeGroup.style.display = 'block';
+    
+    // Показуємо станційні варіанти
+    document.querySelector('input[value="brigade"]').parentElement.style.display = 'block';
+    document.querySelector('input[value="stay"]').parentElement.style.display = 'block';
+    
+    // Ховаємо депо
+    depoCrossLabel.style.display = 'none';
+    depo21Label.style.display = 'none';
+
+    // Ховаємо блок nextGroup (в депо ж не їдуть)
+    nextGroup.style.display = 'none';
+    
+    // Якщо зараз вибрано депо — автоматично перемикаємо на "brigade"
+    let place = document.querySelector('input[name="place"]:checked')?.value;
+    if (place === 'depo_cross' || place === 'depo_21') {
+        document.querySelector('input[value="brigade"]').checked = true;
+    }
+
+    // Показуємо результатні блоки (на всяк випадок)
+    if (!document.getElementById('result_kp')) {
+        document.getElementById('results').innerHTML = `
+            <div id="result_kp" class="res-line kp"></div>
+            <div id="result_zd" class="res-line zd"></div>
+            <div id="result_end" class="res-line end"></div>
+        `;
+    }
+
+    return; // важливо!
+}
 
     // Для всіх інших випадків
     placeGroup.style.display = 'block';
@@ -200,7 +284,7 @@ function calculate() {
         if (operation === 'zdacha') {
             kp = 0; // КП завжди 0
             zdTime = rules.nizhin.zdacha[place]?.[wagons] || 0;
-            let endAdd = rules.nizhin.zdacha[place]?.endAdd || 20;
+            let endAdd = rules.nizhin.zdacha[place]?.endAdd || 11;
             endTime = baseTime + zdTime + endAdd;
 
             document.getElementById('result_kp').innerText = `КП: 0`;
@@ -220,6 +304,20 @@ function calculate() {
 
         }
     }
+// ---------------- Конотоп ----------------
+    else if (city === 'konotop') {
+    kp = rules.konotop.kp[place] || 0;
+    zdTime = rules.konotop.zdacha[place][wagons] || 0;
+    let endAdd = rules.konotop.zdacha[place].endAdd || 20;
+
+    let zd = baseTime + zdTime;
+    endTime = zd + endAdd;
+
+    document.getElementById('result_kp').innerText = `КП: 0`;
+    document.getElementById('result_zd').innerText = `Здача: ${formatTimeCalc(zd)}`;
+    document.getElementById('result_end').innerText = `Кінець роботи: ${formatTimeCalc(endTime)}`;
+}
+
 }
 // -------- Ініціалізація --------
 updatePlaceVisibility();

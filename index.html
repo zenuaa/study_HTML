@@ -27,36 +27,37 @@
 
         <label class="top_lab">Введіть час прибуття або відправлення (год.хв)</label>
         <input type="text" id="timeInputCalc" placeholder="наприклад 5.45">
-
+                                                <!-- Кількість вагонів: -->
         <div class="radio-group">
             <p>Кількість вагонів:</p>
             <label><input type="radio" name="wagons" value="4" checked> 4</label>
             <label><input type="radio" name="wagons" value="6"> 6</label>
             <label><input type="radio" name="wagons" value="8"> 8</label>
         </div>
-
+                                                <!-- Станція -->
         <div class="radio-group">
             <p>Станція:</p>
             <label><input type="radio" name="city" value="chernihiv" checked> Чернігів</label>
             <label><input type="radio" name="city" value="nizhin"> Ніжин</label>
+            <label><input type="radio" name="city" value="konotop"> Конотоп</label>
         </div>
-
+                                                 <!-- Операція -->
         <div class="radio-group" id="operationGroup">
             <p>Операція:</p>
             <label><input type="radio" name="operation" value="zdacha" checked> Здача</label>
             <label id="pryimannyaLabel"><input type="radio" name="operation" value="pryimannya"> Приймання (явка,
                 розраховує тільки для Ніжина)</label>
         </div>
-
+                                                <!-- МІСЦЕ ДІЯ -->
         <div class="radio-group" id="placeGroup">
-            <p>Місце / дія:</p>
+            <p>Місце / дія:</p>                    
             <label><input type="radio" name="place" value="brigade" checked> На ст. лок. бригаді</label>
             <label><input type="radio" name="place" value="stay"> На ст. у відстій</label>
             <label id="depoCrossLabel"><input type="radio" name="place" value="depo_cross"> Заїзд в депо по
                 з'їзду</label><br>
             <label id="depo21Label"><input type="radio" name="place" value="depo_21"> Заїзд в депо по 21</label>
         </div>
-
+                                    <!-- Подальша дія (тільки при заїзді в депо) -->
         <div class="radio-group" id="nextGroup">
             <p>Подальша дія (тільки при заїзді в депо)</p>
             <label><input type="radio" name="next" value="stay" checked> У відстій</label>
