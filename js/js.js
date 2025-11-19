@@ -64,7 +64,7 @@ const rules = {
 
     konotop: {
         pryimannya: {
-            brigade: { 4: 0, 6: 0, 8: 0 },
+            brigade: { 4: 34, 6: 36, 8: 39 },
             stay: { 4: 0, 6: 0, 8: 0 }
         },
         zdacha: {
@@ -304,18 +304,31 @@ function calculate() {
 
         }
     }
-// ---------------- Конотоп ----------------
-    else if (city === 'konotop') {
-    kp = rules.konotop.kp[place] || 0;
-    zdTime = rules.konotop.zdacha[place][wagons] || 0;
-    let endAdd = rules.konotop.zdacha[place].endAdd || 20;
+// ---------------- КОНОТОП ----------------
+else if (city === 'konotop') {
+    if (operation === 'zdacha') {
+        // КП = 0 на станції
+        kp = rules.konotop.kp[place] || 0;
+        zdTime = rules.konotop.zdacha[place][wagons] || 0;
+        let endAdd = rules.konotop.zdacha[place].endAdd || 20;
 
-    let zd = baseTime + zdTime;
-    endTime = zd + endAdd;
+        let zd = baseTime + zdTime;
+        endTime = zd + endAdd;
 
-    document.getElementById('result_kp').innerText = `КП: 0`;
-    document.getElementById('result_zd').innerText = `Здача: ${formatTimeCalc(zd)}`;
-    document.getElementById('result_end').innerText = `Кінець роботи: ${formatTimeCalc(endTime)}`;
+        document.getElementById('result_kp').innerText = `КП: 0`;
+        document.getElementById('result_zd').innerText = `Здача: ${formatTimeCalc(zd)}`;
+        document.getElementById('result_end').innerText = `Кінець роботи: ${formatTimeCalc(endTime)}`;
+    } 
+    else if (operation === 'pryimannya') {
+        // Приймання для Конотопа
+        const pryimTime = rules.konotop.pryimannya[place][wagons] || 0;
+        const yavka = baseTime - pryimTime;
+        const pryimannya = yavka + 20; // додаємо час на приймання (як у Ніжині)
+
+        document.getElementById('result_kp').innerText = `КП: 0`;
+        document.getElementById('result_zd').innerText = `Явка: ${formatTimeCalc(yavka)}`;
+        document.getElementById('result_end').innerText = `Приймання: ${formatTimeCalc(pryimannya)}`;
+    }
 }
 
 }
