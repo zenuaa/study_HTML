@@ -23,44 +23,83 @@
 <body>
     <!-- Блок : Розрахунок здачі/явки -->
     <header>
-        <h3 class="top">Розрахунок здачі, явки та кінця роботи лок. бригади.</h3>
+        <h3 class="top">Розрахунок здачі та явки  локомотивної бригади.</h3>
 
         <label class="top_lab">Введіть час прибуття або відправлення (год.хв)</label>
         <input type="text" id="timeInputCalc" placeholder="наприклад 5.45">
-                                                <!-- Кількість вагонів: -->
+        <!-- Кількість вагонів: -->
+
         <div class="radio-group">
-            <p>Кількість вагонів:</p>
-            <label><input type="radio" name="wagons" value="4" checked> 4</label>
-            <label><input type="radio" name="wagons" value="6"> 6</label>
-            <label><input type="radio" name="wagons" value="8"> 8</label>
+            <fieldset>
+                <legend>
+                    <p>Кількість вагонів:</p>
+                </legend>
+                <label><input type="radio" name="wagons" value="4" checked> 4</label>
+                <label><input type="radio" name="wagons" value="6"> 6</label>
+                <label><input type="radio" name="wagons" value="8"> 8</label>
+                <label><input type="radio" name="wagons" value="10"> 10</label>
+            </fieldset>
         </div>
-                                                <!-- Станція -->
+
+        <!-- Станція -->
         <div class="radio-group">
-            <p>Станція:</p>
-            <label><input type="radio" name="city" value="chernihiv" checked> Чернігів</label>
-            <label><input type="radio" name="city" value="nizhin"> Ніжин</label>
-            <label><input type="radio" name="city" value="konotop"> Конотоп</label>
+            <fieldset>
+                <legend>
+                    <p>Станція:</p>
+                </legend>
+                <label><input type="radio" name="city" value="chernihiv" checked> Чернігів</label>
+                <label><input type="radio" name="city" value="nizhin"> Ніжин</label>
+                <label><input type="radio" name="city" value="konotop"> Конотоп</label>
+            </fieldset>
         </div>
-                                                 <!-- Операція -->
+        <!-- Операція -->
         <div class="radio-group" id="operationGroup">
-            <p>Операція:</p>
-            <label><input type="radio" name="operation" value="zdacha" checked> Здача</label>
-            <label id="pryimannyaLabel"><input type="radio" name="operation" value="pryimannya"> Явка та приймання з відстою</label>
+            <fieldset>
+                <legend>
+                    <p>Операція:</p>
+                </legend>
+                <label id="yavkaLabel"><input type="radio" name="operation" value="yavka"> Явка</label>
+                <label><input type="radio" name="operation" value="zdacha" checked> Здача</label>
+
+            </fieldset>
         </div>
-                                                <!-- МІСЦЕ ДІЯ -->
-        <div class="radio-group" id="placeGroup">
-            <p>Місце / дія:</p>                    
-            <label><input type="radio" name="place" value="brigade" checked> На ст. лок. бригаді</label>
-            <label id="st_vidstii"><input type="radio" name="place" value="stay"> На ст. у відстій</label>
-            <label id="depoCrossLabel"><input type="radio" name="place" value="depo_cross"> Заїзд в депо по
-                з'їзду</label><br>
-            <label id="depo21Label"><input type="radio" name="place" value="depo_21"> Заїзд в депо по 21</label>
+
+        <!-- МІСЦЕ -->
+        <div class="radio-group">
+            <fieldset>
+                <legend>
+                    <p>Місце:</p>
+                </legend>
+                <label><input type="radio" name="place" value="from_stay"> На станнції</label>
+                <label><input type="radio" name="place" value="from_depo"> Депо</label>
+                <label><input type="radio" name="place" value="depo_21"> Депо по 21 колії</label>
+            </fieldset>
         </div>
-                                    <!-- Подальша дія (тільки при заїзді в депо) -->
-        <div class="radio-group" id="nextGroup">
-            <p>Подальша дія (тільки при заїзді в депо)</p>
-            <label><input type="radio" name="next" value="stay" checked> У відстій</label>
-            <label><input type="radio" name="next" value="to"> На ТО</label>
+        <!--Дія-->
+        <div class="radio-group">
+            <fieldset>
+                <legend>
+                    <p>Дія</p>
+                </legend>
+                <!-- на станції -->
+                <label><input type="radio" name="action" value="from_stay" checked> З відстою</label>
+                <label><input type="radio" name="action" value="to_stay"> У відстій</label>
+
+                <label><input type="radio" name="action" value="from_go" checked> Від лок бригади на прохід</label>
+                <label><input type="radio" name="action" value="to_go" checked> Лок бригаді на прохід</label>
+                
+                <!-- у депо -->
+                <label><input type="radio" name="action" value="from_repairs"> З ремонту</label>
+                <label><input type="radio" name="action" value="to_repairs"> У ремонт</label>
+                
+                <!-- ніжин -->
+                 <label><input type="radio" name="action" value="from_go" checked> Від лок бригади на прохід 3,4,5 колія</label>
+                 <label><input type="radio" name="action" value="to_go" checked> Лок бригаді на прохід 3,4,5 колія</label>
+
+                 <label><input type="radio" name="action" value="from_go" checked> Від лок бригади на прохід 6,7 колія</label>
+                 <label><input type="radio" name="action" value="to_go" checked> Лок бригаді на прохід 6,7 колія</label>
+                 
+            </fieldset>
         </div>
         <br>
         <button id="rozr" onclick="calculate()">Розрахувати</button>
@@ -69,7 +108,20 @@
             <div id="result_zd" class="res-line zd"></div>
             <div id="result_end" class="res-line end"></div>
         </div>
+
+        <section class="console">
+            <fieldset><legend><h4>Info:</h4></legend>
+            <div class="output_field">
+                <div class="output">вивід інформації</div>
+           
+            </div></fieldset>
+        </section>
     </header>
+
+
+
+
+<!-- Операції з часом  -->
     <hr class="hr-divider">
     <main>
         <h3>Операції з часом (год.хв)</h3>
@@ -89,7 +141,7 @@
             <img src="images/time.jpg">
         </div>
         <div class="footer">
-            Розробник: Барташ Євгеній
+Розробник: Барташ Євгеній
         </div>
     </footer>
     <script src="js/js.js"></script>
