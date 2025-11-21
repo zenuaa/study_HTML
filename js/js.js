@@ -1,3 +1,68 @@
+// -------- Валідація введення часу --------
+function validateTimeInputCalc() {
+    const input = document.getElementById("timeInputCalc").value.trim();
+    const errorDiv = document.getElementById("timeInputCalcError");
+    if (!input) {
+        errorDiv.textContent = "Поле не може бути порожнім.";
+        return false;
+    }
+    const norm = input.replace(/[:,\-]/g, '.');
+    if (!/^\d{1,2}[.,:\-]\d{1,2}$/.test(input)) {
+        errorDiv.textContent = "Невірний формат. Введіть у форматі год.хв (наприклад 5.45)";
+        return false;
+    }
+    let [h, m] = norm.split('.').map(Number);
+    if (isNaN(h) || isNaN(m) || h < 0 || h > 23 || m < 0 || m > 59) {
+        errorDiv.textContent = "Години мають бути 0-23, хвилини 0-59.";
+        return false;
+    }
+    errorDiv.textContent = "";
+    return true;
+}
+
+// -------- Валідація введення часу --------
+function validateTimeInputSimple() {
+    const input = document.getElementById("timeInputSimple").value.trim();
+    const errorDiv = document.getElementById("timeInputSimpleError");
+    if (!input) {
+        errorDiv.textContent = "Поле не може бути порожнім.";
+        return false;
+    }
+    const norm = input.replace(/[:,\-]/g, '.');
+    if (!/^\d{1,2}[.,:\-]\d{1,2}$/.test(input)) {
+        errorDiv.textContent = "Невірний формат. Введіть у форматі год.хв (наприклад 5.45)";
+        return false;
+    }
+    let [h, m] = norm.split('.').map(Number);
+    if (isNaN(h) || isNaN(m) || h < 0 || h > 23 || m < 0 || m > 59) {
+        errorDiv.textContent = "Години мають бути 0-23, хвилини 0-59.";
+        return false;
+    }
+    errorDiv.textContent = "";
+    return true;
+}
+
+function validateTimeInputCalc() {
+    const input = document.getElementById("timeInputCalc").value.trim();
+    const errorDiv = document.getElementById("timeInputCalcError");
+    if (!input) {
+        errorDiv.textContent = "Поле не може бути порожнім.";
+        return false;
+    }
+    const norm = input.replace(/[:,\-]/g, '.');
+    if (!/^\d{1,2}[.,:\-]\d{1,2}$/.test(input)) {
+        errorDiv.textContent = "Невірний формат. Введіть у форматі год.хв (наприклад 5.45)";
+        return false;
+    }
+    let [h, m] = norm.split('.').map(Number);
+    if (isNaN(h) || isNaN(m) || h < 0 || h > 23 || m < 0 || m > 59) {
+        errorDiv.textContent = "Години мають бути 0-23, хвилини 0-59.";
+        return false;
+    }
+    errorDiv.textContent = "";
+    return true;
+}
+
 
 
 // -------- Блок : Операції з часом --------
@@ -107,4 +172,160 @@ function formatTimeCalc(total) {
     let m = total % 60;
     return h + '.' + m.toString().padStart(2, '0');
 }
+
+// Функція для оновлення видимості радіо-кнопок залежно від вибраних значень
+function updateVisability() {
+    const city = document.querySelector('input[name="city"]:checked')?.value;
+    const operation = document.querySelector('input[name="operation"]:checked')?.value;
+    const placeRadios = document.querySelectorAll('input[name="place"]');
+    const place = document.querySelector('input[name="place"]:checked')?.value;
+    const actionRadios = document.querySelectorAll('input[name="action"]');
+    const medBlock = Array.from(document.querySelectorAll('.radio-group'))
+                          .find(group => group.textContent.includes('Мед:'));
+
+    // Спочатку ховаємо всі дії
+    actionRadios.forEach(radio => radio.parentElement.style.display = 'none');
+
+  // Управління видимістю місць
+placeRadios.forEach(radio => {
+    if (radio.value === 'depo_21') {
+        // "Депо по 21 колії" видиме тільки для Чернігів-Здача
+        if (city === 'chernihiv' && operation === 'zdacha') {
+            radio.parentElement.style.display = '';
+        } else {
+            radio.parentElement.style.display = 'none';
+        }
+    } else if (city === 'nizhin' && (operation === 'yavka' || operation === 'zdacha')) {
+        // Ніжин-Явка або Ніжин-Здача: показати лише "На станції"
+        if (radio.value === 'from_stay') {
+            radio.parentElement.style.display = '';
+        } else {
+            radio.parentElement.style.display = 'none';
+        }
+    } else {
+        // Всі інші місця завжди видимі
+        radio.parentElement.style.display = '';
+    }
+});
+
+
+    // Чернігів-Явка-На станції
+    if (city === 'chernihiv' && operation === 'yavka' && place === 'from_stay') {
+        if (medBlock) medBlock.style.display = 'none';
+        actionRadios.forEach(radio => {
+            if (radio.value === 'from_stay' || radio.value === 'from_go') radio.parentElement.style.display = '';
+        });
+        return;
+    }
+
+    // Чернігів-Явка-Депо
+    if (city === 'chernihiv' && operation === 'yavka' && place === 'from_depo') {
+        if (medBlock) medBlock.style.display = '';
+        actionRadios.forEach(radio => {
+            if (radio.value === 'from_stay' || radio.value === 'from_repairsDepo') radio.parentElement.style.display = '';
+        });
+        return;
+    }
+
+    // Чернігів-Здача-На станції
+    if (city === 'chernihiv' && operation === 'zdacha' && place === 'from_stay') {
+        if (medBlock) medBlock.style.display = 'none';
+        actionRadios.forEach(radio => {
+            if (radio.value === 'to_stay' || radio.value === 'to_go') radio.parentElement.style.display = '';
+        });
+        return;
+    }
+
+    // Чернігів-Здача-Депо
+    if (city === 'chernihiv' && operation === 'zdacha' && place === 'from_depo') {
+        if (medBlock) medBlock.style.display = '';
+        actionRadios.forEach(radio => {
+            if (radio.value === 'to_stay' || radio.value === 'to_repairsDepo') radio.parentElement.style.display = '';
+        });
+        return;
+    }
+
+    // Чернігів-Здача-Депо по 21 колії
+    if (city === 'chernihiv' && operation === 'zdacha' && place === 'depo_21') {
+        if (medBlock) medBlock.style.display = ''; // Мед залишаємо видимим
+        actionRadios.forEach(radio => {
+            if (radio.value === 'to_stay' || radio.value === 'to_repairsDepo') radio.parentElement.style.display = '';
+        });
+        return;
+    }
+
+    // Ніжин-Явка-На станції
+    if (city === 'nizhin' && operation === 'yavka' && place === 'from_stay') {
+        if (medBlock) medBlock.style.display = 'none';
+        actionRadios.forEach(radio => {
+            if (['from_staySt31','from_go345','from_go67'].includes(radio.value)) radio.parentElement.style.display = '';
+        });
+        return;
+    }
+    // Ніжин-Здача-На станції
+if (city === 'nizhin' && operation === 'zdacha' && place === 'from_stay') {
+    if (medBlock) medBlock.style.display = 'none';
+    actionRadios.forEach(radio => {
+        if (['to_stay31', 'to_go345', 'to_go67', 'to_staySt31'].includes(radio.value)) {
+            radio.parentElement.style.display = '';
+        } else {
+            radio.parentElement.style.display = 'none';
+        }
+    });
+    return;
+}
+
+// Конотоп: блок Місце видно лише "На станції" для Явки і Здачі
+if (city === 'konotop' && (operation === 'yavka' || operation === 'zdacha')) {
+    if (medBlock) medBlock.style.display = 'none'; // приховуємо Мед
+
+    // Блок Місце: показуємо тільки "На станції"
+    placeRadios.forEach(radio => {
+        radio.parentElement.style.display = (radio.value === 'from_stay') ? '' : 'none';
+    });
+
+    // Блок Дія: показуємо різні дії залежно від operation
+    actionRadios.forEach(radio => {
+        if (operation === 'yavka' && radio.value === 'from_go') {
+            radio.parentElement.style.display = '';
+        } else if (operation === 'zdacha' && radio.value === 'to_go') {
+            radio.parentElement.style.display = '';
+        } else {
+            radio.parentElement.style.display = 'none';
+        }
+    });
+    return;
+}
+
+
+
+
+    // Для інших комбінацій блок Мед прихований, показати всі дії
+    if (medBlock) medBlock.style.display = 'none';
+    actionRadios.forEach(radio => radio.parentElement.style.display = '');
+}
+
+
+
+// Додаємо обробники для всіх радіо-кнопок
+['city', 'operation', 'place', 'med'].forEach(name => {
+    document.querySelectorAll(`input[name="${name}"]`).forEach(el => {
+        el.addEventListener('change', updateVisability);
+    });
+});
+
+// Додаємо обробник для вагонів
+['wagons'].forEach(name => {
+    document.querySelectorAll(`input[name="${name}"]`).forEach(el => {
+        el.addEventListener('change', () => {
+            // Показати всі радіо-кнопки дій
+            document.querySelectorAll('input[name="action"]').forEach(radio => {
+                radio.parentElement.style.display = '';
+            });
+        });
+    });
+});
+
+// Викликаємо при завантаженні сторінки
+window.addEventListener('DOMContentLoaded', updateVisability);
 
