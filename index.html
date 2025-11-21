@@ -75,24 +75,37 @@
                 <label><input type="radio" name="place" value="depo_21"> Депо по 21 колії</label>
             </fieldset>
         </div>
+        <!-- Мед коміссія -->
+          <div class="radio-group">
+            <fieldset>
+                <legend>
+                    <p>Мед:</p>
+                </legend>
+                <label id="yavkaLabel"><input type="radio" name="operation" value="yavka"> З мед коміссією</label>
+                <label><input type="radio" name="operation" value="zdacha" checked> Без мед коміссії</label>
+
+            </fieldset>
+        </div>
         <!--Дія-->
         <div class="radio-group">
             <fieldset>
                 <legend>
                     <p>Дія</p>
                 </legend>
-                <!-- на станції -->
-                <label><input type="radio" name="action" value="from_stay" checked> З відстою</label>
+                
                 <label><input type="radio" name="action" value="to_stay"> У відстій</label>
-
+                <label><input type="radio" name="action" value="from_stay"> З відстою</label>
+                <!-- на станції -->
                 <label><input type="radio" name="action" value="from_go" checked> Від лок бригади на прохід</label>
                 <label><input type="radio" name="action" value="to_go" checked> Лок бригаді на прохід</label>
                 
                 <!-- у депо -->
-                <label><input type="radio" name="action" value="from_repairs"> З ремонту</label>
-                <label><input type="radio" name="action" value="to_repairs"> У ремонт</label>
+                
+                <label><input type="radio" name="action" value="from_repairsDepo"> З ремонту </label>
+                <label><input type="radio" name="action" value="to_repairsDepo"> У ремонт </label>
                 
                 <!-- ніжин -->
+                 <label><input type="radio" name="action" value="from_staySt" checked> З відстою 31-34 колії</label>
                  <label><input type="radio" name="action" value="from_go" checked> Від лок бригади на прохід 3,4,5 колія</label>
                  <label><input type="radio" name="action" value="to_go" checked> Лок бригаді на прохід 3,4,5 колія</label>
 

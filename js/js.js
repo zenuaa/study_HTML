@@ -34,46 +34,60 @@ function subtractTimeSimple() {
 const rules = {
     chernihiv: {
         yavka: {
-            brigade: { 4: 0, 6: 0, 8: 0 },
-            stay: { 4: 0, 6: 0, 8: 0 },
-            depo_cross: { 4: 0, 6: 0, 8: 0 },
-            depo_cross_stay: { 4: 0, 6: 0, 8: 0 },
-            depo_21: { 4: 0, 6: 0, 8: 0 },
-            depo_21_stay: { 4: 0, 6: 0, 8: 0 }
+            from_staySt: { 4: 49, 6: 58, 8: 66, 10: 75 },       
+
+            from_stayDepoMedYes: { 4: 71, 6: 80, 8: 88, 10: 97 },   // з коміссією з виїздом на станцію
+
+            from_stayDepoMedNoStNo: { 4: 44, 6: 53, 8: 61, 10: 70 },    // без виїзду на станцію 
+            from_stayDepoMedNoStYes: { 4: 69, 6: 78, 8: 86, 10: 95 },   // з виїздом на станцію
+
+            from_go: { 4: 40, 6: 42, 8: 45, 10: 48 },
+            from_repairsDepoMedYes: { 4: 77, 6: 89, 8: 100, 10: 101 },  // з коміссією з виїздом на станцію
+
+            from_repairsDepoMedNoStNo: { 4: 49, 6: 61, 8: 72, 10: 83 },     // без виїзду на станцію 
+            from_repairsDepoMedNoStYes: { 4: 74, 6: 86, 8: 97, 10: 108 },   // з виїздом на станцію
+            
         },
         zdacha: {
-            brigade: { 4: 9, 6: 11, 8: 14, 10: 17, endAdd: 26 },
-            stay: { 4: 11, 6: 16, 8: 21, endAdd: 26 },
-            depo_cross: { 4: 22, 6: 31, 8: 39, endAdd: 15 },
-            depo_cross_stay: { 4: 15, 6: 20, 8: 25, endAdd: 15 },
-            depo_21: { 4: 25, 6: 34, 8: 43, endAdd: 15 },
-            depo_21_stay: { 4: 18, 6: 23, 8: 28, endAdd: 15 }
+            to_staySt: { 4: 11, 6: 16, 8: 21, 10: 26, endAdd: 26 },
+            to_go: { 4: 9, 6: 11, 8: 14, 10: 17, endAdd: 26 },
+
+            to_stayDepoMedNo: { 4: 15, 6: 20, 8: 25, 10: 30, endAdd: 12 },       // без мед коміссії
+            to_stayDepoMedYes: { 4: 15, 6: 20, 8: 25, 10: 30, endAdd: 15 },      // з мед комоссією
+            
+            to_repairsDepoMedNo: { 4: 22, 6: 31, 8: 39, 10: 48, endAdd: 15 },     // ТО без мед коміссії
+            to_repairsDepoMedYes: { 4: 22, 6: 31, 8: 39, 10: 48, endAdd: 12 },    // ТО з мед комоссією
+
+            to_stayDepo21: { 4: 18, 6: 23, 8: 28, 10: 33, endAdd: 15 },
+            to_repairsDepo21: { 4: 25, 6: 34, 8: 42, 10: 51, endAdd: 15 },
         },
-        kp: { brigade: 0, stay: 0, depo_cross: 20, depo_cross_stay: 20, depo_21: 27, depo_21_stay: 27 }
+        kp: { brigade: 0, to_stay: 0, to_stayDepo: 20, to_repairsDepo: 20, to_stayDepo21: 27, to_repairsDepo21: 27 }
     },
 
     nizhin: {
         yavka: {
-            brigade: { 4: 0, 6: 0, 8: 0 },
-            stay: { 4: 84, 6: 95, 8: 105 }
+            from_stay31: { 4: 84, 6: 95, 8: 105, 10: 116 },
+            from_go345: { 4: 26, 6: 28, 8: 31, 10: 34 },
+            from_go67: { 4: 27, 6: 29, 8: 32, 10: 35 },
+            
+        
         },
         zdacha: {
-            brigade: { 4: 9, 6: 11, 8: 14, endAdd: 4 },
-            stay: { 4: 80, 6: 101, 8: 123, endAdd: 11 }
+            to_stay31: { 4: 80, 6: 101, 8: 123, 10: 123, endAdd: 11 },
+            to_go345: { 4: 9, 6: 11, 8: 14, 10: 17, endAdd: 4 },
+            to_go67: { 4: 9, 6: 11, 8: 14, 10: 17, endAdd: 5 },
         },
-        kp: { brigade: 0, stay: 0 }
+        kp: { to_stay31: 0, to_go345: 0, to_go67:0,}
     },
 
     konotop: {
         yavka: {
-            brigade: { 4: 34, 6: 36, 8: 39, 10: 42 },
-            stay: { 4: 0, 6: 0, 8: 0, 10: 0 }
+            from_go: { 4: 34, 6: 36, 8: 39, 10: 42 },
         },
         zdacha: {
-            brigade: { 4: 9, 6: 11, 8: 14, 10: 17, endAdd: 20 },
-            stay: { 4: 11, 6: 16, 8: 21, 10: 26, endAdd: 20 }
+            to_go: { 4: 9, 6: 11, 8: 14, 10: 17, endAdd: 20 },
         },
-        kp: { brigade: 0, stay: 0 }
+        kp: { from_go: 0, to_go: 0 }
     }
 };
 
