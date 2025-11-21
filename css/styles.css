@@ -153,7 +153,8 @@ button:active {
     font-weight: 600;
     color: #fff;
 }
-
+.yavka { background: linear-gradient(135deg, #ec8d27, #ee8803); }
+.pr { background: linear-gradient(135deg, #b68f1b, #68510c); }
 .kp { background: linear-gradient(135deg, #2d8fdd, #3da0f0); }
 .zd { background: linear-gradient(135deg, #6aa84f, #8fcf5a); }
 .end { background: linear-gradient(135deg, #e06666, #f28b8b); }

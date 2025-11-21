@@ -75,14 +75,16 @@ function subtractTimeSimple() {
 const rules = {
     chernihiv: {
         yavka: {
-            from_staySt: { 4: 49, 6: 58, 8: 66, 10: 75 }, 
-            from_stayDepoMedYes: { 4: 71, 6: 80, 8: 88, 10: 97 }, // з коміссією з виїздом на станцію 
-            from_stayDepoMedNoStNo: { 4: 44, 6: 53, 8: 61, 10: 70 }, // без виїзду на станцію 
-            from_stayDepoMedNoStYes: { 4: 69, 6: 78, 8: 86, 10: 95 }, // з виїздом на станцію 
-            from_go: { 4: 40, 6: 42, 8: 45, 10: 48 },
-            from_repairsDepoMedYes: { 4: 77, 6: 89, 8: 100, 10: 101 }, // з коміссією з виїздом на станцію 
-            from_repairsDepoMedNoStNo: { 4: 49, 6: 61, 8: 72, 10: 83 }, // без виїзду на станцію 
-            from_repairsDepoMedNoStYes: { 4: 74, 6: 86, 8: 97, 10: 108 }, // з виїздом на станцію }, 
+            from_staySt: { 4: 49, 6: 58, 8: 66, 10: 75, pr:0}, //DONE
+            from_stayDepoMedYes: { 4: 71, 6: 80, 8: 88, 10: 97, pr:14 }, // з коміссією з виїздом на станцію //DONE
+            from_stayDepoMedNoStNo: { 4: 44, 6: 53, 8: 61, 10: 70, pr:14 }, // без виїзду на станцію 
+            from_stayDepoMedNoStYes: { 4: 69, 6: 78, 8: 86, 10: 95, pr:14 }, // з виїздом на станцію 
+           
+
+            from_go: { 4: 40, 6: 42, 8: 45, 10: 48 },//DONE
+            from_repairsDepoMedYes: { 4: 77, 6: 89, 8: 100, 10: 101, pr:15 }, // з коміссією з виїздом на станцію //DONE
+            from_repairsDepoMedNoStNo: { 4: 49, 6: 61, 8: 72, 10: 83, pr:15 }, // без виїзду на станцію 
+            from_repairsDepoMedNoStYes: { 4: 74, 6: 86, 8: 97, 10: 108, pr:15 }, // з виїздом на станцію }, 
             zdacha: {
                 to_staySt: { 4: 11, 6: 16, 8: 21, 10: 26, endAdd: 26 },
                 to_go: { 4: 9, 6: 11, 8: 14, 10: 17, endAdd: 26 },
@@ -93,25 +95,22 @@ const rules = {
                 to_stayDepo21: { 4: 18, 6: 23, 8: 28, 10: 33, endAdd: 15 },
                 to_repairsDepo21: { 4: 25, 6: 34, 8: 42, 10: 51, endAdd: 15 },
             },
-            kp: { brigade: 0, to_stay: 0, to_stayDepo: 20, to_repairsDepo: 20, to_stayDepo21: 27, to_repairsDepo21: 27 }
         },
         nizhin: {
             yavka: {
-                from_stay31: { 4: 84, 6: 95, 8: 105, 10: 116 },
-                from_go345: { 4: 26, 6: 28, 8: 31, 10: 34 },
-                from_go67: { 4: 27, 6: 29, 8: 32, 10: 35 },
+                from_stay31: { 4: 84, 6: 95, 8: 105, 10: 116, pr:0 },
+                from_go345: { 4: 26, 6: 28, 8: 31, 10: 34, pr:0 },
+                from_go67: { 4: 27, 6: 29, 8: 32, 10: 35, pr:0 },
             },
             zdacha: {
                 to_stay31: { 4: 80, 6: 101, 8: 123, 10: 123, endAdd: 11 },
                 to_go345: { 4: 9, 6: 11, 8: 14, 10: 17, endAdd: 4 },
                 to_go67: { 4: 9, 6: 11, 8: 14, 10: 17, endAdd: 5 },
             },
-            kp: { to_stay31: 0, to_go345: 0, to_go67: 0, }
         },
         konotop: {
-            yavka: { from_go: { 4: 34, 6: 36, 8: 39, 10: 42 }, },
+            yavka: { from_go: { 4: 34, 6: 36, 8: 39, 10: 42, pr:0 }, },
             zdacha: { to_go: { 4: 9, 6: 11, 8: 14, 10: 17, endAdd: 20 }, },
-            kp: { from_go: 0, to_go: 0 }
         }
     }
 }
@@ -135,51 +134,105 @@ function formatTimeCalc(total) {
 function updateVisability() {
     const city = document.querySelector('input[name="city"]:checked')?.value;
     const operation = document.querySelector('input[name="operation"]:checked')?.value;
-    const placeRadios = document.querySelectorAll('input[name="place"]');
     const place = document.querySelector('input[name="place"]:checked')?.value;
-    const actionRadios = document.querySelectorAll('input[name="action"]');
-    const medBlock = Array.from(document.querySelectorAll('.radio-group'))
-        .find(group => group.textContent.includes('Мед:'));
+    const medChecked = document.querySelector('input[name="med"]:checked')?.value === 'yavka';
 
-    // Ховаємо всі дії
+    const placeRadios = document.querySelectorAll('input[name="place"]');
+    const actionRadios = document.querySelectorAll('input[name="action"]');
+
+    const stationBlock = document.getElementById('station_yesNo');
+    const yesRadio = stationBlock?.querySelector('input[value="station_yes"]');
+    const noRadio = stationBlock?.querySelector('input[value="station_no"]');
+
+    const medBlock = Array.from(document.querySelectorAll('.radio-group'))
+        .find(g => g.textContent.includes('Мед:'));
+
+    // --- Ховаємо всі дії ---
     actionRadios.forEach(radio => radio.parentElement.style.display = 'none');
 
-    // Управління видимістю місць
+    // --- Місця ---
     placeRadios.forEach(radio => {
         if (radio.value === 'depo_21') {
             radio.parentElement.style.display = (city === 'chernihiv' && operation === 'zdacha') ? '' : 'none';
-        } else if (city === 'nizhin') {
-            radio.parentElement.style.display = (radio.value === 'from_stay') ? '' : 'none';
-        } else if (city === 'konotop') {
+        } else if (city === 'nizhin' || city === 'konotop') {
             radio.parentElement.style.display = (radio.value === 'from_stay') ? '' : 'none';
         } else {
             radio.parentElement.style.display = '';
         }
     });
 
-    // Управління блоком Мед і діями
+    // --- Мед блок ---
     if (medBlock) medBlock.style.display = 'none';
 
+    // --- Блок "Подальша дія" ---
+    if (stationBlock) {
+        stationBlock.style.display = 'none';
+        yesRadio.parentElement.style.display = 'none';
+        noRadio.parentElement.style.display = 'none';
+    }
+
+    // --- Показуємо тільки для Чернігів → Явка → Депо ---
+    if (city === 'chernihiv' && operation === 'yavka' && place === 'from_depo') {
+        stationBlock.style.display = '';
+        yesRadio.parentElement.style.display = '';
+        noRadio.parentElement.style.display = '';
+
+        if (medChecked) {
+            // Ховаємо "Без виїзду"
+            noRadio.parentElement.style.display = 'none';
+            yesRadio.checked = true;
+        }
+    }
+
+    // --- Дії ---
     if (city === 'chernihiv') {
-        if (operation === 'yavka' && place === 'from_stay') showActions(['from_stay', 'from_go']);
-        else if (operation === 'yavka' && place === 'from_depo') { if (medBlock) medBlock.style.display = ''; showActions(['from_stay', 'from_repairsDepo']); }
-        else if (operation === 'zdacha' && place === 'from_stay') showActions(['to_stay', 'to_go']);
-        else if (operation === 'zdacha' && place === 'from_depo') { if (medBlock) medBlock.style.display = ''; showActions(['to_stay', 'to_repairsDepo']); }
-        else if (operation === 'zdacha' && place === 'depo_21') { if (medBlock) medBlock.style.display = ''; showActions(['to_stay', 'to_repairsDepo']); }
-    } else if (city === 'nizhin') {
-        if (operation === 'yavka' && place === 'from_stay')
-            showActions(['from_staySt31', 'from_go345', 'from_go67']);
+        if (operation === 'yavka' && place === 'from_stay') 
+            showActions(['from_stay', 'from_go']);
+        else if (operation === 'yavka' && place === 'from_depo') {
+            if (medBlock) medBlock.style.display = '';
+            showActions(['from_stay', 'from_repairsDepo']);
+        }
         else if (operation === 'zdacha' && place === 'from_stay')
+            showActions(['to_stay', 'to_go']);
+        else if (operation === 'zdacha' && place === 'from_depo') {
+            if (medBlock) medBlock.style.display = '';
+            showActions(['to_stay', 'to_repairsDepo']);
+        }
+        else if (operation === 'zdacha' && place === 'depo_21') {
+            if (medBlock) medBlock.style.display = '';
+            showActions(['to_stay', 'to_repairsDepo']);
+        }
+    }
+    else if (city === 'nizhin') {
+        if (operation === 'yavka')
+            showActions(['from_staySt31', 'from_go345', 'from_go67']);
+        else if (operation === 'zdacha')
             showActions(['to_stay31', 'to_go345', 'to_go67', 'to_stay34', 'to_stay31_34']);
     }
     else if (city === 'konotop') {
         if (operation === 'yavka') showActions(['from_go']);
-        else if (operation === 'zdacha') showActions(['to_go']);
-    } else {
-        // Для всіх інших комбінацій показати всі дії
-        actionRadios.forEach(radio => radio.parentElement.style.display = '');
+        else showActions(['to_go']);
     }
 }
+
+
+
+
+
+
+
+
+
+function showActions(list) {
+    const actionRadios = document.querySelectorAll('input[name="action"]');
+    actionRadios.forEach(radio => {
+        radio.parentElement.style.display = list.includes(radio.value) ? '' : 'none';
+    });
+}
+
+
+
+
 
 function showActions(list) {
     const actionRadios = document.querySelectorAll('input[name="action"]');
@@ -212,6 +265,96 @@ if (btn) {
         updateVisability();
     });
 }
+
+                        //Блок розрахунку часу
+                    function calculate() {
+    const timeInput = document.getElementById("timeInputCalc").value.trim();
+    if (!validateTimeInputCalc()) {
+        alert("Введено некоректний час.");
+        return;
+    }
+
+    // Парсимо час у хвилини
+    let [h, m] = timeInput.replace(/[:,\-]/g, '.').split('.').map(Number);
+    let timeMinutes = h * 60 + m;
+
+    // Вибір користувача
+    const city = document.querySelector('input[name="city"]:checked')?.value;
+    const operation = document.querySelector('input[name="operation"]:checked')?.value;
+    const place = document.querySelector('input[name="place"]:checked')?.value;
+    const med = document.querySelector('input[name="med"]:checked')?.value === 'yavka';
+    const action = document.querySelector('input[name="action"]:checked')?.value;
+    const wagons = parseInt(document.querySelector('input[name="wagons"]:checked').value);
+
+    let yavkaMinutes = null;
+    let prMinutes = null;
+    let key = '';
+
+    // Визначаємо ключ для rules
+    if (city === 'chernihiv' && operation === 'yavka') {
+        if (place === 'from_stay' && action === 'from_stay') key = 'from_staySt';
+        else if (place === 'from_stay' && action === 'from_go') key = 'from_go';
+        else if (place === 'from_depo' && med && action === 'from_stay') key = 'from_stayDepoMedYes';
+        else if (place === 'from_depo' && med && action === 'from_repairsDepo') key = 'from_repairsDepoMedYes';
+        else if (place === 'from_depo' && !med) key = 'from_stayDepoMedNoStYes';
+    }
+    else if (city === 'nizhin' && operation === 'yavka') {
+        if (place === 'from_stay') key = 'from_stay31';
+        else if (place === 'from_go345') key = 'from_go345';
+        else if (place === 'from_go67') key = 'from_go67';
+    }
+    else if (city === 'konotop' && operation === 'yavka') {
+        key = 'from_go';
+    }
+
+    // Розрахунок явки
+    if (key && rules[city].yavka[key]) {
+        yavkaMinutes = timeMinutes - rules[city].yavka[key][wagons];
+
+        // Особливі випадки для pr
+        if (city === 'chernihiv' && place === 'from_depo' && med && (action === 'from_stay' || action === 'from_repairsDepo')) {
+            prMinutes = yavkaMinutes + rules[city].yavka[key].pr;
+        }
+    }
+
+    // Формат часу
+    function formatTime(totalMinutes) {
+        totalMinutes = ((totalMinutes % 1440) + 1440) % 1440;
+        let hours = Math.floor(totalMinutes / 60);
+        let minutes = totalMinutes % 60;
+        return hours + '.' + minutes.toString().padStart(2, '0');
+    }
+
+    // Вивід
+    if (yavkaMinutes !== null) {
+        document.getElementById("result_yavka").innerText = "Явка: " + formatTime(yavkaMinutes);
+    } else {
+        document.getElementById("result_yavka").innerText = "Явка: -";
+    }
+
+    // Вивід pr для особливих випадків
+    if (prMinutes !== null) {
+        document.getElementById("result_pr").innerText = "Пр: " + formatTime(prMinutes);
+    } else {
+        document.getElementById("result_pr").innerText = "";
+    }
+
+    // КП не показуємо для станцій
+    document.getElementById("result_kp").innerText = "";
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // -------- Початковий стан при завантаженні сторінки --------
 window.addEventListener('DOMContentLoaded', () => {

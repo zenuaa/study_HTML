@@ -118,9 +118,21 @@
                  
             </fieldset>
         </div>
+        <!-- Виїзд на станцію -->
+          <div id="station_yesNo" class="radio-group">
+            <fieldset>
+                <legend>
+                    <p>Подальша дія:</p>
+                </legend>
+                <label ><input type="radio" name="next_action" value="station_yes" checked>З виїздом на станцію</label>
+                <label><input type="radio" name="next_action" value="station_no" > Без виїзда на станцію</label>
+            </fieldset>
+        </div>
         <br>
         <button id="rozr" onclick="calculate()">Розрахувати</button>
         <div id="results">
+            <div id="result_yavka" class="res-line yavka"></div>
+             <div id="result_pr" class="res-line pr"></div>
             <div id="result_kp" class="res-line kp"></div>
             <div id="result_zd" class="res-line zd"></div>
             <div id="result_end" class="res-line end"></div>
