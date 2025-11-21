@@ -254,6 +254,9 @@ placeRadios.forEach(radio => {
         return;
     }
 
+
+   
+
     // Ніжин-Явка-На станції
     if (city === 'nizhin' && operation === 'yavka' && place === 'from_stay') {
         if (medBlock) medBlock.style.display = 'none';
@@ -307,6 +310,7 @@ if (city === 'konotop' && (operation === 'yavka' || operation === 'zdacha')) {
 
 
 
+
 // Додаємо обробники для всіх радіо-кнопок
 ['city', 'operation', 'place', 'med'].forEach(name => {
     document.querySelectorAll(`input[name="${name}"]`).forEach(el => {
@@ -326,6 +330,65 @@ if (city === 'konotop' && (operation === 'yavka' || operation === 'zdacha')) {
     });
 });
 
+window.addEventListener('DOMContentLoaded', () => {
+    // Всі кнопки міст
+    const cityRadios = document.querySelectorAll('input[name="city"]');
+
+    cityRadios.forEach(cityRadio => {
+        cityRadio.addEventListener('click', () => {
+            const city = cityRadio.value;
+
+            if (city === 'nizhin') {
+                // Операція
+                const yavkaRadio = document.querySelector('input[name="operation"][value="yavka"]');
+                if (yavkaRadio) yavkaRadio.checked = true;
+
+                // Місце
+                const fromStayRadio = document.querySelector('input[name="place"][value="from_stay"]');
+                if (fromStayRadio) fromStayRadio.checked = true;
+            }
+
+            // Додатково можна прописати для інших міст
+            // if (city === 'chernihiv') { ... }
+
+            // Після зміни оновлюємо видимість блоків
+            updateVisability();
+        });
+    });
+});
+
 // Викликаємо при завантаженні сторінки
-window.addEventListener('DOMContentLoaded', updateVisability);
+window.addEventListener('DOMContentLoaded', () => {
+    // За замовчуванням вибираємо Чернігів → Явка → На станції
+    const chernihivRadio = document.querySelector('input[name="city"][value="chernihiv"]');
+    if (chernihivRadio) chernihivRadio.checked = true;
+
+    const yavkaRadio = document.querySelector('input[name="operation"][value="yavka"]');
+    if (yavkaRadio) yavkaRadio.checked = true;
+
+    const fromStayRadio = document.querySelector('input[name="place"][value="from_stay"]');
+    if (fromStayRadio) fromStayRadio.checked = true;
+
+    // Одразу оновлюємо видимість блоків
+    updateVisability();
+
+    // Додаємо обробники для натискання на радіо міст
+    const cityRadios = document.querySelectorAll('input[name="city"]');
+    cityRadios.forEach(cityRadio => {
+        cityRadio.addEventListener('click', () => {
+            const city = cityRadio.value;
+
+            if (city === 'nizhin') {
+                const yavkaRadio = document.querySelector('input[name="operation"][value="yavka"]');
+                if (yavkaRadio) yavkaRadio.checked = true;
+
+                const fromStayRadio = document.querySelector('input[name="place"][value="from_stay"]');
+                if (fromStayRadio) fromStayRadio.checked = true;
+            }
+
+            updateVisability();
+        });
+    });
+});
+
 
