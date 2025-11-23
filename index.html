@@ -19,20 +19,17 @@
 
     <link rel="stylesheet" href="css/styles.css">
 </head>
-
 <body>
     <!-- Блок : Розрахунок здачі/явки -->
     <header class="main-header">
         <div class="header-content">
             <h2 class="site-title">Розрахунок часу та здачі локомотивної бригади</h2>
         </div>
-
         <label class="top_lab">Введіть час прибуття або відправлення (год.хв)</label>
         <input type="text" id="timeInputCalc" placeholder="наприклад 5.45" oninput="validateTimeInputCalc()">
         <div id="timeInputCalcError" style="color: red; font-size: 14px; min-height: 18px;"></div>
         <!-- Кількість вагонів: -->
-
-        <div  class="radio-group">
+        <div class="radio-group">
             <fieldset id="kil_vag">
                 <legend>
                     <p>Кількість вагонів:</p>
@@ -43,7 +40,6 @@
                 <label><input type="radio" name="wagons" value="10"> 10</label>
             </fieldset>
         </div>
-
         <!-- Станція -->
         <div class="radio-group">
             <fieldset>
@@ -61,12 +57,10 @@
                 <legend>
                     <p>Операція:</p>
                 </legend>
-                <label id="yavkaLabel"><input type="radio" name="operation" value="yavka" > Явка</label>
-                <label><input type="radio" name="operation" value="zdacha" > Здача</label>
-
+                <label id="yavkaLabel"><input type="radio" name="operation" value="yavka"> Явка</label>
+                <label><input type="radio" name="operation" value="zdacha"> Здача</label>
             </fieldset>
         </div>
-
         <!-- МІСЦЕ -->
         <div class="radio-group">
             <fieldset>
@@ -79,14 +73,13 @@
             </fieldset>
         </div>
         <!-- Мед коміссія -->
-          <div class="radio-group">
+        <div class="radio-group">
             <fieldset>
                 <legend>
                     <p>Мед:</p>
                 </legend>
                 <label id="yavkaLabel"><input type="radio" name="med" value="yavka" checked> З мед коміссією</label>
-                <label><input type="radio" name="med" value="zdacha" > Без мед коміссії</label>
-
+                <label><input type="radio" name="med" value="zdacha"> Без мед коміссії</label>
             </fieldset>
         </div>
         <!--Дія-->
@@ -95,61 +88,60 @@
                 <legend>
                     <p>Дія</p>
                 </legend>
-                
+
                 <label><input type="radio" name="action" value="to_stay"> У відстій</label>
                 <label><input type="radio" name="action" value="from_stay"> З відстою</label>
                 <!-- на станції -->
-                <label><input type="radio" name="action" value="from_go" > Від лок бригади на прохід</label>
-                <label><input type="radio" name="action" value="to_go" > Лок бригаді на прохід</label>
-                
+                <label><input type="radio" name="action" value="from_go"> Від лок бригади на прохід</label>
+                <label><input type="radio" name="action" value="to_go"> Лок бригаді на прохід</label>
+
                 <!-- у депо -->
-                
+
                 <label><input type="radio" name="action" value="from_repairsDepo"> З ремонту </label>
                 <label><input type="radio" name="action" value="to_repairsDepo"> У ремонт </label>
-                
-                <!-- ніжин -->
-                 <label><input type="radio" name="action" value="from_staySt31" > З відстою 31-34 колії</label>
-                <label><input type="radio" name="action" value="to_stay31_34"> У відстій 31-34 колії</label>
-                 <label><input type="radio" name="action" value="from_go345" > Від лок бригади на прохід 3,4,5 колія</label>
-                 <label><input type="radio" name="action" value="to_go345" > Лок бригаді на прохід 3,4,5 колія</label>
 
-                 <label><input type="radio" name="action" value="from_go67" > Від лок бригади на прохід 6,7 колія</label>
-                 <label><input type="radio" name="action" value="to_go67" > Лок бригаді на прохід 6,7 колія</label>
-                 
+                <!-- ніжин -->
+                <label><input type="radio" name="action" value="from_staySt31"> З відстою 31-34 колії</label>
+                <label><input type="radio" name="action" value="to_stay31_34"> У відстій 31-34 колії</label>
+                <label><input type="radio" name="action" value="from_go345"> Від лок бригади на прохід 3,4,5
+                    колія</label>
+                <label><input type="radio" name="action" value="to_go345"> Лок бригаді на прохід 3,4,5 колія</label>
+
+                <label><input type="radio" name="action" value="from_go67"> Від лок бригади на прохід 6,7 колія</label>
+                <label><input type="radio" name="action" value="to_go67"> Лок бригаді на прохід 6,7 колія</label>
             </fieldset>
         </div>
         <!-- Виїзд на станцію -->
-          <div id="station_yesNo" class="radio-group">
+        <div id="station_yesNo" class="radio-group">
             <fieldset>
                 <legend>
                     <p>Подальша дія:</p>
                 </legend>
-                <label ><input type="radio" name="next_action" value="station_yes" checked>З виїздом на станцію</label>
-                <label><input type="radio" name="next_action" value="station_no" > Без виїзда на станцію</label>
+                <label><input type="radio" name="next_action" value="station_yes" checked>З виїздом на станцію</label>
+                <label><input type="radio" name="next_action" value="station_no"> Без виїзда на станцію</label>
             </fieldset>
         </div>
         <br>
         <button id="rozr" onclick="calculate()">Розрахувати</button>
         <div id="results">
             <div id="result_yavka" class="res-line yavka"></div>
-             <div id="result_pr" class="res-line pr"></div>
+            <div id="result_pr" class="res-line pr"></div>
             <div id="result_kp" class="res-line kp"></div>
             <div id="result_zd" class="res-line zd"></div>
             <div id="result_end" class="res-line end"></div>
         </div>
-
         <section style="display: none;" class="console">
-            <fieldset><legend><p>Info:</p></legend>
-            <div class="output_field">
-                <div class="output">вивід інформації</div>
-            </div></fieldset>
+            <fieldset>
+                <legend>
+                    <p>Info:</p>
+                </legend>
+                <div class="output_field">
+                    <div class="output">вивід інформації</div>
+                </div>
+            </fieldset>
         </section>
     </header>
-
-
-
-
-<!-- Операції з часом  -->
+    <!-- Операції з часом  -->
     <hr class="hr-divider">
     <main>
         <h3>Операції з часом (год.хв)</h3>
@@ -165,32 +157,28 @@
     </main>
     <hr class="hr-divider">
     <div id="table">
-            <img src="images/time.jpg">
-           
-        </div>
-        <p class="dubina">Таблицю склав: Дубина Дмитро Григорович.</p> 
-        <section class="attachments">
-    <h3>Файли для завантаження:</h3>
-    <ul>
-        <li><a href="files/2024 ВІДОМІСТЬ .xls" target>Відомість Excel файл</a></li>
-        <li><a href="files/2024 ВІДОМІСТЬ.pdf" target="_blank">Відомість PDF файл</a></li>
-    </ul>
-</section>
-
+        <img src="images/time.jpg">
+    </div>
+    <p class="dubina">Таблицю склав: Дубина Дмитро Григорович.</p>
+    <section class="attachments">
+        <h3>Файли для завантаження:</h3>
+        <ul>
+            <li><a href="files/2024 ВІДОМІСТЬ .xls" target>Відомість Excel файл</a></li>
+            <li><a href="files/2024 ВІДОМІСТЬ.pdf" target="_blank">Відомість PDF файл</a></li>
+        </ul>
+    </section>
     <footer class="main-footer">
-        
         <div class="footer-content">
             <div class="footer-left">
                 <img src="images/face.png" alt="Лого" class="footer-logo">
                 <span class="footer-title">Розробник:</span>
             </div>
             <div class="footer-center">
-                <span>&copy; 2025&nbsp;&nbsp;&nbsp; &nbsp;  </span>
+                <span>&copy; 2025&nbsp;&nbsp;&nbsp; &nbsp; </span>
                 <span>Email: <a href="mailto:bartash.e@gmail.com">zenuaa@outlook.com</a></span>
             </div>
         </div>
     </footer>
     <script src="js/js.js"></script>
 </body>
-
 </html>

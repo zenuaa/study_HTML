@@ -75,32 +75,32 @@ function subtractTimeSimple() {
 const rules = {
     chernihiv: {
         yavka: {
-            from_staySt: { 4: 49, 6: 58, 8: 66, 10: 75, pr:0}, // На станції DONE
-            from_stayDepoMedYes: { 4: 71, 6: 80, 8: 88, 10: 97, pr:14 }, // Депо відстій з мед з виїздом на станцію //DONE
-            from_stayDepoMedNoStNo: { 4: 44, 6: 53, 8: 61, 10: 70, pr:14 }, // Депо відстій без мед без виїзду на станцію //DONE
-            from_stayDepoMedNoStYes: { 4: 69, 6: 78, 8: 86, 10: 95, pr:14 }, // Депо відстій без мед з виїздом на станцію //DONE
-           
+            from_staySt: { 4: 49, 6: 58, 8: 66, 10: 75, pr: 0 }, // На станції DONE
+            from_stayDepoMedYes: { 4: 71, 6: 80, 8: 88, 10: 97, pr: 14 }, // Депо відстій з мед з виїздом на станцію //DONE
+            from_stayDepoMedNoStNo: { 4: 44, 6: 53, 8: 61, 10: 70, pr: 14 }, // Депо відстій без мед без виїзду на станцію //DONE
+            from_stayDepoMedNoStYes: { 4: 69, 6: 78, 8: 86, 10: 95, pr: 14 }, // Депо відстій без мед з виїздом на станцію //DONE
+
 
             from_go: { 4: 40, 6: 42, 8: 45, 10: 48 }, // На прохід DONE
-            from_repairsDepoMedYes: { 4: 77, 6: 89, 8: 100, 10: 101, pr:15 }, // Депо з ремонту з мед з виїздом на станцію //DONE
-            from_repairsDepoMedNoStNo: { 4: 49, 6: 61, 8: 72, 10: 83, pr:15 }, // Депо з ремонту  без мед без виїзду на станцію //DONE
-            from_repairsDepoMedNoStYes: { 4: 74, 6: 86, 8: 97, 10: 108, pr:15 }, // Депо з ремонту  без мед з виїздом на станцію //DONE
+            from_repairsDepoMedYes: { 4: 77, 6: 89, 8: 100, 10: 101, pr: 15 }, // Депо з ремонту з мед з виїздом на станцію //DONE
+            from_repairsDepoMedNoStNo: { 4: 49, 6: 61, 8: 72, 10: 83, pr: 15 }, // Депо з ремонту  без мед без виїзду на станцію //DONE
+            from_repairsDepoMedNoStYes: { 4: 74, 6: 86, 8: 97, 10: 108, pr: 15 }, // Депо з ремонту  без мед з виїздом на станцію //DONE
             zdacha: {
                 to_staySt: { 4: 11, 6: 16, 8: 21, 10: 26, endAdd: 26 }, // На станції у відстій //DONE
                 to_go: { 4: 9, 6: 11, 8: 14, 10: 17, endAdd: 26 },  //на станції на прохід  //DONE
-                to_stayDepoMedNo: { 4: 15, 6: 20, 8: 25, 10: 30, endAdd: 12, kp:20 }, // У депо у відстій без мед коміссії //DONE
-                to_stayDepoMedYes: { 4: 15, 6: 20, 8: 25, 10: 30, endAdd: 15, kp:20}, // У депо у відстій з мед комоссією //DONE
-                to_repairsDepoMedNo: { 4: 22, 6: 31, 8: 39, 10: 48, endAdd: 15, kp:20 }, //У депо у ремонт ТО без мед коміссії //DONE
-                to_repairsDepoMedYes: { 4: 22, 6: 31, 8: 39, 10: 48, endAdd: 12, kp:20 }, //У депо у ремонт ТО з мед комоссією //DONE
-                to_stayDepo21: { 4: 18, 6: 23, 8: 28, 10: 33, endAdd: 15, kp:27 }, // у депо у відстій по 21 колії //DONE
-                to_repairsDepo21: { 4: 25, 6: 34, 8: 42, 10: 51, endAdd: 15, kp:27 },// у депо на ремонт по 21 колії //DONE
+                to_stayDepoMedNo: { 4: 15, 6: 20, 8: 25, 10: 30, endAdd: 12, kp: 20 }, // У депо у відстій без мед коміссії //DONE
+                to_stayDepoMedYes: { 4: 15, 6: 20, 8: 25, 10: 30, endAdd: 15, kp: 20 }, // У депо у відстій з мед комоссією //DONE
+                to_repairsDepoMedNo: { 4: 22, 6: 31, 8: 39, 10: 48, endAdd: 15, kp: 20 }, //У депо у ремонт ТО без мед коміссії //DONE
+                to_repairsDepoMedYes: { 4: 22, 6: 31, 8: 39, 10: 48, endAdd: 12, kp: 20 }, //У депо у ремонт ТО з мед комоссією //DONE
+                to_stayDepo21: { 4: 18, 6: 23, 8: 28, 10: 33, endAdd: 15, kp: 27 }, // у депо у відстій по 21 колії //DONE
+                to_repairsDepo21: { 4: 25, 6: 34, 8: 42, 10: 51, endAdd: 15, kp: 27 },// у депо на ремонт по 21 колії //DONE
             },
         },
         nizhin: {
             yavka: {
-                from_stay31: { 4: 84, 6: 95, 8: 105, 10: 116, pr:20 }, // ніжин-явка -на станції- з відстою 31-34 колія //DONE
-                from_go345: { 4: 26, 6: 28, 8: 31, 10: 34, pr:0 },// ніжин-явка -на станції- на прохід 345 колія //DONE
-                from_go67: { 4: 27, 6: 29, 8: 32, 10: 35, pr:0 },// ніжин-явка -на станції- на прохід 67 колія //DONE
+                from_stay31: { 4: 84, 6: 95, 8: 105, 10: 116, pr: 20 }, // ніжин-явка -на станції- з відстою 31-34 колія //DONE
+                from_go345: { 4: 26, 6: 28, 8: 31, 10: 34, pr: 0 },// ніжин-явка -на станції- на прохід 345 колія //DONE
+                from_go67: { 4: 27, 6: 29, 8: 32, 10: 35, pr: 0 },// ніжин-явка -на станції- на прохід 67 колія //DONE
             },
             zdacha: {
                 to_stay31: { 4: 80, 6: 101, 8: 123, 10: 123, endAdd: 11 },//DONE
@@ -109,18 +109,18 @@ const rules = {
             },
         },
         konotop: {
-            yavka: { from_go: { 4: 34, 6: 36, 8: 39, 10: 42, pr:0 }, },// Явка на прохід //DONE
+            yavka: { from_go: { 4: 34, 6: 36, 8: 39, 10: 42, pr: 0 }, },// Явка на прохід //DONE
             zdacha: { to_go: { 4: 9, 6: 11, 8: 14, 10: 17, endAdd: 20 }, }, // Здача на прохід //DONE
         }
     }
 }
-    // -------- Парсер і формат часу --------
-    function parseTimeCalc(input) {
-        input = input.replace(/[:,\-]/g, '.').trim();
-if (!input.includes('.')) return null;
-let [h, m] = input.split('.').map(Number);
-if (isNaN(h) || isNaN(m)) return null;
-return h * 60 + m;
+// -------- Парсер і формат часу --------
+function parseTimeCalc(input) {
+    input = input.replace(/[:,\-]/g, '.').trim();
+    if (!input.includes('.')) return null;
+    let [h, m] = input.split('.').map(Number);
+    if (isNaN(h) || isNaN(m)) return null;
+    return h * 60 + m;
 }
 
 function formatTimeCalc(total) {
@@ -186,7 +186,7 @@ function updateVisability() {
 
     // --- Дії ---
     if (city === 'chernihiv') {
-        if (operation === 'yavka' && place === 'from_stay') 
+        if (operation === 'yavka' && place === 'from_stay')
             showActions(['from_stay', 'from_go']);
         else if (operation === 'yavka' && place === 'from_depo') {
             if (medBlock) medBlock.style.display = '';
@@ -380,8 +380,8 @@ function calculate() {
     let prMinutes = null;
     let zdachaMinutes = null;
     let endWorkMinutes = null;
+    let zdachaRule = null;
 
-    // --- Функція для форматування часу ---
     function formatTime(totalMinutes) {
         totalMinutes = ((totalMinutes % 1440) + 1440) % 1440;
         const hours = Math.floor(totalMinutes / 60);
@@ -390,14 +390,15 @@ function calculate() {
     }
 
     if (operation === 'yavka') {
+        // -------- Явка --------
         if (city === 'konotop') {
-            const konotopResult = calculateKonotop(timeMinutes, wagons);
-            yavkaMinutes = konotopResult.yavkaMinutes;
-            prMinutes = konotopResult.prMinutes;
+            const result = calculateKonotop(timeMinutes, wagons);
+            yavkaMinutes = result.yavkaMinutes;
+            prMinutes = result.prMinutes;
         } else if (city === 'nizhin') {
-            const nizhinResult = calculateNizhin(timeMinutes, action, wagons);
-            yavkaMinutes = nizhinResult.yavkaMinutes;
-            prMinutes = nizhinResult.prMinutes;
+            const result = calculateNizhin(timeMinutes, action, wagons);
+            yavkaMinutes = result.yavkaMinutes;
+            prMinutes = result.prMinutes;
         } else if (city === 'chernihiv') {
             let key = '';
             if (place === 'from_stay' && action === 'from_stay') key = 'from_staySt';
@@ -405,9 +406,9 @@ function calculate() {
             else if (place === 'from_depo' && med && action === 'from_stay') key = 'from_stayDepoMedYes';
             else if (place === 'from_depo' && med && action === 'from_repairsDepo') key = 'from_repairsDepoMedYes';
             else if (place === 'from_depo' && !med) {
-                key = nextAction === 'station_yes' ? 
-                      (action === 'from_stay' ? 'from_stayDepoMedNoStYes' : 'from_repairsDepoMedNoStYes') : 
-                      (action === 'from_stay' ? 'from_stayDepoMedNoStNo'  : 'from_repairsDepoMedNoStNo');
+                key = nextAction === 'station_yes' ?
+                    (action === 'from_stay' ? 'from_stayDepoMedNoStYes' : 'from_repairsDepoMedNoStYes') :
+                    (action === 'from_stay' ? 'from_stayDepoMedNoStNo' : 'from_repairsDepoMedNoStNo');
             }
 
             if (key && rules.chernihiv.yavka[key]) {
@@ -421,57 +422,63 @@ function calculate() {
                 }
             }
         }
+
+        // Для явки КП завжди порожнє
+        document.getElementById("result_kp").innerText = "";
+
     } else if (operation === 'zdacha') {
-    if (city === 'chernihiv') {
-        let zdachaRule = null;
+        // -------- Здача --------
+        if (city === 'chernihiv') {
+            if (place === 'from_stay' && action === 'to_stay') zdachaRule = rules.chernihiv.yavka.zdacha.to_staySt;
+            else if (place === 'from_stay' && action === 'to_go') zdachaRule = rules.chernihiv.yavka.zdacha.to_go;
+            else if (place === 'from_depo' && action === 'to_stay' && med) zdachaRule = rules.chernihiv.yavka.zdacha.to_stayDepoMedYes;
+            else if (place === 'from_depo' && action === 'to_stay' && !med) zdachaRule = rules.chernihiv.yavka.zdacha.to_stayDepoMedNo;
+            else if (place === 'from_depo' && action === 'to_repairsDepo' && med) zdachaRule = rules.chernihiv.yavka.zdacha.to_repairsDepoMedYes;
+            else if (place === 'from_depo' && action === 'to_repairsDepo' && !med) zdachaRule = rules.chernihiv.yavka.zdacha.to_repairsDepoMedNo;
+            else if (place === 'depo_21' && action === 'to_stay') zdachaRule = rules.chernihiv.yavka.zdacha.to_stayDepo21;
+            else if (place === 'depo_21' && action === 'to_repairsDepo') zdachaRule = rules.chernihiv.yavka.zdacha.to_repairsDepo21;
 
-        if (place === 'from_stay' && action === 'to_stay') zdachaRule = rules.chernihiv.yavka.zdacha.to_staySt;
-        else if (place === 'from_stay' && action === 'to_go') zdachaRule = rules.chernihiv.yavka.zdacha.to_go;
-        else if (place === 'from_depo' && action === 'to_stay' && med) zdachaRule = rules.chernihiv.yavka.zdacha.to_stayDepoMedYes;
-        else if (place === 'from_depo' && action === 'to_stay' && !med) zdachaRule = rules.chernihiv.yavka.zdacha.to_stayDepoMedNo;
-        else if (place === 'from_depo' && action === 'to_repairsDepo' && med) zdachaRule = rules.chernihiv.yavka.zdacha.to_repairsDepoMedYes;
-        else if (place === 'from_depo' && action === 'to_repairsDepo' && !med) zdachaRule = rules.chernihiv.yavka.zdacha.to_repairsDepoMedNo;
-        else if (place === 'depo_21' && action === 'to_stay') zdachaRule = rules.chernihiv.yavka.zdacha.to_stayDepo21;
-        else if (place === 'depo_21' && action === 'to_repairsDepo') zdachaRule = rules.chernihiv.yavka.zdacha.to_repairsDepo21;
+            if (zdachaRule) {
+                const offset = zdachaRule[wagons];
+                const endAdd = zdachaRule.endAdd || 0;
+                if (typeof offset === 'number') {
+                    zdachaMinutes = timeMinutes + offset;
+                    endWorkMinutes = zdachaMinutes + endAdd;
 
-        if (zdachaRule) {
-            const offset = zdachaRule[wagons];
-            const endAdd = zdachaRule.endAdd || 0;
-            if (typeof offset === 'number') {
-                zdachaMinutes = timeMinutes + offset;
-                endWorkMinutes = zdachaMinutes + endAdd;
-
-                // --- Обчислення КП тільки для Чернігова і якщо є kp ---
-                if (zdachaRule.kp) {
-                    document.getElementById("result_kp").innerText = "КП: " + formatTime(timeMinutes + zdachaRule.kp);
-                } else {
-                    document.getElementById("result_kp").innerText = "";
+                    // КП тільки для Чернігів
+                    if (zdachaRule.kp) {
+                        document.getElementById("result_kp").innerText = "КП: " + formatTime(timeMinutes + zdachaRule.kp);
+                    } else {
+                        document.getElementById("result_kp").innerText = "";
+                    }
                 }
             }
-        }
-    } else {
-        // Для Ніжина та Конотопу КП не виводимо
-        document.getElementById("result_kp").innerText = "";
-        if (city === 'konotop') {
-            const konotopZdacha = calculateKonotopZdacha(timeMinutes, wagons);
-            zdachaMinutes = konotopZdacha.zdachaTime;
-            endWorkMinutes = konotopZdacha.endWorkTime;
-        } 
-        else if (city === 'nizhin') {
-            const nizhinZdacha = calculateNizhinZdacha(timeMinutes, action, wagons);
-            zdachaMinutes = nizhinZdacha.zdachaMinutes;
-            endWorkMinutes = nizhinZdacha.endWorkMinutes;
+        } else if (city === 'konotop') {
+            const result = calculateKonotopZdacha(timeMinutes, wagons);
+            zdachaMinutes = result.zdachaTime;
+            endWorkMinutes = result.endWorkTime;
+            document.getElementById("result_kp").innerText = ""; // КП не показуємо
+        } else if (city === 'nizhin') {
+            const result = calculateNizhinZdacha(timeMinutes, action, wagons);
+            zdachaMinutes = result.zdachaMinutes;
+            endWorkMinutes = result.endWorkMinutes;
+            document.getElementById("result_kp").innerText = ""; // КП не показуємо
         }
     }
-}
-
 
     // --- Вивід результатів ---
-    document.getElementById("result_yavka").innerText = operation === 'yavka' ? (yavkaMinutes !== null ? "Явка: " + formatTime(yavkaMinutes) : "Явка: -") : "";
-    document.getElementById("result_pr").innerText = operation === 'yavka' ? (prMinutes !== null ? "Пр: " + formatTime(prMinutes) : "") : "";
-    document.getElementById("result_zd").innerText = operation === 'zdacha' ? (zdachaMinutes !== null ? "Здача: " + formatTime(zdachaMinutes) : "") : "";
-    document.getElementById("result_end").innerText = operation === 'zdacha' ? (endWorkMinutes !== null ? "Кінець роботи: " + formatTime(endWorkMinutes) : "") : "";
-    
+    document.getElementById("result_yavka").innerText = operation === 'yavka'
+        ? (yavkaMinutes !== null ? "Явка: " + formatTime(yavkaMinutes) : "Явка: -")
+        : "";
+    document.getElementById("result_pr").innerText = operation === 'yavka'
+        ? (prMinutes !== null ? "Пр: " + formatTime(prMinutes) : "")
+        : "";
+    document.getElementById("result_zd").innerText = operation === 'zdacha'
+        ? (zdachaMinutes !== null ? "Здача: " + formatTime(zdachaMinutes) : "")
+        : "";
+    document.getElementById("result_end").innerText = operation === 'zdacha'
+        ? (endWorkMinutes !== null ? "Кінець роботи: " + formatTime(endWorkMinutes) : "")
+        : "";
 }
 
 
