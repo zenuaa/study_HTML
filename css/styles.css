@@ -298,3 +298,30 @@ main {
         margin-bottom: 6px;
     }
 }
+
+.dubina {
+    font-size: 14px;
+    color: #555;
+    margin-left: 15px;
+}
+.attachments {
+    margin-left: 20px;
+}
+.attachments ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.attachments li {
+    margin: 8px 0;
+}
+
+.attachments a {
+    text-decoration: none;
+    color: #2d8fdd;
+    font-weight: bold;
+}
+
+.attachments a:hover {
+    text-decoration: underline;
+}
