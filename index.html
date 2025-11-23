@@ -18,12 +18,63 @@
     <meta name="theme-color" content="#ffffff">
 
     <link rel="stylesheet" href="css/styles.css">
+
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-BE1TQJ347V"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-BE1TQJ347V');
+//Відстеження кнопок
+  document.getElementById("calcBtn").addEventListener("click", function () {
+    gtag("event", "calculate_click", {
+        event_category: "interaction",
+        event_label: "Натискання кнопки Розрахувати"
+    });
+});
+//Подія введення часу
+document.getElementById("timeInputCalc").addEventListener("input", function () {
+    gtag("event", "time_input", {
+        event_category: "form",
+        event_label: "Ввід часу",
+        value: this.value
+    });
+});
+//Подія помилок (неправильний час)
+function validateTimeInputCalc() {
+    const input = document.getElementById("timeInputCalc").value.trim();
+    const errorDiv = document.getElementById("timeInputCalcError");
+
+    if (!/^\d{1,2}[:.\-]\d{2}$/.test(input)) {
+
+        // ---- GA4: подія помилки ----
+        gtag("event", "time_input_error", {
+            event_category: "error",
+            event_label: "Неправильний формат часу",
+            value: input
+        });
+
+        errorDiv.textContent = "Некоректний час";
+        return false;
+    }
+
+    errorDiv.textContent = "";
+    return true;
+}
+
+
+
+</script>
+
+
 </head>
 <body>
     <!-- Блок : Розрахунок здачі/явки -->
     <header class="main-header">
         <div class="header-content">
-            <h2 class="site-title">Розрахунок часу та здачі локомотивної бригади</h2>
+            <h2 class="site-title">Розрахунок явки чи здачі локомотивної бригади</h2>
         </div>
         <label class="top_lab">Введіть час прибуття або відправлення (год.хв)</label>
         <input type="text" id="timeInputCalc" placeholder="наприклад 5.45" oninput="validateTimeInputCalc()">
@@ -163,8 +214,9 @@
     <section class="attachments">
         <h3>Файли для завантаження:</h3>
         <ul>
-            <li><a href="files/2024 ВІДОМІСТЬ .xls" target>Відомість Excel файл</a></li>
-            <li><a href="files/2024 ВІДОМІСТЬ.pdf" target="_blank">Відомість PDF файл</a></li>
+            <li><a href="files/2024%20ВІДОМІСТЬ%20.xls" target="_blank">Відомість Excel файл</a></li>
+            <li><a href="files/2024%20ВІДОМІСТЬ.pdf" target="_blank">Відомість PDF файл</a></li>
+
         </ul>
     </section>
     <footer class="main-footer">
