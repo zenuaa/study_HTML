@@ -1,20 +1,30 @@
-const CACHE_NAME = "calk-v1"; // змінюй на v3, v4… при оновленнях
+const CACHE_NAME = "calk-v1"; // змінюй при оновленнях
 const FILES_TO_CACHE = [
-  "/study_HTML/",
-  "/study_HTML/index.html",
-  "/study_HTML/style.css",
-  "/study_HTML/script.js",
-  "/study_HTML/manifest.json",
-  "/study_HTML/images/face.png",
-  "/study_HTML/images/faceIOS.png"
+  "./index.html",
+  "./css/styles.css",
+  "./js/js.js",
+  "./manifest.json",
+  "./images/face.png",
+  "./images/faceIOS.png",
+  "./images/time.jpg",
+  "./files/2024%20ВІДОМІСТЬ%20.xls",
+  "./files/2024%20ВІДОМІСТЬ.pdf"
 ];
 
 // Install
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(FILES_TO_CACHE);
-    })
+    caches.open(CACHE_NAME)
+      .then((cache) =>
+        Promise.all(
+          FILES_TO_CACHE.map(url =>
+            fetch(url).then(res => {
+              if (!res.ok) throw new Error(`Файл не знайдено: ${url}`);
+              return cache.put(url, res);
+            }).catch(err => console.log(err))
+          )
+        )
+      )
   );
   self.skipWaiting();
 });
@@ -36,8 +46,6 @@ self.addEventListener("activate", (event) => {
 // Fetch
 self.addEventListener("fetch", (event) => {
   event.respondWith(
-    caches.match(event.request).then((response) => {
-      return response || fetch(event.request);
-    })
+    caches.match(event.request).then((response) => response || fetch(event.request))
   );
 });

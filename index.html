@@ -241,7 +241,7 @@
     <script src="js/js.js"></script>
     <script>
 if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("/study_HTML/service-worker.js")
+   navigator.serviceWorker.register("./service-worker.js")
         .then(() => console.log("SW registered"))
         .catch(e => console.log("SW error", e));
 }
