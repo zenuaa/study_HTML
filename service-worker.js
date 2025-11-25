@@ -1,10 +1,10 @@
-const CACHE_NAME = "calk-v3"; // змінюй при оновленнях
+const CACHE_NAME = "calk-v4"; // змінюй версію при оновленнях
 const FILES_TO_CACHE = [
   "./index.html",
   "./css/styles.css",
   "./js/js.js",
   "./manifest.json",
-   "./images/clock72.png",
+  "./images/clock72.png",
   "./images/clock96.png",
   "./images/clock128.png",
   "./images/clock144.png",
@@ -18,39 +18,25 @@ const FILES_TO_CACHE = [
   "./files/2024%20ВІДОМІСТЬ.pdf"
 ];
 
-// Install
+// Install: кешуємо всі файли
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) =>
-        Promise.all(
-          FILES_TO_CACHE.map(url =>
-            fetch(url).then(res => {
-              if (!res.ok) throw new Error(`Файл не знайдено: ${url}`);
-              return cache.put(url, res);
-            }).catch(err => console.log(err))
-          )
-        )
-      )
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(FILES_TO_CACHE))
   );
   self.skipWaiting();
 });
 
-// Activate
+// Activate: видаляємо старі кеші
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
-      Promise.all(
-        keys.map((key) => {
-          if (key !== CACHE_NAME) return caches.delete(key);
-        })
-      )
+      Promise.all(keys.map((key) => key !== CACHE_NAME && caches.delete(key)))
     )
   );
   self.clients.claim();
 });
 
-// Fetch
+// Fetch: кеш-перший для всіх файлів
 self.addEventListener("fetch", (event) => {
   event.respondWith(
     caches.match(event.request).then((response) => response || fetch(event.request))
