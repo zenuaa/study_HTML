@@ -19,7 +19,7 @@ const FILES_TO_CACHE = [
 ];
 
 // Install
-self.addEventListener("install", (event) images/face.png=> {
+self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) =>
