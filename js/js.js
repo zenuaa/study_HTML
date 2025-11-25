@@ -573,3 +573,30 @@ document.addEventListener("DOMContentLoaded", () => {
         iosInstallBlock.style.display = "block";
     }
 });
+
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/service-worker.js').then(reg => {
+
+    // Слухаємо новий SW
+    reg.addEventListener('updatefound', () => {
+      const newSW = reg.installing;
+      newSW.addEventListener('statechange', () => {
+        if (newSW.state === 'installed' && navigator.serviceWorker.controller) {
+          // Показати банер оновлення
+          const banner = document.getElementById('updateBanner');
+          banner.style.display = 'block';
+
+          document.getElementById('reloadBtn').addEventListener('click', () => {
+            newSW.postMessage('skipWaiting'); // активуємо новий SW
+          });
+        }
+      });
+    });
+  });
+
+  // Перезавантаження після skipWaiting
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    window.location.reload();
+  });
+}

@@ -36,9 +36,28 @@ self.addEventListener("activate", (event) => {
   self.clients.claim();
 });
 
-// Fetch: кеш-перший для всіх файлів
+// Fetch: кеш-перший з фоновим оновленням
 self.addEventListener("fetch", (event) => {
   event.respondWith(
-    caches.match(event.request).then((response) => response || fetch(event.request))
+    caches.open(CACHE_NAME).then(async (cache) => {
+      const cachedResponse = await cache.match(event.request); // віддаємо кеш, якщо є
+      const fetchPromise = fetch(event.request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            cache.put(event.request, networkResponse.clone()); // оновлюємо кеш
+          }
+          return networkResponse;
+        })
+        .catch(() => {}); // якщо офлайн, нічого не робимо
+      return cachedResponse || fetchPromise; // віддаємо кеш або мережу
+    })
   );
 });
+
+self.addEventListener("message", (event) => {
+  if (event.data === "skipWaiting") {
+    self.skipWaiting(); // активуємо новий SW
+  }
+});
+
+
