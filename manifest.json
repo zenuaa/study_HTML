@@ -2,16 +2,14 @@
   "name": "Розрахунок здачі та явки..",
   "short_name": "Calk",
   "icons": [
-    {
-      "src": "images/face.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "images/faceIOS.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
+    { "src": "images/clock72.png", "sizes": "72x72", "type": "image/png" },
+    { "src": "images/clock96.png", "sizes": "96x96", "type": "image/png" },
+    { "src": "images/clock128.png", "sizes": "128x128", "type": "image/png" },
+    { "src": "images/clock144.png", "sizes": "144x144", "type": "image/png" },
+    { "src": "images/clock152.png", "sizes": "152x152", "type": "image/png" },
+    { "src": "images/clock192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "images/face384.png", "sizes": "384x384", "type": "image/png" },
+    { "src": "images/faceIOS.png", "sizes": "512x512", "type": "image/png" }
   ],
   "start_url": "/study_HTML/index.html",
   "display": "standalone",

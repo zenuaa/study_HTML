@@ -1,9 +1,16 @@
-const CACHE_NAME = "calk-v1"; // змінюй при оновленнях
+const CACHE_NAME = "calk-v2"; // змінюй при оновленнях
 const FILES_TO_CACHE = [
   "./index.html",
   "./css/styles.css",
   "./js/js.js",
   "./manifest.json",
+   "./images/clock72.png",
+  "./images/clock96.png",
+  "./images/clock128.png",
+  "./images/clock144.png",
+  "./images/clock152.png",
+  "./images/clock192.png",
+  "./images/face384.png",
   "./images/face.png",
   "./images/faceIOS.png",
   "./images/time.jpg",
@@ -12,7 +19,7 @@ const FILES_TO_CACHE = [
 ];
 
 // Install
-self.addEventListener("install", (event) => {
+self.addEventListener("install", (event) images/face.png=> {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) =>
