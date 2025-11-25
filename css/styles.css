@@ -424,3 +424,16 @@ main {
     transform: translateY(2px);
 }
 
+/* для айфонів */
+.ios-install {
+    background-color: #fffae6;
+    border: 1px solid #ffd700;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 20px 0;
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+.ios-install ol {
+    margin: 5px 0 0 20px;
+}

@@ -559,3 +559,17 @@ installBtn.addEventListener("click", async () => {
     installBtn.style.display = "none";
   }
 });
+
+
+// Перевірка iOS
+function isIos() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+}
+
+// Показати блок тільки для iOS
+document.addEventListener("DOMContentLoaded", () => {
+    if (isIos()) {
+        const iosInstallBlock = document.getElementById("ios-install");
+        iosInstallBlock.style.display = "block";
+    }
+});
