@@ -1,4 +1,4 @@
-const CACHE_NAME = "calk-v2"; // змінюй при оновленнях
+const CACHE_NAME = "calk-v3"; // змінюй при оновленнях
 const FILES_TO_CACHE = [
   "./index.html",
   "./css/styles.css",
