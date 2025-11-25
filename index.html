@@ -217,9 +217,15 @@
         <ul>
             <li><a href="files/2024%20ВІДОМІСТЬ%20.xls" target="_blank">Відомість Excel файл</a></li>
             <li><a href="files/2024%20ВІДОМІСТЬ.pdf" target="_blank">Відомість PDF файл</a></li>
-
         </ul>
     </section>
+
+    <section class="install-app">
+    <button id="installBtn" style="display:none;">
+        <span class="btn-icon">📱</span> Встановити додаток на телефон
+    </button>
+</section>
+
     <footer class="main-footer">
         <div class="footer-content">
             <div class="footer-left">
@@ -233,5 +239,13 @@
         </div>
     </footer>
     <script src="js/js.js"></script>
+    <script>
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/study_HTML/service-worker.js")
+        .then(() => console.log("SW registered"))
+        .catch(e => console.log("SW error", e));
+}
+</script>
+
 </body>
 </html>
