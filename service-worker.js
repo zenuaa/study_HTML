@@ -1,4 +1,4 @@
-// test update version
+// test update version 0
 
 const CACHE_NAME = "calk-cache"; // стабільна назва кешу
 const FILES_TO_CACHE = [
