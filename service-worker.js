@@ -1,3 +1,5 @@
+// test update version
+
 const CACHE_NAME = "calk-cache"; // стабільна назва кешу
 const FILES_TO_CACHE = [
   "./index.html",
