@@ -634,7 +634,7 @@ function isIos() {
 
 
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/service-worker.js').then(reg => {
+    navigator.serviceWorker.register('/study_HTML/service-worker.js').then(reg => {
 
         // Слухаємо новий SW
         reg.addEventListener('updatefound', () => {
