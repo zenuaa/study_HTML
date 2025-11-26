@@ -39,13 +39,13 @@ fieldset {
 }
 
 .console {
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'Fira Mono', 'Roboto Mono', 'JetBrains Mono', monospace;
     background-color: #f4f4f4;
     padding: 0px;
     border-radius: 8px;
     overflow-y: auto;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
     color: #333;
     margin-top: 10px;
 }

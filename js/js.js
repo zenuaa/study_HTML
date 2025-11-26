@@ -230,15 +230,6 @@ function updateVisability() {
 
 
 
-function showActions(list) {
-    const actionRadios = document.querySelectorAll('input[name="action"]');
-    actionRadios.forEach(radio => {
-        radio.parentElement.style.display = list.includes(radio.value) ? '' : 'none';
-    });
-}
-
-
-
 
 
 function showActions(list) {
@@ -579,6 +570,7 @@ function calculate() {
 
 // -------- Початковий стан при завантаженні сторінки --------
 window.addEventListener('DOMContentLoaded', () => {
+    // --- Початкові радіо ---
     const chernihivRadio = document.querySelector('input[name="city"][value="chernihiv"]');
     const yavkaRadio = document.querySelector('input[name="operation"][value="yavka"]');
     const fromStayRadio = document.querySelector('input[name="place"][value="from_stay"]');
@@ -587,8 +579,20 @@ window.addEventListener('DOMContentLoaded', () => {
     if (yavkaRadio) yavkaRadio.checked = true;
     if (fromStayRadio) fromStayRadio.checked = true;
 
+    // --- Показати блок iOS ---
+    function isIos() {
+        return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    }
+
+    if (isIos()) {
+        const iosInstallBlock = document.getElementById("ios-install");
+        if (iosInstallBlock) iosInstallBlock.style.display = "block";
+    }
+
+    // --- Оновити видимість радіо ---
     updateVisability();
 });
+
 
 //Функція для очищення логів перед новим розрахунком
 function clearLog() {
@@ -627,13 +631,6 @@ function isIos() {
     return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 }
 
-// Показати блок тільки для iOS
-document.addEventListener("DOMContentLoaded", () => {
-    if (isIos()) {
-        const iosInstallBlock = document.getElementById("ios-install");
-        iosInstallBlock.style.display = "block";
-    }
-});
 
 
 if ('serviceWorker' in navigator) {

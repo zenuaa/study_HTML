@@ -1,4 +1,4 @@
-const CACHE_NAME = "calk-v7"; // змінюй версію при оновленнях
+const CACHE_NAME = "calk-cache"; // стабільна назва кешу
 const FILES_TO_CACHE = [
   "./index.html",
   "./css/styles.css",
@@ -14,11 +14,11 @@ const FILES_TO_CACHE = [
   "./images/face.png",
   "./images/faceIOS.png",
   "./images/time.jpg",
-  "./files/2024%20ВІДОМІСТЬ%20.xls",
-  "./files/2024%20ВІДОМІСТЬ.pdf"
+  "./files/2024_ВІДОМІСТЬ.xls",
+  "./files/2024_ВІДОМІСТЬ.pdf"
 ];
 
-// Install: кешуємо всі файли
+// ---------- Install ----------
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(FILES_TO_CACHE))
@@ -26,38 +26,45 @@ self.addEventListener("install", (event) => {
   self.skipWaiting();
 });
 
-// Activate: видаляємо старі кеші
-self.addEventListener("activate", (event) => {
+// ---------- Activate ----------
+self.addEventListener('activate', event => {
+  const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(keys.map((key) => key !== CACHE_NAME && caches.delete(key)))
-    )
+    caches.keys().then(keys => 
+      Promise.all(keys.map(key => {
+        if (!cacheWhitelist.includes(key)) return caches.delete(key);
+      }))
+    ).then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
-// Fetch: кеш-перший з фоновим оновленням
+
+// ---------- Fetch: кеш-перший + автоматичне оновлення ----------
 self.addEventListener("fetch", (event) => {
   event.respondWith(
     caches.open(CACHE_NAME).then(async (cache) => {
-      const cachedResponse = await cache.match(event.request); // віддаємо кеш, якщо є
-      const fetchPromise = fetch(event.request)
-        .then((networkResponse) => {
-          if (networkResponse && networkResponse.status === 200) {
-            cache.put(event.request, networkResponse.clone()); // оновлюємо кеш
-          }
-          return networkResponse;
-        })
-        .catch(() => {}); // якщо офлайн, нічого не робимо
-      return cachedResponse || fetchPromise; // віддаємо кеш або мережу
+      try {
+        const networkResponse = await fetch(event.request);
+        // якщо успішний запит, оновлюємо кеш
+        if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
+          cache.put(event.request, networkResponse.clone());
+        }
+        return networkResponse;
+      } catch (err) {
+        // якщо офлайн або помилка, віддаємо кеш
+        const cachedResponse = await cache.match(event.request);
+        if (cachedResponse) return cachedResponse;
+        // якщо немає у кеші — fallback
+        return new Response("Файл недоступний офлайн", {
+          status: 503,
+          statusText: "Service Worker: Offline fallback"
+        });
+      }
     })
   );
 });
 
+// ---------- Повідомлення від сторінки ----------
 self.addEventListener("message", (event) => {
-  if (event.data === "skipWaiting") {
-    self.skipWaiting(); // активуємо новий SW
-  }
+  if (event.data === "skipWaiting") self.skipWaiting();
 });
-
-
