@@ -23,7 +23,15 @@ const FILES_TO_CACHE = [
 // ---------- Install ----------
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(FILES_TO_CACHE))
+    caches.open(CACHE_NAME).then(async (cache) => {
+      for (const file of FILES_TO_CACHE) {
+        try {
+          await cache.add(file);
+        } catch (err) {
+          console.error("Failed to cache:", file, err);
+        }
+      }
+    })
   );
   self.skipWaiting();
 });
