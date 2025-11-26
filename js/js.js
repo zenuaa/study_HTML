@@ -219,6 +219,7 @@ function updateVisability() {
         if (operation === 'yavka') showActions(['from_go']);
         else showActions(['to_go']);
     }
+
 }
 
 
@@ -365,7 +366,10 @@ function calculateNizhin(timeMinutes, action, wagons) {
 
 // -------- Основна функція calculate (інтеграція Konotop) --------
 // -------- Основна функція calculate (оновлена під твою логіку kp->zdacha->end) --------
+// -------- Основна функція calculate (оновлена під твою логіку kp->zdacha->end) --------
 function calculate() {
+    clearLog(); // очищаємо лог перед новим підрахунком
+
     const timeInput = document.getElementById("timeInputCalc").value.trim();
     if (!validateTimeInputCalc()) {
         alert("Введено некоректний час.");
@@ -388,6 +392,7 @@ function calculate() {
     let zdachaMinutes = null;
     let endWorkMinutes = null;
     let zdachaRule = null;
+    let kpMinutes = null; // Зберігаємо КП для логів, якщо він обчислений
 
     function formatTime(totalMinutes) {
         totalMinutes = ((totalMinutes % 1440) + 1440) % 1440;
@@ -414,8 +419,8 @@ function calculate() {
             else if (place === 'from_depo' && med && action === 'from_repairsDepo') key = 'from_repairsDepoMedYes';
             else if (place === 'from_depo' && !med) {
                 key = nextAction === 'station_yes' ?
-                      (action === 'from_stay' ? 'from_stayDepoMedNoStYes' : 'from_repairsDepoMedNoStYes') :
-                      (action === 'from_stay' ? 'from_stayDepoMedNoStNo'  : 'from_repairsDepoMedNoStNo');
+                    (action === 'from_stay' ? 'from_stayDepoMedNoStYes' : 'from_repairsDepoMedNoStYes') :
+                    (action === 'from_stay' ? 'from_stayDepoMedNoStNo' : 'from_repairsDepoMedNoStNo');
             }
 
             if (key && rules.chernihiv.yavka[key]) {
@@ -443,7 +448,7 @@ function calculate() {
             else if (place === 'from_depo' && action === 'to_stay' && !med) zdachaRule = rules.chernihiv.yavka.zdacha.to_stayDepoMedNo;
             else if (place === 'from_depo' && action === 'to_repairsDepo' && med) zdachaRule = rules.chernihiv.yavka.zdacha.to_repairsDepoMedYes;
             else if (place === 'from_depo' && action === 'to_repairsDepo' && !med) zdachaRule = rules.chernihiv.yavka.zdacha.to_repairsDepoMedNo;
-            
+
             else if (place === 'depo_21' && action === 'to_stay' && med) zdachaRule = rules.chernihiv.yavka.zdacha.to_stayDepo21MedYes;
             else if (place === 'depo_21' && action === 'to_stay' && !med) zdachaRule = rules.chernihiv.yavka.zdacha.to_stayDepo21MedNo;
 
@@ -459,7 +464,8 @@ function calculate() {
                     // Якщо правило має kp (тобто це випадок "депо" або "депо по 21"), 
                     // тоді робимо: kp = time + kpOffset; zdacha = kp + offset; end = zdacha + endAdd
                     if (typeof kpOffset === 'number') {
-                        const kpMinutes = timeMinutes + kpOffset;
+                        const kpM = timeMinutes + kpOffset;
+                        kpMinutes = kpM; // зберігаємо для логу
                         // показуємо КП
                         document.getElementById("result_kp").innerText = "КП: " + formatTime(kpMinutes);
 
@@ -508,7 +514,51 @@ function calculate() {
     document.getElementById("result_end").innerText = operation === 'zdacha'
         ? (endWorkMinutes !== null ? "Кінець роботи: " + formatTime(endWorkMinutes) : "")
         : "";
+
+    // --- ДОБАВЛЯЄМО ЛОГИ (тільки те, що реально виводиться) ---
+    // Всі часи логуються без позначки часу; формули будуються по реальних значеннях
+
+    // Явка
+    if (operation === 'yavka' && yavkaMinutes !== null) {
+        const offset = timeMinutes - yavkaMinutes;
+        addLog(`Явка = ${formatTime(timeMinutes)} - ${offset} &#9658; ${formatTime(yavkaMinutes)}`);
+    }
+
+    // Приймання (якщо є)
+    if (operation === 'yavka' && prMinutes !== null) {
+        if (yavkaMinutes !== null) {
+            const prOffset = prMinutes - yavkaMinutes;
+            addLog(`Приймання = ${formatTime(yavkaMinutes)} + ${prOffset} &#9658; ${formatTime(prMinutes)}`);
+        } else {
+            // якщо явки немає, прив'язуємо до вхідного часу
+            const prOffset = prMinutes - timeMinutes;
+            addLog(`Приймання = ${formatTime(timeMinutes)} + ${prOffset} &#9658; ${formatTime(prMinutes)}`);
+        }
+    }
+
+    // КП (якщо показано)
+    if (kpMinutes !== null) {
+        addLog(`КП = ${formatTime(timeMinutes)} + ${kpMinutes - timeMinutes} &#9658; ${formatTime(kpMinutes)}`);
+    }
+
+    // Здача
+    if (operation === 'zdacha' && zdachaMinutes !== null) {
+        if (kpMinutes !== null) {
+            const zdOffset = zdachaMinutes - kpMinutes;
+            addLog(`Здача = ${formatTime(kpMinutes)} + ${zdOffset} &#9658; ${formatTime(zdachaMinutes)}`);
+        } else {
+            const zdOffset = zdachaMinutes - timeMinutes;
+            addLog(`Здача = ${formatTime(timeMinutes)} + ${zdOffset} &#9658; ${formatTime(zdachaMinutes)}`);
+        }
+    }
+
+    // Кінець роботи
+    if (operation === 'zdacha' && endWorkMinutes !== null && zdachaMinutes !== null) {
+        const endOffset = endWorkMinutes - zdachaMinutes;
+        addLog(`Кінець роб. = ${formatTime(zdachaMinutes)} + ${endOffset} &#9658; ${formatTime(endWorkMinutes)}`);
+    }
 }
+
 
 
 
@@ -540,24 +590,35 @@ window.addEventListener('DOMContentLoaded', () => {
     updateVisability();
 });
 
+//Функція для очищення логів перед новим розрахунком
+function clearLog() {
+    document.getElementById("logContent").innerHTML = "";
+}
+//Функція для додавання запису в лог
+function addLog(text) {
+    const log = document.getElementById("logContent");
+    log.innerHTML += `<div>${text}</div>`;
+}
 
+
+// -------- PWA Логіка --------
 let deferredPrompt;
 const installBtn = document.getElementById("installBtn");
 
 window.addEventListener("beforeinstallprompt", (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  installBtn.style.display = "block";
+    e.preventDefault();
+    deferredPrompt = e;
+    installBtn.style.display = "block";
 });
 
 installBtn.addEventListener("click", async () => {
-  if (deferredPrompt) {
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    console.log("User choice:", outcome);
-    deferredPrompt = null;
-    installBtn.style.display = "none";
-  }
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log("User choice:", outcome);
+        deferredPrompt = null;
+        installBtn.style.display = "none";
+    }
 });
 
 
@@ -576,27 +637,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/service-worker.js').then(reg => {
+    navigator.serviceWorker.register('/service-worker.js').then(reg => {
 
-    // Слухаємо новий SW
-    reg.addEventListener('updatefound', () => {
-      const newSW = reg.installing;
-      newSW.addEventListener('statechange', () => {
-        if (newSW.state === 'installed' && navigator.serviceWorker.controller) {
-          // Показати банер оновлення
-          const banner = document.getElementById('updateBanner');
-          banner.style.display = 'block';
+        // Слухаємо новий SW
+        reg.addEventListener('updatefound', () => {
+            const newSW = reg.installing;
+            newSW.addEventListener('statechange', () => {
+                if (newSW.state === 'installed' && navigator.serviceWorker.controller) {
+                    // Показати банер оновлення
+                    const banner = document.getElementById('updateBanner');
+                    banner.style.display = 'block';
 
-          document.getElementById('reloadBtn').addEventListener('click', () => {
-            newSW.postMessage('skipWaiting'); // активуємо новий SW
-          });
-        }
-      });
+                    document.getElementById('reloadBtn').addEventListener('click', () => {
+                        newSW.postMessage('skipWaiting'); // активуємо новий SW
+                    });
+                }
+            });
+        });
     });
-  });
 
-  // Перезавантаження після skipWaiting
-  navigator.serviceWorker.addEventListener('controllerchange', () => {
-    window.location.reload();
-  });
+    // Перезавантаження після skipWaiting
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+        window.location.reload();
+    });
 }

@@ -41,16 +41,18 @@ fieldset {
 .console {
     font-family: 'Courier New', Courier, monospace;
     background-color: #f4f4f4;
-    padding: 5px;
+    padding: 0px;
     border-radius: 8px;
     overflow-y: auto;
     font-size: 14px;
+    font-weight: 500;
     color: #333;
+    margin-top: 10px;
 }
 
 .output_field {
-    height: 100px;
-    padding: 0px 10px 0px 10px;
+    max-height: 70px;
+    padding: 0px 5px 5px 5px;
 }
 
 .radio-group {
@@ -434,9 +436,11 @@ main {
     font-family: Arial, sans-serif;
     color: #333;
 }
+
 .ios-install ol {
     margin: 5px 0 0 20px;
 }
-.red{
+
+.red {
     color: red
 }

@@ -19,64 +19,69 @@
 
     <link rel="stylesheet" href="css/styles.css">
 
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-BE1TQJ347V"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-BE1TQJ347V');
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BE1TQJ347V"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
 
-  // ----- Всі події запускаємо тільки після завантаження DOM -----
-  document.addEventListener("DOMContentLoaded", function() {
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', 'G-BE1TQJ347V');
 
-      // Подія натискання кнопки "Розрахувати"
-      document.getElementById("rozr").addEventListener("click", function () {
-          gtag("event", "calculate_click", {
-              event_category: "interaction",
-              event_label: "Кнопка Розрахувати"
-          });
-      });
+        // ----- Всі події запускаємо тільки після завантаження DOM -----
+        document.addEventListener("DOMContentLoaded", function () {
 
-      // Подія введення часу
-      document.getElementById("timeInputCalc").addEventListener("input", function () {
-          gtag("event", "time_input", {
-              event_category: "form",
-              event_label: "Ввід часу",
-              value: this.value
-          });
-      });
-  });
+            // Подія натискання кнопки "Розрахувати"
+            document.getElementById("rozr").addEventListener("click", function () {
+                gtag("event", "calculate_click", {
+                    event_category: "interaction",
+                    event_label: "Кнопка Розрахувати"
+                });
+            });
 
-  // ---- Подія помилки у форматі часу ----
-  function validateTimeInputCalc() {
-      const input = document.getElementById("timeInputCalc").value.trim();
-      const errorDiv = document.getElementById("timeInputCalcError");
+            // Подія введення часу
+            document.getElementById("timeInputCalc").addEventListener("input", function () {
+                gtag("event", "time_input", {
+                    event_category: "form",
+                    event_label: "Ввід часу",
+                    value: this.value
+                });
+            });
+        });
 
-      if (!/^\d{1,2}[:.\-]\d{2}$/.test(input)) {
+        // ---- Подія помилки у форматі часу ----
+        function validateTimeInputCalc() {
+            const input = document.getElementById("timeInputCalc").value.trim();
+            const errorDiv = document.getElementById("timeInputCalcError");
 
-          gtag("event", "time_input_error", {
-              event_category: "error",
-              event_label: "Неправильний формат часу",
-              value: input
-          });
+            if (!/^\d{1,2}[:.\-]\d{2}$/.test(input)) {
 
-          errorDiv.textContent = "Некоректний час";
-          return false;
-      }
+                gtag("event", "time_input_error", {
+                    event_category: "error",
+                    event_label: "Неправильний формат часу",
+                    value: input
+                });
 
-      errorDiv.textContent = "";
-      return true;
-  }
-</script>
+                errorDiv.textContent = "Некоректний час";
+                return false;
+            }
+
+            errorDiv.textContent = "";
+            return true;
+        }
+    </script>
 
 </head>
+
 <body>
     <!-- Блок : Розрахунок здачі/явки -->
     <header class="main-header">
         <div class="header-content">
             <h2 class="site-title">Розрахунок явки та здачі локомотивної бригади</h2>
         </div>
+        <!-- Час прибуття/відправлення -->
         <label class="top_lab">Введіть час прибуття або відправлення (год.хв)</label>
         <input type="text" id="timeInputCalc" placeholder="наприклад 5.45" oninput="validateTimeInputCalc()">
         <div id="timeInputCalcError" style="color: red; font-size: 14px; min-height: 18px;"></div>
@@ -135,7 +140,7 @@
             </fieldset>
         </div>
         <!--Дія-->
-        <div class="radio-group">
+        <div class="radio-group" id="actionBlock">
             <fieldset>
                 <legend>
                     <p>Дія</p>
@@ -182,12 +187,12 @@
             <div id="result_zd" class="res-line zd"></div>
             <div id="result_end" class="res-line end"></div>
         </div>
-        <section style="display: none;" class="console">
+        <section class="console">
             <fieldset>
                 <legend>
                     <p>Info:</p>
                 </legend>
-                <div class="output_field">
+                <div id="logContent" class="output_field">
                     <div class="output">вивід інформації</div>
                 </div>
             </fieldset>
@@ -197,7 +202,7 @@
     <hr class="hr-divider">
     <main>
         <h3>Операції з часом (год.хв)</h3>
-        <label>Час (формат год.хв, можна . , : -):</label>
+        <label>Час (формат год.хв):</label>
         <input type="text" id="timeInputSimple" placeholder="наприклад 5.45" oninput="validateTimeInputSimple()">
         <div id="timeInputSimpleError" style="color: red; font-size: 14px; min-height: 18px;"></div>
         <label>Хвилини:</label>
@@ -209,7 +214,7 @@
     </main>
     <hr class="hr-divider">
     <div id="table">
-        <img src="images/time.jpg">
+        <img src="images/time.png">
     </div>
     <p class="dubina">Таблицю склав: Дубина Дмитро Григорович.</p>
     <section class="attachments">
@@ -221,26 +226,26 @@
     </section>
 
     <section class="install-app">
-    <button id="installBtn" style="display:none;">
-        <span class="btn-icon">📱</span> Встановити додаток на телефон
-    </button>
-</section>
-<section>
-    <div id="updateBanner" style="display:none; background:#ff0; padding:10px;">
-  Доступна нова версія! 
-  <button id="reloadBtn">Оновити</button>
-</div>
-</section>
+        <button id="installBtn" style="display:none;">
+            <span class="btn-icon">📱</span> Встановити додаток на телефон
+        </button>
+    </section>
+    <section>
+        <div id="updateBanner" style="display:none; background:#ff0; padding:10px;">
+            Доступна нова версія!
+            <button id="reloadBtn">Оновити</button>
+        </div>
+    </section>
 
-<section id="ios-install" class="ios-install" style="display:none;">
-    <p>Щоб встановити застосунок на iPhone/iPad:</p>
-    <ol>
-        <li>Відкрийте цей сайт у Safari.</li>
-        <li>Натисніть кнопку <strong>Поділитися</strong> (квадрат зі стрілкою вверх).</li>
-        <li>Виберіть <strong>Додати на головний екран</strong>.</li>
-        <li class="red">На iOS встановлення PWA працює тільки через Safari!!!</li>
-    </ol>
-</section>
+    <section id="ios-install" class="ios-install" style="display:none;">
+        <p>Щоб встановити застосунок на iPhone/iPad:</p>
+        <ol>
+            <li>Відкрийте цей сайт у Safari.</li>
+            <li>Натисніть кнопку <strong>Поділитися</strong> (квадрат зі стрілкою вверх).</li>
+            <li>Виберіть <strong>Додати на головний екран</strong>.</li>
+            <li class="red">На iOS встановлення PWA працює тільки через Safari!!!</li>
+        </ol>
+    </section>
 
 
     <footer class="main-footer">
@@ -257,12 +262,13 @@
     </footer>
     <script src="js/js.js"></script>
     <script>
-if ("serviceWorker" in navigator) {
-   navigator.serviceWorker.register("./service-worker.js")
-        .then(() => console.log("SW registered"))
-        .catch(e => console.log("SW error", e));
-}
-</script>
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.register("./service-worker.js")
+                .then(() => console.log("SW registered"))
+                .catch(e => console.log("SW error", e));
+        }
+    </script>
 
 </body>
+
 </html>
