@@ -15,7 +15,7 @@ const FILES_TO_CACHE = [
   "./images/face384.png",
   "./images/face.png",
   "./images/faceIOS.png",
-  "./images/time.jpg",
+  "./images/time.png",
   "./files/2024_VIDOMIST.xls",
   "./files/2024_VIDOMIST.pdf"
 ];
