@@ -625,6 +625,43 @@ installBtn.addEventListener("click", async () => {
     }
 });
 
+// фіксувати момент, коли користувач підтвердив інсталяцію додатку:
+// Reports → Engagement → Events → pwa_install_button_click
+let deferredPromptt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPromptt = e;
+});
+
+
+document.getElementById('installBtn').addEventListener('click', async () => {
+    if (typeof gtag === 'function') {
+        gtag('event', 'pwa_install_button_click', {
+            event_category: 'pwa',
+            event_label: 'Install prompt shown'
+        });
+    }
+
+    if (!deferredPromptt) return;
+    deferredPromptt.prompt();
+
+    const result = await deferredPromptt.userChoice;
+    if (result.outcome === 'accepted') {
+        gtag('event', 'pwa_installed', {
+            event_category: 'pwa',
+            event_label: 'User accepted installation'
+        });
+    } else {
+        gtag('event', 'pwa_install_rejected', {
+            event_category: 'pwa',
+            event_label: 'User dismissed installation'
+        });
+    }
+    deferredPromptt = null;
+});
+
+
 
 // Перевірка iOS
 function isIos() {
