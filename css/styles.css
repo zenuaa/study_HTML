@@ -1,5 +1,4 @@
 body {
-
     font-family: Arial, sans-serif;
     max-width: 700px;
     margin: 0px auto;
@@ -8,6 +7,7 @@ body {
     flex-direction: column;
     font-style: italic;
 }
+
 
 header,
 main {
@@ -168,6 +168,9 @@ button:active {
     color: #fff;
 }
 
+.from_stay812, .to_stay812 {
+    display: none;
+}
 .yavka {
     background: linear-gradient(135deg, #ec8d27, #ee8803);
 }

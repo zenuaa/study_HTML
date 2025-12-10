@@ -76,35 +76,35 @@ const rules = {
     chernihiv: {
         yavka: {
             from_staySt: { 4: 49, 6: 58, 8: 66, 10: 75, pr: 0 }, // На станції DONE
-            from_stayDepoMedYes: { 4: 71, 6: 80, 8: 88, 10: 97, pr: 14 }, // Депо відстій з мед з виїздом на станцію //DONE
+            from_stayDepoMedYes: { 4: 72, 6: 81, 8: 89, 10: 98, pr: 14 }, // Депо відстій з мед з виїздом на станцію //DONE
             from_stayDepoMedNoStNo: { 4: 44, 6: 53, 8: 61, 10: 70, pr: 14 }, // Депо відстій без мед без виїзду на станцію //DONE
             from_stayDepoMedNoStYes: { 4: 69, 6: 78, 8: 86, 10: 95, pr: 14 }, // Депо відстій без мед з виїздом на станцію //DONE
 
 
             from_go: { 4: 40, 6: 42, 8: 45, 10: 48 }, // На прохід DONE
-            from_repairsDepoMedYes: { 4: 77, 6: 89, 8: 100, 10: 101, pr: 15 }, // Депо з ремонту з мед з виїздом на станцію //DONE
+            from_repairsDepoMedYes: { 4: 77, 6: 89, 8: 100, 10: 111, pr: 15 }, // Депо з ремонту з мед з виїздом на станцію //DONE
             from_repairsDepoMedNoStNo: { 4: 49, 6: 61, 8: 72, 10: 83, pr: 15 }, // Депо з ремонту  без мед без виїзду на станцію //DONE
             from_repairsDepoMedNoStYes: { 4: 74, 6: 86, 8: 97, 10: 108, pr: 15 }, // Депо з ремонту  без мед з виїздом на станцію //DONE
             zdacha: {
                 to_staySt: { 4: 11, 6: 16, 8: 21, 10: 26, endAdd: 26 }, // На станції у відстій //DONE
                 to_go: { 4: 9, 6: 11, 8: 14, 10: 17, endAdd: 26 },  //на станції на прохід  //DONE
 
-                to_stayDepoMedNo: { 4: 15, 6: 20, 8: 25, 10: 30, endAdd: 12, kp: 20 }, // У депо у відстій без мед коміссії //DONE
+                to_stayDepoMedNo: { 4: 15, 6: 20, 8: 25, 10: 30, endAdd: 8, kp: 20 }, // У депо у відстій без мед коміссії //DONE
                 to_stayDepoMedYes: { 4: 15, 6: 20, 8: 25, 10: 30, endAdd: 15, kp: 20 }, // У депо у відстій з мед комоссією //DONE
 
-                to_repairsDepoMedNo: { 4: 22, 6: 31, 8: 39, 10: 48, endAdd: 12, kp: 20 }, //У депо у ремонт ТО без мед коміссії //DONE
+                to_repairsDepoMedNo: { 4: 22, 6: 31, 8: 39, 10: 48, endAdd: 8, kp: 20 }, //У депо у ремонт ТО без мед коміссії //DONE
                 to_repairsDepoMedYes: { 4: 22, 6: 31, 8: 39, 10: 48, endAdd: 15, kp: 20 }, //У депо у ремонт ТО з мед комоссією //DONE
 
                 to_stayDepo21MedYes: { 4: 18, 6: 23, 8: 28, 10: 33, endAdd: 15, kp: 27 }, // у депо у відстій по 21 колії з мед//DONE
-                to_stayDepo21MedNo: { 4: 18, 6: 23, 8: 28, 10: 33, endAdd: 12, kp: 27 }, // у депо у відстій по 21 колії без мед //DONE
+                to_stayDepo21MedNo: { 4: 18, 6: 23, 8: 28, 10: 33, endAdd: 8, kp: 27 }, // у депо у відстій по 21 колії без мед //DONE
 
                 to_repairsDepo21MedYes: { 4: 25, 6: 34, 8: 42, 10: 51, endAdd: 15, kp: 27 },// у депо на ремонт по 21 колії з мед //DONE
-                to_repairsDepo21MedNo: { 4: 25, 6: 34, 8: 42, 10: 51, endAdd: 12, kp: 27 },// у депо на ремонт по 21 колії без мед //DONE
+                to_repairsDepo21MedNo: { 4: 25, 6: 34, 8: 42, 10: 51, endAdd: 8, kp: 27 },// у депо на ремонт по 21 колії без мед //DONE
             },
         },
         nizhin: {
             yavka: {
-                from_stay31: { 4: 84, 6: 95, 8: 105, 10: 116, pr: 20 }, // ніжин-явка -на станції- з відстою 31-34 колія //DONE
+                from_stay31: { 4: 84, 6: 95, 8: 105, 10: 114, pr: 20 }, // ніжин-явка -на станції- з відстою 31-34 колія //DONE
                 from_go345: { 4: 26, 6: 28, 8: 31, 10: 34, pr: 0 },// ніжин-явка -на станції- на прохід 345 колія //DONE
                 from_go67: { 4: 27, 6: 29, 8: 32, 10: 35, pr: 0 },// ніжин-явка -на станції- на прохід 67 колія //DONE
             },
@@ -115,8 +115,17 @@ const rules = {
             },
         },
         konotop: {
-            yavka: { from_go: { 4: 34, 6: 36, 8: 39, 10: 42, pr: 0 }, },// Явка на прохід //DONE
-            zdacha: { to_go: { 4: 9, 6: 11, 8: 14, 10: 17, endAdd: 20 }, }, // Здача на прохід //DONE
+            yavka: { 
+                from_go: { 4: 36, 6: 38, 8: 41, 10: 44, pr: 0 }, // Явка на прохід //DONE
+                from_stay812: { 4: 91, 6: 102, 8: 112, 10: 121, pr: 32 }, // явка -на станції- з відстою 8-12 колія 
+
+            
+            },
+            zdacha: { 
+                to_go: { 4: 9, 6: 11, 8: 14, 10: 17, endAdd: 22 }, // Здача на прохід //DONE
+                to_stay812: { 4: 37, 6: 44, 8: 51, 10: 56, endAdd: 32}, // Здача на станції
+        
+        }, 
         }
     }
 }
@@ -216,8 +225,9 @@ function updateVisability() {
             showActions(['to_stay31', 'to_go345', 'to_go67', 'to_stay34', 'to_stay31_34']);
     }
     else if (city === 'konotop') {
-        if (operation === 'yavka') showActions(['from_go']);
-        else showActions(['to_go']);
+        if (operation === 'yavka') showActions(['from_go','from_stay812']);
+        else showActions(['to_go','to_stay812'])
+        ;
     }
 
 }
@@ -395,10 +405,26 @@ function calculate() {
     if (operation === 'yavka') {
         // -------- Явка -------- (без змін)
         if (city === 'konotop') {
-            const result = calculateKonotop(timeMinutes, wagons);
-            yavkaMinutes = result.yavkaMinutes;
-            prMinutes = result.prMinutes;
-        } else if (city === 'nizhin') {
+
+    // --- ЯВКА з відстою 8–12 колія ---
+    if (place === 'from_stay' && action === 'from_stay812') {
+        const ruleObj = rules.chernihiv.konotop.yavka.from_stay812;
+        const offset = ruleObj[wagons];
+        const pr = ruleObj.pr || 0;
+
+        if (typeof offset === 'number') {
+            yavkaMinutes = timeMinutes - offset;
+            prMinutes = yavkaMinutes + pr; // приймання показуємо
+        }
+
+    // --- ЯВКА звичайна (як було раніше) ---
+    } else {
+        const result = calculateKonotop(timeMinutes, wagons);
+        yavkaMinutes = result.yavkaMinutes;
+        prMinutes = result.prMinutes;
+    }
+}
+ else if (city === 'nizhin') {
             const result = calculateNizhin(timeMinutes, action, wagons);
             yavkaMinutes = result.yavkaMinutes;
             prMinutes = result.prMinutes;
@@ -479,12 +505,31 @@ function calculate() {
                 document.getElementById("result_kp").innerText = "";
             }
 
-        } else if (city === 'konotop') {
-            const result = calculateKonotopZdacha(timeMinutes, wagons);
-            zdachaMinutes = result.zdachaTime;
-            endWorkMinutes = result.endWorkTime;
-            document.getElementById("result_kp").innerText = ""; // КП не показуємо для Конотопу
-        } else if (city === 'nizhin') {
+       } else if (city === 'konotop') {
+
+    // --- ЗДАЧА у відстій 8–12 колія ---
+    if (place === 'from_stay' && action === 'to_stay812') {
+
+        const ruleObj = rules.chernihiv.konotop.zdacha.to_stay812;
+        const offset = ruleObj[wagons];
+        const endAdd = ruleObj.endAdd || 0;
+
+        if (typeof offset === 'number') {
+            zdachaMinutes = timeMinutes + offset;
+            endWorkMinutes = zdachaMinutes + endAdd;
+        }
+
+        document.getElementById("result_kp").innerText = ""; // КП не показуємо
+
+    // --- звичайний режим Конотопа ---
+    } else {
+        const result = calculateKonotopZdacha(timeMinutes, wagons);
+        zdachaMinutes = result.zdachaTime;
+        endWorkMinutes = result.endWorkTime;
+        document.getElementById("result_kp").innerText = "";// КП не показуємо для Конотопа
+    }
+}
+ else if (city === 'nizhin') {
             const result = calculateNizhinZdacha(timeMinutes, action, wagons);
             zdachaMinutes = result.zdachaMinutes;
             endWorkMinutes = result.endWorkMinutes;
@@ -695,3 +740,5 @@ if ('serviceWorker' in navigator) {
         window.location.reload();
     });
 }
+
+
