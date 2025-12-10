@@ -89,17 +89,17 @@ const rules = {
                 to_staySt: { 4: 11, 6: 16, 8: 21, 10: 26, endAdd: 26 }, // На станції у відстій //DONE
                 to_go: { 4: 9, 6: 11, 8: 14, 10: 17, endAdd: 26 },  //на станції на прохід  //DONE
 
-                to_stayDepoMedNo: { 4: 15, 6: 20, 8: 25, 10: 30, endAdd: 8, kp: 20 }, // У депо у відстій без мед коміссії //DONE
+                to_stayDepoMedNo: { 4: 15, 6: 20, 8: 25, 10: 30, endAdd: 12, kp: 20 }, // У депо у відстій без мед коміссії //DONE
                 to_stayDepoMedYes: { 4: 15, 6: 20, 8: 25, 10: 30, endAdd: 15, kp: 20 }, // У депо у відстій з мед комоссією //DONE
 
-                to_repairsDepoMedNo: { 4: 22, 6: 31, 8: 39, 10: 48, endAdd: 8, kp: 20 }, //У депо у ремонт ТО без мед коміссії //DONE
+                to_repairsDepoMedNo: { 4: 22, 6: 31, 8: 39, 10: 48, endAdd: 12, kp: 20 }, //У депо у ремонт ТО без мед коміссії //DONE
                 to_repairsDepoMedYes: { 4: 22, 6: 31, 8: 39, 10: 48, endAdd: 15, kp: 20 }, //У депо у ремонт ТО з мед комоссією //DONE
 
                 to_stayDepo21MedYes: { 4: 18, 6: 23, 8: 28, 10: 33, endAdd: 15, kp: 27 }, // у депо у відстій по 21 колії з мед//DONE
-                to_stayDepo21MedNo: { 4: 18, 6: 23, 8: 28, 10: 33, endAdd: 8, kp: 27 }, // у депо у відстій по 21 колії без мед //DONE
+                to_stayDepo21MedNo: { 4: 18, 6: 23, 8: 28, 10: 33, endAdd: 12, kp: 27 }, // у депо у відстій по 21 колії без мед //DONE
 
                 to_repairsDepo21MedYes: { 4: 25, 6: 34, 8: 42, 10: 51, endAdd: 15, kp: 27 },// у депо на ремонт по 21 колії з мед //DONE
-                to_repairsDepo21MedNo: { 4: 25, 6: 34, 8: 42, 10: 51, endAdd: 8, kp: 27 },// у депо на ремонт по 21 колії без мед //DONE
+                to_repairsDepo21MedNo: { 4: 25, 6: 34, 8: 42, 10: 51, endAdd: 12, kp: 27 },// у депо на ремонт по 21 колії без мед //DONE
             },
         },
         nizhin: {
