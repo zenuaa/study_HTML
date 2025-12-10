@@ -244,10 +244,24 @@ function updateVisability() {
 
 function showActions(list) {
     const actionRadios = document.querySelectorAll('input[name="action"]');
+    let firstVisible = null;
+
     actionRadios.forEach(radio => {
-        radio.parentElement.style.display = list.includes(radio.value) ? '' : 'none';
+        if (list.includes(radio.value)) {
+            radio.parentElement.style.display = '';
+            if (!firstVisible) firstVisible = radio;
+        } else {
+            radio.parentElement.style.display = 'none';
+            radio.checked = false;
+        }
     });
+
+    // Встановлюємо checked для першого видимого, якщо ще нічого не вибрано
+    if (firstVisible && !document.querySelector('input[name="action"]:checked')) {
+        firstVisible.checked = true;
+    }
 }
+
 
 // -------- Додаємо обробники --------
 ['city', 'operation', 'place', 'med'].forEach(name => {
@@ -705,13 +719,6 @@ document.getElementById('installBtn').addEventListener('click', async () => {
     }
     deferredPromptt = null;
 });
-
-
-
-// Перевірка iOS
-function isIos() {
-    return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-}
 
 
 
