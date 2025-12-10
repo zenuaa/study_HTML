@@ -182,7 +182,9 @@
             </fieldset>
         </div>
         <br>
-        <button id="rozr" onclick="calculate()">Розрахувати</button>
+        <audio id="sound" src="files/christmas.mp3" preload="auto"></audio> <!-- Звук для кнопки -->
+
+        <button id="rozr" onclick="calculate(), playAndCalculate()">Розрахувати</button>
         <div id="results">
             <div id="result_yavka" class="res-line yavka"></div>
             <div id="result_pr" class="res-line pr"></div>
@@ -193,6 +195,7 @@
         <section class="console">
             <fieldset>
                 <legend>
+                    <img src="images/hat.png" alt="hat" class="hat">
                     <p>Info:</p>
                 </legend>
                 <div id="logContent" class="output_field">
@@ -275,6 +278,7 @@
                 .catch(e => console.log("SW error", e));
         }
     </script>
+    
 
 </body>
 

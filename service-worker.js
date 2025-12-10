@@ -16,8 +16,11 @@ const FILES_TO_CACHE = [
   "./images/face.png",
   "./images/faceIOS.png",
   "./images/time.png",
-  "./files/2025_VIDOMIST.xls",
-  "./files/2025_VIDOMIST.pdf"
+  "./files/2025_VIDOMIST.xlsx",
+  "./files/2025_VIDOMIST.pdf",
+  "./files/christmas.mp3",
+  "./images/hat.png"
+
 ];
 
 // ---------- Install ----------

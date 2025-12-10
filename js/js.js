@@ -742,3 +742,21 @@ if ('serviceWorker' in navigator) {
 }
 
 
+// -------- Функція відтворення звуку і виклику розрахунку --------
+function playAndCalculate() {
+    // Виконуємо розрахунок
+    calculate();
+
+    // Перевіряємо, чи є хоч якийсь текст у блоці Info
+    const infoBlock = document.getElementById("logContent").innerText.trim() +
+                      document.getElementById("result_yavka").innerText.trim() +
+                      document.getElementById("result_pr").innerText.trim() +
+                      document.getElementById("result_zd").innerText.trim() +
+                      document.getElementById("result_end").innerText.trim();
+
+    if (infoBlock) {
+        const audio = document.getElementById("sound");
+        audio.currentTime = 0;
+        audio.play().catch(e => console.log(e));
+    }
+}

@@ -447,3 +447,9 @@ main {
 .red {
     color: red
 }
+
+.hat {
+    width: 24px;
+    margin-bottom: -25px;
+    vertical-align: middle;
+}
