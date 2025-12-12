@@ -867,9 +867,12 @@ if (navigator.serviceWorker) {
     const offlineBlock = document.querySelector("#offline p");
     if (!offlineBlock) return;
 
-    if (event.data && typeof event.data.offline === "boolean") {
-      offlineBlock.style.display = event.data.offline ? "block" : "none";
+    // Перевіряємо, чи є поле offline і чи воно булеве
+    const isOffline = event?.data?.offline;
+    if (typeof isOffline === "boolean") {
+      offlineBlock.style.display = isOffline ? "block" : "none";
     }
   });
 }
+
 
