@@ -1,6 +1,4 @@
-// test update version 0
-
-const CACHE_NAME = "calk-cache"; // стабільна назва кешу
+const CACHE_NAME = "calk-cache"; 
 const FILES_TO_CACHE = [
   "./index.html",
   "./css/styles.css",
@@ -20,55 +18,65 @@ const FILES_TO_CACHE = [
   "./files/2025_VIDOMIST.pdf",
   "./files/christmas.mp3",
   "./images/hat.png"
-
 ];
 
 // ---------- Install ----------
-self.addEventListener("install", (event) => {
+self.addEventListener("install", event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(async (cache) => {
-      for (const file of FILES_TO_CACHE) {
-        try {
-          await cache.add(file);
-        } catch (err) {
-          console.error("Failed to cache:", file, err);
-        }
-      }
-    })
+    caches.open(CACHE_NAME).then(cache => cache.addAll(FILES_TO_CACHE))
   );
   self.skipWaiting();
 });
 
 // ---------- Activate ----------
-self.addEventListener('activate', event => {
+self.addEventListener("activate", event => {
   const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
-    caches.keys().then(keys => 
-      Promise.all(keys.map(key => {
-        if (!cacheWhitelist.includes(key)) return caches.delete(key);
-      }))
+    caches.keys().then(keys =>
+      Promise.all(keys.map(key => !cacheWhitelist.includes(key) ? caches.delete(key) : null))
     ).then(() => self.clients.claim())
   );
 });
 
-
 // ---------- Fetch ----------
-self.addEventListener("fetch", (event) => {
+self.addEventListener("fetch", event => {
+  const url = new URL(event.request.url);
+
+  // --- Зображення для preloading / іконки --- cache-first без таймауту
+  if (url.pathname.endsWith(".png") || url.pathname.endsWith(".jpg") || url.pathname.endsWith(".mp3")) {
+    event.respondWith(
+      caches.open(CACHE_NAME).then(async cache => {
+        const cached = await cache.match(event.request);
+        if (cached) return cached;
+
+        try {
+          const response = await fetch(event.request);
+          if (response && response.status === 200 && response.type === "basic") {
+            cache.put(event.request, response.clone());
+          }
+          return response;
+        } catch (err) {
+          return new Response("", { status: 200, statusText: "Offline fallback" });
+        }
+      })
+    );
+    return;
+  }
+
+  // --- Інші файли: online-first з таймаутом 3.5 сек ---
   event.respondWith(
     (async () => {
       const cache = await caches.open(CACHE_NAME);
 
       const networkPromise = new Promise((resolve, reject) => {
-        const timer = setTimeout(() => reject(new Error("timeout")), 3500); // 3.5 сек
+        const timer = setTimeout(() => reject(new Error("timeout")), 3500);
 
         fetch(event.request)
           .then(response => {
             clearTimeout(timer);
-
             if (response && response.status === 200 && response.type === "basic") {
               cache.put(event.request, response.clone());
             }
-
             resolve(response);
           })
           .catch(err => {
@@ -79,16 +87,14 @@ self.addEventListener("fetch", (event) => {
 
       try {
         const response = await networkPromise;
-        // повідомляємо сторінку, що ONLINE
-        self.clients.matchAll().then(clients => {
-          clients.forEach(client => client.postMessage({ offline: false }));
-        });
+        self.clients.matchAll().then(clients =>
+          clients.forEach(client => client.postMessage({ offline: false }))
+        );
         return response;
       } catch (err) {
-        // повідомляємо сторінку, що дані беруться з кешу
-        self.clients.matchAll().then(clients => {
-          clients.forEach(client => client.postMessage({ offline: true }));
-        });
+        self.clients.matchAll().then(clients =>
+          clients.forEach(client => client.postMessage({ offline: true }))
+        );
 
         const cached = await cache.match(event.request);
         if (cached) return cached;
@@ -102,9 +108,7 @@ self.addEventListener("fetch", (event) => {
   );
 });
 
-
-
 // ---------- Повідомлення від сторінки ----------
-self.addEventListener("message", (event) => {
+self.addEventListener("message", event => {
   if (event.data === "skipWaiting") self.skipWaiting();
 });
