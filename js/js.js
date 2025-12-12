@@ -270,14 +270,46 @@ function updateVisability() {
         }
         else if (operation === 'zdacha' && place === 'from_stay')
             showActions(['to_stay', 'to_go']);
+
         else if (operation === 'zdacha' && place === 'from_depo') {
-            if (medBlock) medBlock.style.display = '';
-            showActions(['to_stay', 'to_repairsDepo']);
+    // Чернігів → Здача → Депо (звичайне) → ОБИДВА мед варіанти
+    if (medBlock) {
+        medBlock.style.display = '';
+
+        const medYes = document.querySelector('input[name="med"][value="yavka"]');
+        const medNo  = document.querySelector('input[name="med"][value="zdacha"]');
+
+        // показати обидва
+        if (medYes) medYes.parentElement.style.display = '';
+        if (medNo)  medNo.parentElement.style.display  = '';
+    }
+
+    showActions(['to_stay', 'to_repairsDepo']);
+}
+else if (operation === 'zdacha' && place === 'depo_21') {
+    // Чернігів → Здача → Депо по 21 → ТІЛЬКИ "З мед комісією"
+    if (medBlock) {
+        medBlock.style.display = '';
+
+        const medYes = document.querySelector('input[name="med"][value="yavka"]');
+        const medNo  = document.querySelector('input[name="med"][value="zdacha"]');
+
+        // ховаємо "Без мед комісії"
+        if (medNo) {
+            medNo.parentElement.style.display = 'none';
+            if (medNo.checked) medNo.checked = false;
         }
-        else if (operation === 'zdacha' && place === 'depo_21') {
-            if (medBlock) medBlock.style.display = '';
-            showActions(['to_stay', 'to_repairsDepo']);
+
+        // показуємо "З мед комісією"
+        if (medYes) {
+            medYes.parentElement.style.display = '';
+            medYes.checked = true;
         }
+    }
+
+    showActions(['to_stay', 'to_repairsDepo']);
+}
+
     }
     else if (city === 'nizhin') {
         if (operation === 'yavka')
