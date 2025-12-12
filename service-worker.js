@@ -52,30 +52,57 @@ self.addEventListener('activate', event => {
 });
 
 
-// ---------- Fetch: кеш-перший + автоматичне оновлення ----------
+// ---------- Fetch ----------
 self.addEventListener("fetch", (event) => {
   event.respondWith(
-    caches.open(CACHE_NAME).then(async (cache) => {
+    (async () => {
+      const cache = await caches.open(CACHE_NAME);
+
+      const networkPromise = new Promise((resolve, reject) => {
+        const timer = setTimeout(() => reject(new Error("timeout")), 3500); // 3.5 сек
+
+        fetch(event.request)
+          .then(response => {
+            clearTimeout(timer);
+
+            if (response && response.status === 200 && response.type === "basic") {
+              cache.put(event.request, response.clone());
+            }
+
+            resolve(response);
+          })
+          .catch(err => {
+            clearTimeout(timer);
+            reject(err);
+          });
+      });
+
       try {
-        const networkResponse = await fetch(event.request);
-        // якщо успішний запит, оновлюємо кеш
-        if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
-          cache.put(event.request, networkResponse.clone());
-        }
-        return networkResponse;
+        const response = await networkPromise;
+        // повідомляємо сторінку, що ONLINE
+        self.clients.matchAll().then(clients => {
+          clients.forEach(client => client.postMessage({ offline: false }));
+        });
+        return response;
       } catch (err) {
-        // якщо офлайн або помилка, віддаємо кеш
-        const cachedResponse = await cache.match(event.request);
-        if (cachedResponse) return cachedResponse;
-        // якщо немає у кеші — fallback
-        return new Response("Файл недоступний офлайн", {
+        // повідомляємо сторінку, що дані беруться з кешу
+        self.clients.matchAll().then(clients => {
+          clients.forEach(client => client.postMessage({ offline: true }));
+        });
+
+        const cached = await cache.match(event.request);
+        if (cached) return cached;
+
+        return new Response("Offline і даних у кеші немає", {
           status: 503,
-          statusText: "Service Worker: Offline fallback"
+          statusText: "SW offline fallback"
         });
       }
-    })
+    })()
   );
 });
+
+
 
 // ---------- Повідомлення від сторінки ----------
 self.addEventListener("message", (event) => {

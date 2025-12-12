@@ -860,3 +860,16 @@ function playAndCalculate() {
         audio.play().catch(e => console.log(e));
     }
 }
+
+// слухаємо повідомлення від SW для показу блоку офлайн
+if (navigator.serviceWorker) {
+  navigator.serviceWorker.addEventListener("message", (event) => {
+    const offlineBlock = document.querySelector("#offline p");
+    if (!offlineBlock) return;
+
+    if (event.data && typeof event.data.offline === "boolean") {
+      offlineBlock.style.display = event.data.offline ? "block" : "none";
+    }
+  });
+}
+
