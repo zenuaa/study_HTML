@@ -15,8 +15,8 @@ const FILES_TO_CACHE = [
   "./images/face384.png",
   "./images/face.png",
   "./images/faceIOS.png",
-  "./images/time.png",
   "./images/hat.png",
+  "./images/time_table.png",
 
   "./files/2025_VIDOMIST.xlsx",
   "./files/2025_VIDOMIST.pdf",
@@ -96,7 +96,7 @@ self.addEventListener("fetch", event => {
       const cache = await caches.open(CACHE_NAME);
 
       const networkPromise = new Promise((resolve, reject) => {
-        const timer = setTimeout(() => reject(new Error("timeout")), 3500);
+        const timer = setTimeout(() => reject(new Error("timeout")), 3000);
 
         fetch(event.request)
           .then(response => {

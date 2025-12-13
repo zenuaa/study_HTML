@@ -115,17 +115,17 @@ const rules = {
             },
         },
         konotop: {
-            yavka: { 
+            yavka: {
                 from_go: { 4: 36, 6: 38, 8: 41, 10: 44, pr: 0 }, // Явка на прохід //DONE
                 from_stay812: { 4: 91, 6: 102, 8: 112, 10: 121, pr: 32 }, // явка -на станції- з відстою 8-12 колія 
 
-            
+
             },
-            zdacha: { 
+            zdacha: {
                 to_go: { 4: 9, 6: 11, 8: 14, 10: 17, endAdd: 22 }, // Здача на прохід //DONE
-                to_stay812: { 4: 37, 6: 44, 8: 51, 10: 56, endAdd: 32}, // Здача на станції
-        
-        }, 
+                to_stay812: { 4: 37, 6: 44, 8: 51, 10: 56, endAdd: 32 }, // Здача на станції
+
+            },
         }
     }
 }
@@ -168,23 +168,23 @@ const rules_parrot = {
                 from_go67: { 4: 0, 6: 25, 8: 28, 10: 0, pr: 0 },// ніжин-явка -на станції- на прохід 67 колія 
             },
             zdacha: {
-                to_stay31: { 4: 0, 6: 103, 8: 123, 10: 0, endAdd: 11 }, 
-                to_go345: { 4: 9, 6: 11, 8: 14, 10: 17, endAdd: 4 }, 
-                to_go67: { 4: 9, 6: 11, 8: 14, 10: 17, endAdd: 5 }, 
+                to_stay31: { 4: 0, 6: 103, 8: 123, 10: 0, endAdd: 11 },
+                to_go345: { 4: 9, 6: 11, 8: 14, 10: 17, endAdd: 4 },
+                to_go67: { 4: 9, 6: 11, 8: 14, 10: 17, endAdd: 5 },
             },
         },
         konotop: {
-            yavka: { 
+            yavka: {
                 from_go: { 4: 0, 6: 34, 8: 37, 10: 0, pr: 0 }, // Явка на прохід 
                 from_stay812: { 4: 0, 6: 100, 8: 108, 10: 0, pr: 32 }, // явка -на станції- з відстою 8-12 колія 
 
-            
+
             },
-            zdacha: { 
+            zdacha: {
                 to_go: { 4: 9, 6: 11, 8: 14, 10: 17, endAdd: 22 }, // Здача на прохід 
-                to_stay812: { 4: 0, 6: 46, 8: 51, 10: 56, endAdd: 32}, // Здача на станції
-        
-        }, 
+                to_stay812: { 4: 0, 6: 46, 8: 51, 10: 56, endAdd: 32 }, // Здача на станції
+
+            },
         }
     }
 }
@@ -272,43 +272,43 @@ function updateVisability() {
             showActions(['to_stay', 'to_go']);
 
         else if (operation === 'zdacha' && place === 'from_depo') {
-    // Чернігів → Здача → Депо (звичайне) → ОБИДВА мед варіанти
-    if (medBlock) {
-        medBlock.style.display = '';
+            // Чернігів → Здача → Депо (звичайне) → ОБИДВА мед варіанти
+            if (medBlock) {
+                medBlock.style.display = '';
 
-        const medYes = document.querySelector('input[name="med"][value="yavka"]');
-        const medNo  = document.querySelector('input[name="med"][value="zdacha"]');
+                const medYes = document.querySelector('input[name="med"][value="yavka"]');
+                const medNo = document.querySelector('input[name="med"][value="zdacha"]');
 
-        // показати обидва
-        if (medYes) medYes.parentElement.style.display = '';
-        if (medNo)  medNo.parentElement.style.display  = '';
-    }
+                // показати обидва
+                if (medYes) medYes.parentElement.style.display = '';
+                if (medNo) medNo.parentElement.style.display = '';
+            }
 
-    showActions(['to_stay', 'to_repairsDepo']);
-}
-else if (operation === 'zdacha' && place === 'depo_21') {
-    // Чернігів → Здача → Депо по 21 → ТІЛЬКИ "З мед комісією"
-    if (medBlock) {
-        medBlock.style.display = '';
-
-        const medYes = document.querySelector('input[name="med"][value="yavka"]');
-        const medNo  = document.querySelector('input[name="med"][value="zdacha"]');
-
-        // ховаємо "Без мед комісії"
-        if (medNo) {
-            medNo.parentElement.style.display = 'none';
-            if (medNo.checked) medNo.checked = false;
+            showActions(['to_stay', 'to_repairsDepo']);
         }
+        else if (operation === 'zdacha' && place === 'depo_21') {
+            // Чернігів → Здача → Депо по 21 → ТІЛЬКИ "З мед комісією"
+            if (medBlock) {
+                medBlock.style.display = '';
 
-        // показуємо "З мед комісією"
-        if (medYes) {
-            medYes.parentElement.style.display = '';
-            medYes.checked = true;
+                const medYes = document.querySelector('input[name="med"][value="yavka"]');
+                const medNo = document.querySelector('input[name="med"][value="zdacha"]');
+
+                // ховаємо "Без мед комісії"
+                if (medNo) {
+                    medNo.parentElement.style.display = 'none';
+                    if (medNo.checked) medNo.checked = false;
+                }
+
+                // показуємо "З мед комісією"
+                if (medYes) {
+                    medYes.parentElement.style.display = '';
+                    medYes.checked = true;
+                }
+            }
+
+            showActions(['to_stay', 'to_repairsDepo']);
         }
-    }
-
-    showActions(['to_stay', 'to_repairsDepo']);
-}
 
     }
     else if (city === 'nizhin') {
@@ -318,9 +318,9 @@ else if (operation === 'zdacha' && place === 'depo_21') {
             showActions(['to_stay31', 'to_go345', 'to_go67', 'to_stay34', 'to_stay31_34']);
     }
     else if (city === 'konotop') {
-        if (operation === 'yavka') showActions(['from_go','from_stay812']);
-        else showActions(['to_go','to_stay812'])
-        ;
+        if (operation === 'yavka') showActions(['from_go', 'from_stay812']);
+        else showActions(['to_go', 'to_stay812'])
+            ;
     }
 
 }
@@ -513,25 +513,25 @@ function calculate() {
         // -------- Явка -------- (без змін)
         if (city === 'konotop') {
 
-    // --- ЯВКА з відстою 8–12 колія ---
-    if (place === 'from_stay' && action === 'from_stay812') {
-        const ruleObj = rules.chernihiv.konotop.yavka.from_stay812;
-        const offset = ruleObj[wagons];
-        const pr = ruleObj.pr || 0;
+            // --- ЯВКА з відстою 8–12 колія ---
+            if (place === 'from_stay' && action === 'from_stay812') {
+                const ruleObj = rules.chernihiv.konotop.yavka.from_stay812;
+                const offset = ruleObj[wagons];
+                const pr = ruleObj.pr || 0;
 
-        if (typeof offset === 'number') {
-            yavkaMinutes = timeMinutes - offset;
-            prMinutes = yavkaMinutes + pr; // приймання показуємо
+                if (typeof offset === 'number') {
+                    yavkaMinutes = timeMinutes - offset;
+                    prMinutes = yavkaMinutes + pr; // приймання показуємо
+                }
+
+                // --- ЯВКА звичайна (як було раніше) ---
+            } else {
+                const result = calculateKonotop(timeMinutes, wagons);
+                yavkaMinutes = result.yavkaMinutes;
+                prMinutes = result.prMinutes;
+            }
         }
-
-    // --- ЯВКА звичайна (як було раніше) ---
-    } else {
-        const result = calculateKonotop(timeMinutes, wagons);
-        yavkaMinutes = result.yavkaMinutes;
-        prMinutes = result.prMinutes;
-    }
-}
- else if (city === 'nizhin') {
+        else if (city === 'nizhin') {
             const result = calculateNizhin(timeMinutes, action, wagons);
             yavkaMinutes = result.yavkaMinutes;
             prMinutes = result.prMinutes;
@@ -612,31 +612,31 @@ function calculate() {
                 document.getElementById("result_kp").innerText = "";
             }
 
-       } else if (city === 'konotop') {
+        } else if (city === 'konotop') {
 
-    // --- ЗДАЧА у відстій 8–12 колія ---
-    if (place === 'from_stay' && action === 'to_stay812') {
+            // --- ЗДАЧА у відстій 8–12 колія ---
+            if (place === 'from_stay' && action === 'to_stay812') {
 
-        const ruleObj = rules.chernihiv.konotop.zdacha.to_stay812;
-        const offset = ruleObj[wagons];
-        const endAdd = ruleObj.endAdd || 0;
+                const ruleObj = rules.chernihiv.konotop.zdacha.to_stay812;
+                const offset = ruleObj[wagons];
+                const endAdd = ruleObj.endAdd || 0;
 
-        if (typeof offset === 'number') {
-            zdachaMinutes = timeMinutes + offset;
-            endWorkMinutes = zdachaMinutes + endAdd;
+                if (typeof offset === 'number') {
+                    zdachaMinutes = timeMinutes + offset;
+                    endWorkMinutes = zdachaMinutes + endAdd;
+                }
+
+                document.getElementById("result_kp").innerText = ""; // КП не показуємо
+
+                // --- звичайний режим Конотопа ---
+            } else {
+                const result = calculateKonotopZdacha(timeMinutes, wagons);
+                zdachaMinutes = result.zdachaTime;
+                endWorkMinutes = result.endWorkTime;
+                document.getElementById("result_kp").innerText = "";// КП не показуємо для Конотопа
+            }
         }
-
-        document.getElementById("result_kp").innerText = ""; // КП не показуємо
-
-    // --- звичайний режим Конотопа ---
-    } else {
-        const result = calculateKonotopZdacha(timeMinutes, wagons);
-        zdachaMinutes = result.zdachaTime;
-        endWorkMinutes = result.endWorkTime;
-        document.getElementById("result_kp").innerText = "";// КП не показуємо для Конотопа
-    }
-}
- else if (city === 'nizhin') {
+        else if (city === 'nizhin') {
             const result = calculateNizhinZdacha(timeMinutes, action, wagons);
             zdachaMinutes = result.zdachaMinutes;
             endWorkMinutes = result.endWorkMinutes;
@@ -849,10 +849,10 @@ function playAndCalculate() {
 
     // Перевіряємо, чи є хоч якийсь текст у блоці Info
     const infoBlock = document.getElementById("logContent").innerText.trim() +
-                      document.getElementById("result_yavka").innerText.trim() +
-                      document.getElementById("result_pr").innerText.trim() +
-                      document.getElementById("result_zd").innerText.trim() +
-                      document.getElementById("result_end").innerText.trim();
+        document.getElementById("result_yavka").innerText.trim() +
+        document.getElementById("result_pr").innerText.trim() +
+        document.getElementById("result_zd").innerText.trim() +
+        document.getElementById("result_end").innerText.trim();
 
     if (infoBlock) {
         const audio = document.getElementById("sound");
@@ -863,15 +863,15 @@ function playAndCalculate() {
 
 // слухаємо повідомлення від SW для показу блоку офлайн
 if (navigator.serviceWorker) {
-  navigator.serviceWorker.addEventListener("message", (event) => {
-    const offlineBlock = document.querySelector("#offline p");
-    if (!offlineBlock) return;
+    navigator.serviceWorker.addEventListener("message", (event) => {
+        const offlineBlock = document.querySelector("#offline p");
+        if (!offlineBlock) return;
 
-    // Перевіряємо, чи є поле offline і чи воно булеве
-    const isOffline = event?.data?.offline;
-    if (typeof isOffline === "boolean") {
-      offlineBlock.style.display = isOffline ? "block" : "none";
-    }
-  });
+        // Перевіряємо, чи є поле offline і чи воно булеве
+        const isOffline = event?.data?.offline;
+        if (typeof isOffline === "boolean") {
+            offlineBlock.style.display = isOffline ? "block" : "none";
+        }
+    });
 }
 
