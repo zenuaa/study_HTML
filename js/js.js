@@ -875,11 +875,3 @@ if (navigator.serviceWorker) {
   });
 }
 
-// JS — прибираємо loader КОЛИ ВСЕ ГОТОВО
-window.addEventListener("load", () => {
-  const loader = document.getElementById("app-loader");
-  const app = document.getElementById("app");
-
-  if (loader) loader.remove();
-  if (app) app.hidden = false;
-});
