@@ -1,6 +1,13 @@
 {
-  "name": "Розрахунок здачі та явки..",
+  "name": "Розрахунок здачі та явки локомотивної бригади",
   "short_name": "Calk",
+  "description": "Додаток для розрахунку явки та здачі локомотивних бригад з підтримкою офлайн режиму",
+  "start_url": "/study_HTML/index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "orientation": "portrait",
+  "scope": "/study_HTML/",
   "icons": [
     { "src": "images/clock72.png", "sizes": "72x72", "type": "image/png" },
     { "src": "images/clock96.png", "sizes": "96x96", "type": "image/png" },
@@ -11,8 +18,5 @@
     { "src": "images/face384.png", "sizes": "384x384", "type": "image/png" },
     { "src": "images/faceIOS.png", "sizes": "512x512", "type": "image/png" }
   ],
-  "start_url": "/study_HTML/index.html",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#ffffff"
+  "prefer_related_applications": false
 }
