@@ -33,44 +33,35 @@
         // ----- Всі події запускаємо тільки після завантаження DOM -----
         document.addEventListener("DOMContentLoaded", function () {
 
-            // Подія натискання кнопки "Розрахувати"
-            document.getElementById("rozr").addEventListener("click", function () {
-                gtag("event", "calculate_click", {
-                    event_category: "interaction",
-                    event_label: "Кнопка Розрахувати"
-                });
-            });
+    const rozrBtn = document.getElementById("rozr");
+    const timeInput = document.getElementById("timeInputCalc");
 
-            // Подія введення часу
-            document.getElementById("timeInputCalc").addEventListener("input", function () {
-                gtag("event", "time_input", {
-                    event_category: "form",
-                    event_label: "Ввід часу",
-                    value: this.value
-                });
-            });
+    // миттєва валідація при вводі
+    timeInput.addEventListener("input", validateTimeInputCalc);
+
+    // Клік по кнопці "Розрахувати"
+    rozrBtn.addEventListener("click", () => {
+        if (!validateTimeInputCalc()) return;
+
+        gtag("event", "calculate_click", {
+            event_category: "interaction",
+            event_label: "Кнопка Розрахувати"
         });
 
-        // ---- Подія помилки у форматі часу ----
-        function validateTimeInputCalc() {
-            const input = document.getElementById("timeInputCalc").value.trim();
-            const errorDiv = document.getElementById("timeInputCalcError");
+        calculate();
+        playAndCalculate();
+    });
 
-            if (!/^\d{1,2}[:.\-]\d{2}$/.test(input)) {
+    // GA — при виході з поля
+    timeInput.addEventListener("blur", function () {
+        gtag("event", "time_input", {
+            event_category: "form",
+            event_label: "Ввід часу",
+            value: this.value
+        });
+    });
 
-                gtag("event", "time_input_error", {
-                    event_category: "error",
-                    event_label: "Неправильний формат часу",
-                    value: input
-                });
-
-                errorDiv.textContent = "Некоректний час";
-                return false;
-            }
-
-            errorDiv.textContent = "";
-            return true;
-        }
+});
     </script>
 
 </head>
@@ -85,7 +76,7 @@
         <!-- Час прибуття/відправлення -->
         <label class="top_lab">Введіть час прибуття або відправлення (год.хв)</label>
 
-        <input type="text" id="timeInputCalc" placeholder="наприклад 5.45" oninput="validateTimeInputCalc()">
+        <input type="text" id="timeInputCalc" placeholder="наприклад 5.45">
         <div id="timeInputCalcError" style="color: red; font-size: 14px; min-height: 18px;"></div>
         <!-- Кількість вагонів: -->
         <div class="radio-group">
@@ -114,7 +105,6 @@
                         <label><input type="radio" name="city" value="konotop"> Конотоп</label>
                         <label><input type="radio" name="city" value="bt"> Борщ. Техн.</label>
                     </div>
-                </div>
                 </div>
             </fieldset>
         </div>
@@ -200,8 +190,8 @@
                 <legend>
                     <p>Вид електропоїзда</p>
                 </legend>
-                <label><input type="radio" name="next_action" value="parrot">Попугай</label>
-                <label><input type="radio" name="next_action" value="no_parrot">Cтарий корч</label>
+                <label><input type="radio" name="type" value="parrot">Попугай</label>
+                <label><input type="radio" name="type" value="no_parrot">Cтарий корч</label>
 
             </fieldset>
         </div>
@@ -253,17 +243,17 @@
         <img src="images/time_table.png" alt="table" class="table-image">
     </div>
     <section class="attachments">
-        <h3">Файли для завантаження:</h3>
-            <ul>
-                <li><a href="files/2025_VIDOMIST.xlsx" target="_blank">
-                        <img src="https://cdn-icons-png.flaticon.com/16/337/337959.png" alt="Excel" width="16"
-                            height="16" style="vertical-align: middle; margin-right: 4px;">
-                        Відомість(2025-2026) Excel файл.</a></li>
-                <li><a href="files/2025_VIDOMIST.pdf" target="_blank">
-                        <img src="https://cdn-icons-png.flaticon.com/16/337/337946.png" alt="PDF" width="16" height="16"
-                            style="vertical-align: middle; margin-right: 4px;">
-                        Відомість(2025-2026) PDF файл.</a></li>
-            </ul>
+        <h3>Файли для завантаження:</h3>
+        <ul>
+            <li><a href="files/2025_VIDOMIST.xlsx" target="_blank">
+                    <img src="https://cdn-icons-png.flaticon.com/16/337/337959.png" alt="Excel" width="16" height="16"
+                        style="vertical-align: middle; margin-right: 4px;">
+                    Відомість(2025-2026) Excel файл.</a></li>
+            <li><a href="files/2025_VIDOMIST.pdf" target="_blank">
+                    <img src="https://cdn-icons-png.flaticon.com/16/337/337946.png" alt="PDF" width="16" height="16"
+                        style="vertical-align: middle; margin-right: 4px;">
+                    Відомість(2025-2026) PDF файл.</a></li>
+        </ul>
     </section>
 
     <section class="install-app">

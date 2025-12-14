@@ -247,6 +247,7 @@ function updateVisability() {
 
     // --- Ховаємо всі дії ---
     actionRadios.forEach(radio => radio.parentElement.style.display = 'none');
+    
 
     // --- Спеціальна умова Борщ. Техн. + Явка ---
     if (city === 'bt' && operation === 'yavka') {
