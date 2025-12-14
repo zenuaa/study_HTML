@@ -230,10 +230,11 @@ function formatTimeCalc(total) {
 
 // -------- Функція оновлення видимості радіо --------
 function updateVisability() {
+    const wagonsRadios = document.querySelectorAll('input[name="wagons"]');
     const city = document.querySelector('input[name="city"]:checked')?.value;
     const operation = document.querySelector('input[name="operation"]:checked')?.value;
     const place = document.querySelector('input[name="place"]:checked')?.value;
-    const medChecked = document.querySelector('input[name="med"]:checked')?.value === 'yavka';
+    // const medChecked = document.querySelector('input[name="med"]:checked')?.value === 'yavka';
 
     const placeRadios = document.querySelectorAll('input[name="place"]');
     const actionRadios = document.querySelectorAll('input[name="action"]');
@@ -245,54 +246,60 @@ function updateVisability() {
     const medBlock = Array.from(document.querySelectorAll('.radio-group'))
         .find(g => g.textContent.includes('Мед:'));
 
-    // --- Ховаємо всі дії ---
-    actionRadios.forEach(radio => radio.parentElement.style.display = 'none');
+    // --- Ховаємо всі дії спочатку ---
+    actionRadios.forEach(r => {
+        r.parentElement.style.display = 'none';
+        r.checked = false;
+    });
+
+
+    // --- Обмеження вагонів для Борщ. Техн ---
+    if (city === 'bt') {
+        wagonsRadios.forEach(radio => {
+            if (radio.value === '6' || radio.value === '8') {
+                radio.parentElement.style.display = '';
+            } else {
+                radio.parentElement.style.display = 'none';
+                radio.checked = false; // якщо був обраний, зняти
+            }
+        });
+
+    } else {
+        // Для інших міст показати всі вагонні варіанти
+        wagonsRadios.forEach(radio => {
+            radio.parentElement.style.display = '';
+        });
+    }
     
 
-    // --- Спеціальна умова Борщ. Техн. + Явка ---
-    if (city === 'bt' && operation === 'yavka') {
+    // --- Спеціальні умови для Борщ. Техн ---
+    
+    if (city === 'bt') {
         const placeBlock = document.querySelector('#spot');
         if (placeBlock) placeBlock.style.display = 'none';
 
-        const btActions = ['from_stayBt']; // ✅ ПРАВИЛЬНЕ value
+        let btActions = [];
+        if (operation === 'yavka') btActions = ['from_stayBt'];
+        else if (operation === 'zdacha') btActions = ['to_stayBt'];
 
-        actionRadios.forEach(radio => {
-            radio.parentElement.style.display =
-                btActions.includes(radio.value) ? '' : 'none';
-            radio.checked = false;
+        actionRadios.forEach(r => {
+            r.parentElement.style.display = btActions.includes(r.value) ? '' : 'none';
         });
 
-        const first = document.querySelector(
-            'input[name="action"][value="from_stayBt"]'
-        );
-        if (first) first.checked = true;
+        // Автовибір першої видимої дії
+        const visibleAction = Array.from(actionRadios).find(r => r.parentElement.style.display !== 'none');
+        if (visibleAction) visibleAction.checked = true;
+
+        // Ховаємо мед і станцію для Борщ. Техн
+        if (medBlock) medBlock.style.display = 'none';
+        if (stationBlock) stationBlock.style.display = 'none';
 
         return;
     }
-    else {
-        // повертаємо блок Місце для інших випадків
-        const placeBlock = document.querySelector('#spot');
-        if (placeBlock) placeBlock.style.display = '';
 
-    } if (city === 'bt' && operation === 'zdacha') {
-        const placeBlock = document.querySelector('#spot');
-        if (placeBlock) placeBlock.style.display = 'none';
-
-        const btActions = ['to_stayBt']; // ✅
-
-        actionRadios.forEach(radio => {
-            radio.parentElement.style.display =
-                btActions.includes(radio.value) ? '' : 'none';
-            radio.checked = false;
-        });
-
-        const first = document.querySelector(
-            'input[name="action"][value="to_stayBt"]'
-        );
-        if (first) first.checked = true;
-
-        return;
-    }
+    // --- Для інших міст повертаємо блок місця ---
+    const placeBlock = document.querySelector('#spot');
+    if (placeBlock) placeBlock.style.display = '';
 
     // --- Місця ---
     placeRadios.forEach(radio => {
@@ -305,106 +312,83 @@ function updateVisability() {
         }
     });
 
-    // --- Мед блок ---
+    // --- Мед блок приховуємо за замовчуванням ---
     if (medBlock) medBlock.style.display = 'none';
 
-    // --- Блок "Подальша дія" ---
+    // --- Блок "Подальша дія" приховуємо за замовчуванням ---
     if (stationBlock) {
         stationBlock.style.display = 'none';
         yesRadio.parentElement.style.display = 'none';
         noRadio.parentElement.style.display = 'none';
     }
 
-    // --- Показуємо тільки для Чернігів → Явка → Депо ---
+    // --- Чернігів → Явка → Депо ---
     if (city === 'chernihiv' && operation === 'yavka' && place === 'from_depo') {
-        stationBlock.style.display = '';
-        yesRadio.parentElement.style.display = '';
-        noRadio.parentElement.style.display = '';
-
-        if (medChecked) {
-            // Ховаємо "Без виїзду"
-            noRadio.parentElement.style.display = 'none';
-            yesRadio.checked = true;
+        if (medBlock) medBlock.style.display = '';
+        if (stationBlock) {
+            stationBlock.style.display = '';
+            yesRadio.parentElement.style.display = '';
+            noRadio.parentElement.style.display = '';
         }
     }
 
     // --- Дії ---
-    if (city === 'chernihiv') {
-        if (operation === 'yavka' && place === 'from_stay')
-            showActions(['from_stay', 'from_go']);
-        else if (operation === 'yavka' && place === 'from_depo') {
-            if (medBlock) medBlock.style.display = '';
-            showActions(['from_stay', 'from_repairsDepo']);
-        }
-        else if (operation === 'zdacha' && place === 'from_stay')
-            showActions(['to_stay', 'to_go']);
+    function showActions(values) {
+        actionRadios.forEach(r => {
+            r.parentElement.style.display = values.includes(r.value) ? '' : 'none';
+        });
+        const firstVisible = Array.from(actionRadios).find(r => r.parentElement.style.display !== 'none');
+        if (firstVisible) firstVisible.checked = true;
+    }
 
+    if (city === 'chernihiv') {
+        if (operation === 'yavka' && place === 'from_stay') showActions(['from_stay', 'from_go']);
+        else if (operation === 'yavka' && place === 'from_depo') {
+            showActions(['from_stay', 'from_repairsDepo']);
+            if (medBlock) medBlock.style.display = '';
+        }
+        else if (operation === 'zdacha' && place === 'from_stay') showActions(['to_stay', 'to_go']);
         else if (operation === 'zdacha' && place === 'from_depo') {
-            // Чернігів → Здача → Депо (звичайне) → ОБИДВА мед варіанти
+            showActions(['to_stay', 'to_repairsDepo']);
             if (medBlock) {
                 medBlock.style.display = '';
-
                 const medYes = document.querySelector('input[name="med"][value="yavka"]');
                 const medNo = document.querySelector('input[name="med"][value="zdacha"]');
-
-                // показати обидва
                 if (medYes) medYes.parentElement.style.display = '';
                 if (medNo) medNo.parentElement.style.display = '';
             }
-
-            showActions(['to_stay', 'to_repairsDepo']);
         }
         else if (operation === 'zdacha' && place === 'depo_21') {
-            // Чернігів → Здача → Депо по 21 → ТІЛЬКИ "З мед комісією"
+            showActions(['to_stay', 'to_repairsDepo']);
             if (medBlock) {
                 medBlock.style.display = '';
-
                 const medYes = document.querySelector('input[name="med"][value="yavka"]');
                 const medNo = document.querySelector('input[name="med"][value="zdacha"]');
-
-                // ховаємо "Без мед комісії"
                 if (medNo) {
                     medNo.parentElement.style.display = 'none';
                     if (medNo.checked) medNo.checked = false;
                 }
-
-                // показуємо "З мед комісією"
                 if (medYes) {
                     medYes.parentElement.style.display = '';
                     medYes.checked = true;
                 }
             }
-
-            showActions(['to_stay', 'to_repairsDepo']);
         }
-
     }
     else if (city === 'nizhin') {
-        if (operation === 'yavka')
-            showActions(['from_staySt31', 'from_go345', 'from_go67']);
-        else if (operation === 'zdacha')
-            showActions(['to_stay31', 'to_go345', 'to_go67', 'to_stay34', 'to_stay31_34']);
+        if (operation === 'yavka') showActions(['from_staySt31', 'from_go345', 'from_go67']);
+        else if (operation === 'zdacha') showActions(['to_stay31', 'to_go345', 'to_go67', 'to_stay34', 'to_stay31_34']);
     }
     else if (city === 'konotop') {
         if (operation === 'yavka') showActions(['from_go', 'from_stay812']);
-        else showActions(['to_go', 'to_stay812'])
-            ;
+        else showActions(['to_go', 'to_stay812']);
     }
-
-
-    // --- Автовибір першої видимої дії для Борщ. Техн. ---
-    if (city === 'bt') {
-        const visibleActions = Array.from(actionRadios)
-            .filter(r => r.parentElement.style.display !== 'none');
-
-        if (visibleActions.length) {
-            visibleActions.forEach(r => r.checked = false);
-            visibleActions[0].checked = true;
-        }
-    }
-
-
 }
+
+
+
+
+
 
 
 
