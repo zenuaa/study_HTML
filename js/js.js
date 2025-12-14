@@ -6,7 +6,7 @@ function validateTimeInputCalc() {
         errorDiv.textContent = "Поле не може бути порожнім.";
         return false;
     }
-    const norm = input.replace(/[:,\-]/g, '.');
+    const norm = input.replace(/[:,\-]/g, '.'); // для уніфікації
     if (!/^\d{1,2}[.,:\-]\d{1,2}$/.test(input)) {
         errorDiv.textContent = "Невірний формат. Введіть у форматі год.хв (наприклад 5.45)";
         return false;
@@ -126,7 +126,18 @@ const rules = {
                 to_stay812: { 4: 37, 6: 44, 8: 51, 10: 56, endAdd: 32 }, // Здача на станції
 
             },
-        }
+        },
+        bt: {
+            yavka: {
+                from_stay1118: { 4: 0, 6: 48, 8: 56, 10: 0, pr: 10 }, // явка 
+
+
+            },
+            zdacha: {
+                to_stay1118: { 4: 0, 6: 26, 8: 31, 10: 0, endAdd: 10 }, // Здача
+
+            },
+        },
     }
 }
 
@@ -185,7 +196,18 @@ const rules_parrot = {
                 to_stay812: { 4: 0, 6: 46, 8: 51, 10: 56, endAdd: 32 }, // Здача на станції
 
             },
-        }
+        },
+        bt: {
+            yavka: {
+                from_stay1118: { 4: 0, 6: 48, 8: 56, 10: 0, pr: 10 }, // явка 
+
+
+            },
+            zdacha: {
+                to_stay1118: { 4: 0, 6: 26, 8: 31, 10: 0, endAdd: 10 }, // Здача
+
+            },
+        },
     }
 }
 
@@ -225,6 +247,51 @@ function updateVisability() {
 
     // --- Ховаємо всі дії ---
     actionRadios.forEach(radio => radio.parentElement.style.display = 'none');
+
+    // --- Спеціальна умова Борщ. Техн. + Явка ---
+    if (city === 'bt' && operation === 'yavka') {
+        const placeBlock = document.querySelector('#spot');
+        if (placeBlock) placeBlock.style.display = 'none';
+
+        const btActions = ['from_stayBt']; // ✅ ПРАВИЛЬНЕ value
+
+        actionRadios.forEach(radio => {
+            radio.parentElement.style.display =
+                btActions.includes(radio.value) ? '' : 'none';
+            radio.checked = false;
+        });
+
+        const first = document.querySelector(
+            'input[name="action"][value="from_stayBt"]'
+        );
+        if (first) first.checked = true;
+
+        return;
+    }
+    else {
+        // повертаємо блок Місце для інших випадків
+        const placeBlock = document.querySelector('#spot');
+        if (placeBlock) placeBlock.style.display = '';
+
+    } if (city === 'bt' && operation === 'zdacha') {
+        const placeBlock = document.querySelector('#spot');
+        if (placeBlock) placeBlock.style.display = 'none';
+
+        const btActions = ['to_stayBt']; // ✅
+
+        actionRadios.forEach(radio => {
+            radio.parentElement.style.display =
+                btActions.includes(radio.value) ? '' : 'none';
+            radio.checked = false;
+        });
+
+        const first = document.querySelector(
+            'input[name="action"][value="to_stayBt"]'
+        );
+        if (first) first.checked = true;
+
+        return;
+    }
 
     // --- Місця ---
     placeRadios.forEach(radio => {
@@ -322,6 +389,19 @@ function updateVisability() {
         else showActions(['to_go', 'to_stay812'])
             ;
     }
+
+
+    // --- Автовибір першої видимої дії для Борщ. Техн. ---
+    if (city === 'bt') {
+        const visibleActions = Array.from(actionRadios)
+            .filter(r => r.parentElement.style.display !== 'none');
+
+        if (visibleActions.length) {
+            visibleActions.forEach(r => r.checked = false);
+            visibleActions[0].checked = true;
+        }
+    }
+
 
 }
 
@@ -472,9 +552,7 @@ function calculateNizhin(timeMinutes, action, wagons) {
 }
 
 
-// -------- Основна функція calculate (інтеграція Konotop) --------
-// -------- Основна функція calculate (оновлена під твою логіку kp->zdacha->end) --------
-// -------- Основна функція calculate (оновлена під твою логіку kp->zdacha->end) --------
+// -------- Основна функція calculate  --------
 function calculate() {
     clearLog(); // очищаємо лог перед новим підрахунком
 
@@ -556,6 +634,13 @@ function calculate() {
                         prMinutes = yavkaMinutes + (ruleObj.pr || 0);
                     }
                 }
+            }
+        } else if (city === 'bt' && operation === 'yavka') {
+            const rule = rules.chernihiv.bt.yavka.from_stay1118;
+            const offset = rule[wagons];
+            if (typeof offset === 'number') {
+                yavkaMinutes = timeMinutes - offset;
+                prMinutes = yavkaMinutes + (rule.pr || 0);
             }
         }
 
@@ -641,6 +726,14 @@ function calculate() {
             zdachaMinutes = result.zdachaMinutes;
             endWorkMinutes = result.endWorkMinutes;
             document.getElementById("result_kp").innerText = ""; // КП не показуємо для Ніжина
+        } else if (city === 'bt' && operation === 'zdacha') {
+            const rule = rules.chernihiv.bt.zdacha.to_stay1118;
+            const offset = rule[wagons];
+            const endAdd = rule.endAdd || 0;
+            if (typeof offset === 'number') {
+                zdachaMinutes = timeMinutes + offset;
+                endWorkMinutes = zdachaMinutes + endAdd;
+            }
         }
     }
 
@@ -701,8 +794,6 @@ function calculate() {
         addLog(`Кінець роб. = ${formatTime(zdachaMinutes)} + ${endOffset} &#9658; ${formatTime(endWorkMinutes)}`);
     }
 }
-
-
 
 
 

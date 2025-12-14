@@ -89,7 +89,7 @@
         <div id="timeInputCalcError" style="color: red; font-size: 14px; min-height: 18px;"></div>
         <!-- Кількість вагонів: -->
         <div class="radio-group">
-            <fieldset id="kil_vag">
+            <fieldset class="kil_vag">
                 <legend>
                     <p>Кількість вагонів:</p>
                 </legend>
@@ -105,23 +105,31 @@
                 <legend>
                     <p>Станція:</p>
                 </legend>
-                <label><input type="radio" name="city" value="chernihiv" checked> Чернігів</label>
-                <label><input type="radio" name="city" value="nizhin"> Ніжин</label>
-                <label><input type="radio" name="city" value="konotop"> Конотоп</label>
+                <div class="two-columns">
+                    <div class="col">
+                        <label><input type="radio" name="city" value="chernihiv" checked> Чернігів</label>
+                        <label><input type="radio" name="city" value="nizhin"> Ніжин</label>
+                    </div>
+                    <div class="col">
+                        <label><input type="radio" name="city" value="konotop"> Конотоп</label>
+                        <label><input type="radio" name="city" value="bt"> Борщ. Техн.</label>
+                    </div>
+                </div>
+                </div>
             </fieldset>
         </div>
         <!-- Операція -->
-        <div class="radio-group" id="operationGroup">
-            <fieldset id="kil_vag">
+        <div class="radio-group">
+            <fieldset class="kil_vag">
                 <legend>
                     <p>Операція:</p>
                 </legend>
-                <label id="yavkaLabel"><input type="radio" name="operation" value="yavka"> Явка</label>
+                <label><input type="radio" name="operation" value="yavka"> Явка</label>
                 <label><input type="radio" name="operation" value="zdacha"> Здача</label>
             </fieldset>
         </div>
         <!-- МІСЦЕ -->
-        <div class="radio-group">
+        <div id="spot" class="radio-group">
             <fieldset>
                 <legend>
                     <p>Місце:</p>
@@ -137,12 +145,12 @@
                 <legend>
                     <p>Мед:</p>
                 </legend>
-                <label id="yavkaLabel"><input type="radio" name="med" value="yavka" checked> З мед коміссією</label>
+                <label><input type="radio" name="med" value="yavka" checked> З мед коміссією</label>
                 <label><input type="radio" name="med" value="zdacha"> Без мед коміссії</label>
             </fieldset>
         </div>
         <!--Дія-->
-        <div class="radio-group" id="actionBlock">
+        <div class="radio-group">
             <fieldset>
                 <legend>
                     <p>Дія</p>
@@ -171,6 +179,9 @@
                 <!-- конотоп -->
                 <label><input type="radio" name="action" value="from_stay812"> З відстою 8-12 колії</label>
                 <label><input type="radio" name="action" value="to_stay812"> У відстій 8-12 колії</label>
+                <!-- Борщ. Техн. -->
+                <label><input type="radio" name="action" value="from_stayBt"> З відстою 11-18 колії</label>
+                <label><input type="radio" name="action" value="to_stayBt"> У відстій 11-18 колії</label>
             </fieldset>
         </div>
         <!-- Виїзд на станцію -->

@@ -24,6 +24,8 @@ h3 {
     margin-top: 0px;
 }
 
+
+
 legend {
     font-weight: bold;
     font-size: 16px;
@@ -34,6 +36,26 @@ fieldset {
     border: 1px solid #ccc;
     padding: 2px 2px;
     margin-bottom: 0px;
+}
+
+
+.two-columns {
+    display: flex;
+    flex-wrap: wrap; /* дозволяє колонкам переноситись на новий ряд */
+    gap: 10px;       /* відступ між колонками */
+}
+
+.two-columns .col {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 100px; /* мінімальна ширина 00px, при потребі займає більше */
+
+}
+
+.two-columns label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
 }
 
 .output_fieldset {
@@ -164,7 +186,7 @@ button:active {
     gap: 8px;
 }
 
-#kil_vag {
+.kil_vag {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
