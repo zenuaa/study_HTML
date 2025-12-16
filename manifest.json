@@ -1,6 +1,6 @@
 {
-  "name": "Розрахунок здачі та явки локомотивної бригади",
-  "short_name": "Calk",
+  "name": "TimeKeeper",
+  "short_name": "TimeKeeper",
   "description": "Додаток для розрахунку явки та здачі локомотивних бригад з підтримкою офлайн режиму",
   "start_url": "/study_HTML/index.html",
   "display": "standalone",
