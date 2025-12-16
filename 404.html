@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>404 — Сторінку не знайдено</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="robots" content="noindex">
+
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(circle at top, #0a8f3c22, #0b1220 70%);
+      color: #e6e6e6;
+      text-align: center;
+    }
+
+    .box {
+      max-width: 420px;
+      padding: 32px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 18px;
+      box-shadow: 0 20px 40px rgba(0,0,0,.35);
+      backdrop-filter: blur(6px);
+    }
+
+    h1 {
+      font-size: 96px;
+      margin: 0;
+      line-height: 1;
+      color: #0a8f3c;
+    }
+
+    h2 {
+      margin: 12px 0 8px;
+      font-weight: 600;
+    }
+
+    p {
+      opacity: .85;
+      margin-bottom: 24px;
+    }
+
+    a {
+      display: inline-block;
+      padding: 12px 22px;
+      border-radius: 12px;
+      text-decoration: none;
+      color: #fff;
+      background: linear-gradient(135deg, #0a8f3c, #16c172);
+      font-weight: 600;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+
+    a:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(22,193,114,.35);
+    }
+
+    .hint {
+      margin-top: 18px;
+      font-size: 13px;
+      opacity: .6;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box">
+    <h1>404</h1>
+    <h2>Сторінку не знайдено</h2>
+    <p>
+      Можливо, посилання застаріло<br>
+      або сторінка була переміщена.
+    </p>
+
+    <a href="https://zenuaa.github.io/study_HTML/">На головну</a>
+
+    <div class="hint">
+      Онлайн калькулятор для залізничників
+    </div>
+  </div>
+</body>
+</html>
