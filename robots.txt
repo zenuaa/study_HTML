@@ -1,0 +1,16 @@
+# Дозволяємо всім пошуковим системам
+User-agent: *
+
+# Забороняємо індексацію технічних файлів
+Disallow: /js/
+Disallow: /css/
+Disallow: /images/
+
+# Дозволяємо індексувати основний контент
+Allow: /
+
+# Посилання на карту сайту
+Sitemap: https://zenuaa.github.io/study_HTML/sitemap.xml
+
+# Опціонально: обмеження швидкості сканування
+Crawl-delay: 10
