@@ -893,7 +893,7 @@ document.getElementById('installBtn').addEventListener('click', async () => {
 
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js') // абсолютний шлях
+        navigator.serviceWorker.register('./service-worker.js') // абсолютний шлях
             .then(reg => {
                 console.log('SW registered:', reg.scope);
 
