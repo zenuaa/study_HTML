@@ -892,30 +892,46 @@ document.getElementById('installBtn').addEventListener('click', async () => {
 
 
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/study_HTML/service-worker.js').then(reg => {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js') // абсолютний шлях
+            .then(reg => {
+                console.log('SW registered:', reg.scope);
 
-        // Слухаємо новий SW
-        reg.addEventListener('updatefound', () => {
-            const newSW = reg.installing;
-            newSW.addEventListener('statechange', () => {
-                if (newSW.state === 'installed' && navigator.serviceWorker.controller) {
-                    // Показати банер оновлення
-                    const banner = document.getElementById('updateBanner');
-                    banner.style.display = 'block';
+                // Слухаємо появу нового SW
+                reg.addEventListener('updatefound', () => {
+                    const newSW = reg.installing;
+                    newSW.addEventListener('statechange', () => {
+                        if (newSW.state === 'installed' && navigator.serviceWorker.controller) {
+                            // Показати банер оновлення
+                            const banner = document.getElementById('updateBanner');
+                            if (banner) banner.style.display = 'block';
 
-                    document.getElementById('reloadBtn').addEventListener('click', () => {
-                        newSW.postMessage('skipWaiting'); // активуємо новий SW
+                            // Кнопка для активації нового SW
+                            const btn = document.getElementById('reloadBtn');
+                            if (btn) {
+                                btn.onclick = () => {
+                                    newSW.postMessage({ type: 'SKIP_WAITING' });
+                                };
+                            }
+                        }
                     });
-                }
+                });
+            })
+            .catch(err => {
+                console.error('SW registration failed:', err);
             });
+
+        // Перезавантажуємо сторінку при зміні контролера
+        let refreshing = false;
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+            if (!refreshing) {
+                refreshing = true;
+                window.location.reload();
+            }
         });
     });
-
-    // Перезавантаження після skipWaiting
-    navigator.serviceWorker.addEventListener('controllerchange', () => {
-        window.location.reload();
-    });
 }
+
 
 
 // -------- Функція відтворення звуку і виклику розрахунку --------

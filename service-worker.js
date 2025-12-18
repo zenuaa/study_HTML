@@ -1,6 +1,7 @@
-const CACHE_NAME = "calk-cache-v1";
+const CACHE_NAME = "calk-cache-v2";
 
-const FILES_TO_CACHE = [
+const CORE_ASSETS = [
+  "./",
   "./index.html",
   "./css/styles.css",
   "./js/js.js",
@@ -16,125 +17,120 @@ const FILES_TO_CACHE = [
   "./images/face.png",
   "./images/faceIOS.png",
   "./images/hat.png",
-  "./images/time_table.png",
-
-  "./files/2025_VIDOMIST.xlsx",
-  "./files/2025_VIDOMIST.pdf",
-  "./files/christmas.mp3"
+  "./images/time_table.png"
 ];
 
-// ---------- INSTALL ----------
+// ---------------- INSTALL ----------------
 self.addEventListener("install", event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(FILES_TO_CACHE))
+    caches.open(CACHE_NAME).then(async cache => {
+      for (const asset of CORE_ASSETS) {
+        try {
+          await cache.add(asset);
+        } catch (e) {
+          // важливо: не валимо install
+        }
+      }
+    })
   );
-  self.skipWaiting(); // 🔑 активуємо новий SW одразу
 });
 
-// ---------- ACTIVATE ----------
+// ---------------- ACTIVATE ----------------
 self.addEventListener("activate", event => {
   event.waitUntil(
     caches.keys().then(keys =>
-      Promise.all(keys.map(k => k !== CACHE_NAME ? caches.delete(k) : null))
-    ).then(() => self.clients.claim()) // 🔑 контролюємо всі вкладки одразу
+      Promise.all(
+        keys.map(k => (k !== CACHE_NAME ? caches.delete(k) : null))
+      )
+    ).then(() => self.clients.claim())
   );
 });
 
-// ---------- FETCH ----------
+// ---------------- FETCH ----------------
 self.addEventListener("fetch", event => {
-  const url = new URL(event.request.url);
+  const req = event.request;
+  const url = new URL(req.url);
 
-  // 🔴 Критичні файли: index.html, JS та CSS – без таймауту
+  // 🟢 Googlebot та інші боти — БЕЗ КЕШУ, БЕЗ ВТРУЧАННЯ
+  if (/bot|crawler|spider|google|bing|yandex/i.test(req.headers.get("user-agent") || "")) {
+    return; // браузер сам піде в мережу
+  }
+
+  // 🔴 Навігація та критичні файли (online-first + 3s timeout)
   if (
-    event.request.mode === "navigate" ||
+    req.mode === "navigate" ||
     url.pathname.endsWith("/index.html") ||
     url.pathname.endsWith("/js/js.js") ||
     url.pathname.endsWith("/css/styles.css")
   ) {
-    event.respondWith(
-      caches.open(CACHE_NAME).then(async cache => {
-        try {
-          const response = await fetch(event.request);
-          if (response && response.status === 200) {
-            cache.put(event.request, response.clone());
-          }
-          return response;
-        } catch (err) {
-          const cached = await cache.match(event.request);
-          if (cached) return cached;
-          return new Response("Offline", { status: 503 });
-        }
-      })
-    );
+    event.respondWith(networkWithTimeout(req, 3000));
     return;
   }
 
-  // 🖼 Картинки / аудіо – cache-first
-  if (url.pathname.match(/\.(png|jpg|jpeg|svg|mp3)$/)) {
-    event.respondWith(
-      caches.open(CACHE_NAME).then(async cache => {
-        const cached = await cache.match(event.request);
-        if (cached) return cached;
-
-        try {
-          const response = await fetch(event.request);
-          if (response && response.status === 200) {
-            cache.put(event.request, response.clone());
-          }
-          return response;
-        } catch {
-          return new Response("", { status: 200 });
-        }
-      })
-    );
+  // 🖼 Статика (cache-first)
+  if (url.pathname.match(/\.(png|jpg|jpeg|svg|webp|mp3)$/)) {
+    event.respondWith(cacheFirst(req));
     return;
   }
 
-  // 🌐 Інші ресурси – online-first з таймаутом 3.5 сек
-  event.respondWith(
-    (async () => {
-      const cache = await caches.open(CACHE_NAME);
-
-      const networkPromise = new Promise((resolve, reject) => {
-        const timer = setTimeout(() => reject(new Error("timeout")), 3000);
-
-        fetch(event.request)
-          .then(response => {
-            clearTimeout(timer);
-            if (response && response.status === 200 && response.type === "basic") {
-              cache.put(event.request, response.clone());
-            }
-            resolve(response);
-          })
-          .catch(err => {
-            clearTimeout(timer);
-            reject(err);
-          });
-      });
-
-      try {
-        const response = await networkPromise;
-        // ONLINE
-        self.clients.matchAll().then(clients =>
-          clients.forEach(c => c.postMessage({ offline: false }))
-        );
-        return response;
-      } catch {
-        // OFFLINE
-        self.clients.matchAll().then(clients =>
-          clients.forEach(c => c.postMessage({ offline: true }))
-        );
-
-        const cached = await cache.match(event.request);
-        if (cached) return cached;
-
-        return new Response("Offline", { status: 503 });
-      }
-    })()
-  );
+  // 🌐 Інше — online-first + fallback
+  event.respondWith(networkWithTimeout(req, 3000));
 });
 
-// ---------- MESSAGE ----------
+// ---------------- STRATEGIES ----------------
+async function cacheFirst(req) {
+  const cache = await caches.open(CACHE_NAME);
+  const cached = await cache.match(req);
+  if (cached) return cached;
+
+  try {
+    const res = await fetch(req);
+    if (res && res.status === 200) {
+      cache.put(req, res.clone());
+    }
+    return res;
+  } catch {
+    return new Response("", { status: 200 });
+  }
+}
+
+async function networkWithTimeout(req, timeout) {
+  const cache = await caches.open(CACHE_NAME);
+
+  try {
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), timeout);
+
+    const res = await fetch(req, { signal: controller.signal });
+    clearTimeout(id);
+
+    if (res && res.status === 200 && res.type === "basic") {
+      cache.put(req, res.clone());
+    }
+
+    notifyClients(false);
+    return res;
+  } catch {
+    notifyClients(true);
+    const cached = await cache.match(req);
+    if (cached) return cached;
+    return new Response("Offline", { status: 503 });
+  }
+}
+
+// ---------------- MESSAGE ----------------
 self.addEventListener("message", event => {
-  if (event.data === "skipWaiting") self.skipWaiting();
+  if (event.data && event.data.type === "SKIP_WAITING") {
+    self.skipWaiting().then(() => {
+      self.clients.claim();
+    });
+  }
 });
+
+
+// ---------------- HELPERS ----------------
+function notifyClients(offline) {
+  self.clients.matchAll().then(clients =>
+    clients.forEach(c => c.postMessage({ offline }))
+  );
+}
