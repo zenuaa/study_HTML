@@ -1,4 +1,4 @@
-const CACHE_NAME = "calk-cache-v6";
+const CACHE_NAME = "calk-cache-v7";
 
 const CORE_ASSETS = [
   "./",

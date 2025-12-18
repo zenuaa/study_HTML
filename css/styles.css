@@ -38,20 +38,23 @@ fieldset {
     margin-bottom: 0px;
 }
 
-#timeInputSimple{
+#timeInputSimple {
     margin-bottom: 0px;
 }
 
 .two-columns {
     display: flex;
-    flex-wrap: wrap; /* дозволяє колонкам переноситись на новий ряд */
-    gap: 10px;       /* відступ між колонками */
+    flex-wrap: wrap;
+    /* дозволяє колонкам переноситись на новий ряд */
+    gap: 10px;
+    /* відступ між колонками */
 }
 
 .two-columns .col {
     display: flex;
     flex-direction: column;
-    flex: 1 1 100px; /* мінімальна ширина 00px, при потребі займає більше */
+    flex: 1 1 100px;
+    /* мінімальна ширина 00px, при потребі займає більше */
 
 }
 
@@ -155,7 +158,9 @@ input[type="radio"]:checked+label {
     color: #2d8fdd;
 }
 
-button {
+#rozr,
+#minus,
+#plus {
     border-radius: 8px;
     color: #fff;
     background: linear-gradient(135deg, #2d8fdd, #35bdcf);
@@ -169,12 +174,16 @@ button {
     margin-top: 10px;
 }
 
-button:hover {
+#rozr,
+#minus,
+#plus:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
 }
 
-button:active {
+#rozr,
+#minus,
+#plus:active {
     transform: translateY(1px);
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 }
@@ -503,9 +512,44 @@ main {
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
+    width: 8px;
 }
+
 ::-webkit-scrollbar-thumb {
-  background: #0377d6;
-  border-radius: 6px;
+    background: #0377d6;
+    border-radius: 6px;
+}
+
+
+
+#updateBanner {
+    display: none;
+    background: #95e928;
+    padding: 15px;
+    border: 2px solid #92e02b;
+    border-radius: 8px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+#reloadBtn {
+    background-color: #92e02b;
+    border: none;
+    margin-top: 5px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#reloadBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+}
+
+#reloadBtn:active {
+    transform: translateY(1px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 }
