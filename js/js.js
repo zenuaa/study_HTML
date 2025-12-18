@@ -903,6 +903,7 @@ if ('serviceWorker' in navigator) {
                     newSW.addEventListener('statechange', () => {
                         if (newSW.state === 'installed' && navigator.serviceWorker.controller) {
                             // Показати банер оновлення
+                            console.log("New SW installed, showing banner!");
                             const banner = document.getElementById('updateBanner');
                             if (banner) banner.style.display = 'block';
 

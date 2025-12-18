@@ -1,4 +1,4 @@
-const CACHE_NAME = "calk-cache-v3";
+const CACHE_NAME = "calk-cache-v5";
 
 const CORE_ASSETS = [
   "./",
@@ -50,6 +50,11 @@ self.addEventListener("activate", event => {
 self.addEventListener("fetch", event => {
   const req = event.request;
   const url = new URL(req.url);
+
+// Не обробляти сторонні домени
+  if (!url.origin.includes(self.location.origin)) {
+    return; // дозволити браузеру самостійно обробляти
+  }
 
   // 🟢 Googlebot та інші боти — БЕЗ КЕШУ, БЕЗ ВТРУЧАННЯ
   if (/bot|crawler|spider|google|bing|yandex/i.test(req.headers.get("user-agent") || "")) {
