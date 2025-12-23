@@ -1,8 +1,9 @@
-const CACHE_NAME = "calk-cache-v7";
+const CACHE_NAME = "calk-cache-v8";
 
 const CORE_ASSETS = [
   "./",
   "./index.html",
+  "./404.html",
   "./css/styles.css",
   "./js/js.js",
   "./manifest.json",
@@ -17,7 +18,8 @@ const CORE_ASSETS = [
   "./images/face.png",
   "./images/faceIOS.png",
   "./images/hat.png",
-  "./images/time_table.png"
+  "./images/time_table.png",
+  "./images/pre.png",
 ];
 
 // ---------------- INSTALL ----------------
