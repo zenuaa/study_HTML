@@ -83,7 +83,7 @@ const rules = {
 
             from_go: { 4: 40, 6: 42, 8: 45, 10: 48 }, // На прохід DONE
             from_repairsDepoMedYes: { 4: 77, 6: 89, 8: 100, 10: 111, pr: 15 }, // Депо з ремонту з мед з виїздом на станцію //DONE
-            from_repairsDepoMedNoStNo: { 4: 49, 6: 61, 8: 72, 10: 83, pr: 15 }, // Депо з ремонту  без мед без виїзду на станцію //DONE
+            from_repairsDepoMedNoStNo: { 4: 49, 6: 61, 8: 72, 10: 83, pr: 12 }, // Депо з ремонту  без мед без виїзду на станцію //DONE
             from_repairsDepoMedNoStYes: { 4: 70, 6: 82, 8: 93, 10: 104, pr: 15 }, // Депо з ремонту  без мед з виїздом на станцію //DONE
             zdacha: {
                 to_staySt: { 4: 11, 6: 16, 8: 21, 10: 26, endAdd: 26 }, // На станції у відстій //DONE
@@ -323,14 +323,29 @@ function updateVisability() {
     }
 
     // --- Чернігів → Явка → Депо ---
-    if (city === 'chernihiv' && operation === 'yavka' && place === 'from_depo') {
-        if (medBlock) medBlock.style.display = '';
-        if (stationBlock) {
-            stationBlock.style.display = '';
+if (city === 'chernihiv' && operation === 'yavka' && place === 'from_depo') {
+    if (medBlock) medBlock.style.display = '';
+
+    const medValue = document.querySelector('input[name="med"]:checked')?.value;
+
+    if (stationBlock) {
+        stationBlock.style.display = '';
+
+        if (medValue === 'zdacha') {
+            // 🔒 Без меду → ТІЛЬКИ без виїзду
+            yesRadio.parentElement.style.display = 'none';
+            yesRadio.checked = false;
+
+            noRadio.parentElement.style.display = '';
+            noRadio.checked = true;
+        } else {
+            // ✅ З медом → обидва варіанти
             yesRadio.parentElement.style.display = '';
             noRadio.parentElement.style.display = '';
         }
     }
+}
+
 
     // --- Дії ---
     function showActions(values) {
