@@ -8,6 +8,7 @@
   "theme_color": "#ffffff",
   "orientation": "portrait",
   "scope": "/study_HTML/",
+  "id": "/?pwa=TimeKeeper",
   "icons": [
     { "src": "images/clock72.png", "sizes": "72x72", "type": "image/png" },
     { "src": "images/clock96.png", "sizes": "96x96", "type": "image/png" },
