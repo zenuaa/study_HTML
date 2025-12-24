@@ -1,4 +1,4 @@
-const CACHE_NAME = "calk-cache-v18";
+const CACHE_NAME = "calk-cache-v19";
 
 const CORE_ASSETS = [
   "./",
@@ -7,7 +7,6 @@ const CORE_ASSETS = [
   "./css/styles.css",
   "./js/js.js",
   "./manifest.json",
-
   "./images/clock72.png",
   "./images/clock96.png",
   "./images/clock128.png",
@@ -27,11 +26,8 @@ self.addEventListener("install", event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(async cache => {
       for (const asset of CORE_ASSETS) {
-        try {
-          await cache.add(asset);
-        } catch (e) {
-          // важливо: не валимо install
-        }
+        try { await cache.add(asset); } 
+        catch (e) { /* не валимо install */ }
       }
     })
   );
@@ -41,9 +37,7 @@ self.addEventListener("install", event => {
 self.addEventListener("activate", event => {
   event.waitUntil(
     caches.keys().then(keys =>
-      Promise.all(
-        keys.map(k => (k !== CACHE_NAME ? caches.delete(k) : null))
-      )
+      Promise.all(keys.map(k => (k !== CACHE_NAME ? caches.delete(k) : null)))
     ).then(() => self.clients.claim())
   );
 });
@@ -53,38 +47,37 @@ self.addEventListener("fetch", event => {
   const req = event.request;
   const url = new URL(req.url);
 
-// Не обробляти сторонні домени
-  if (!url.origin.includes(self.location.origin)) {
-    return; // дозволити браузеру самостійно обробляти
-  }
+  // Сторонні домени — ігнор
+  if (!url.origin.includes(self.location.origin)) return;
 
-  // 🟢 Googlebot та інші боти — БЕЗ КЕШУ, БЕЗ ВТРУЧАННЯ
-  if (/bot|crawler|spider|google|bing|yandex/i.test(req.headers.get("user-agent") || "")) {
-    return; // браузер сам піде в мережу
-  }
+  // Боти — ігнор
+  if (/bot|crawler|spider|google|bing|yandex/i.test(req.headers.get("user-agent") || "")) return;
 
-  // 🔴 Навігація та критичні файли (online-first + 3s timeout)
-  if (
-    req.mode === "navigate" ||
-    url.pathname.endsWith("/index.html") ||
-    url.pathname.endsWith("/js/js.js") ||
-    url.pathname.endsWith("/css/styles.css")
-  ) {
-    event.respondWith(networkWithTimeout(req, 3000));
+  // Offline-first для сторінок (index.html та навігація)
+  if (req.mode === "navigate") {
+    event.respondWith(cacheThenNetwork(req));
     return;
   }
 
-  // 🖼 Статика (cache-first)
+  // Online-first для JS/CSS
+  if (url.pathname.endsWith("/js/js.js") || url.pathname.endsWith("/css/styles.css")) {
+    event.respondWith(networkWithFallback(req));
+    return;
+  }
+
+  // Cache-first для зображень та медіа
   if (url.pathname.match(/\.(png|jpg|jpeg|svg|webp|mp3)$/)) {
     event.respondWith(cacheFirst(req));
     return;
   }
 
-  // 🌐 Інше — online-first + fallback
-  event.respondWith(networkWithTimeout(req, 3000));
+  // Інше — online-first + fallback
+  event.respondWith(networkWithFallback(req));
 });
 
 // ---------------- STRATEGIES ----------------
+
+// Cache-first (для зображень/медіа)
 async function cacheFirst(req) {
   const cache = await caches.open(CACHE_NAME);
   const cached = await cache.match(req);
@@ -92,29 +85,54 @@ async function cacheFirst(req) {
 
   try {
     const res = await fetch(req);
-    if (res && res.status === 200) {
-      cache.put(req, res.clone());
-    }
+    if (res && res.status === 200) cache.put(req, res.clone());
     return res;
   } catch {
     return new Response("", { status: 200 });
   }
 }
 
-async function networkWithTimeout(req, timeout) {
+// Offline-first для сторінок
+async function cacheThenNetwork(req) {
+  const cache = await caches.open(CACHE_NAME);
+  const cached = await cache.match(req);
+
+  if (cached) {
+    // Показуємо користувачу кеш (offline = true, якщо мережа не доступна)
+    notifyClients(true);
+
+    // Паралельно намагаємось оновити кеш з мережі
+    fetch(req)
+      .then(res => {
+        if (res && res.status === 200) {
+          cache.put(req, res.clone());
+          notifyClients(false); // мережа доступна
+        }
+      })
+      .catch(() => notifyClients(true));
+
+    return cached;
+  }
+
+  // Якщо кешу нема — беремо з мережі
+  try {
+    const res = await fetch(req);
+    if (res && res.status === 200) cache.put(req, res.clone());
+    notifyClients(false);
+    return res;
+  } catch {
+    notifyClients(true);
+    return cached || new Response("Offline", { status: 503 });
+  }
+}
+
+// Online-first + fallback (JS/CSS/інші)
+async function networkWithFallback(req) {
   const cache = await caches.open(CACHE_NAME);
 
   try {
-    const controller = new AbortController();
-    const id = setTimeout(() => controller.abort(), timeout);
-
-    const res = await fetch(req, { signal: controller.signal });
-    clearTimeout(id);
-
-    if (res && res.status === 200 && res.type === "basic") {
-      cache.put(req, res.clone());
-    }
-
+    const res = await fetch(req);
+    if (res && res.status === 200) cache.put(req, res.clone());
     notifyClients(false);
     return res;
   } catch {
@@ -128,12 +146,9 @@ async function networkWithTimeout(req, timeout) {
 // ---------------- MESSAGE ----------------
 self.addEventListener("message", event => {
   if (event.data && event.data.type === "SKIP_WAITING") {
-    self.skipWaiting().then(() => {
-      self.clients.claim();
-    });
+    self.skipWaiting().then(() => self.clients.claim());
   }
 });
-
 
 // ---------------- HELPERS ----------------
 function notifyClients(offline) {

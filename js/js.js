@@ -852,102 +852,98 @@ function addLog(text) {
 let deferredPrompt;
 const installBtn = document.getElementById("installBtn");
 
+// Якщо додаток вже запущено як PWA, ховаємо кнопку
+if (window.matchMedia('(display-mode: standalone)').matches) {
+    installBtn.style.display = 'none';
+}
+
 window.addEventListener("beforeinstallprompt", (e) => {
     e.preventDefault();
     deferredPrompt = e;
-    installBtn.style.display = "block";
+
+    // Показуємо кнопку, тільки якщо додаток ще не встановлено
+    if (!window.matchMedia('(display-mode: standalone)').matches) {
+        installBtn.style.display = "block";
+    }
 });
 
 installBtn.addEventListener("click", async () => {
-    if (deferredPrompt) {
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        console.log("User choice:", outcome);
-        deferredPrompt = null;
-        installBtn.style.display = "none";
-    }
-});
+    if (!deferredPrompt) return;
 
-// фіксувати момент, коли користувач підтвердив інсталяцію додатку:
-// Reports → Engagement → Events → pwa_install_button_click
-let deferredPromptt;
+    // Показуємо стандартний банер установки
+    deferredPrompt.prompt();
 
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPromptt = e;
-});
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log("User choice:", outcome);
 
-
-document.getElementById('installBtn').addEventListener('click', async () => {
-    if (typeof gtag === 'function') {
-        gtag('event', 'pwa_install_button_click', {
-            event_category: 'pwa',
-            event_label: 'Install prompt shown'
+    // Google Analytics події
+    if (typeof gtag === "function") {
+        gtag("event", "pwa_install_button_click", {
+            event_category: "pwa",
+            event_label: "Install prompt shown"
         });
+
+        if (outcome === "accepted") {
+            gtag("event", "pwa_installed", {
+                event_category: "pwa",
+                event_label: "User accepted installation"
+            });
+        } else {
+            gtag("event", "pwa_install_rejected", {
+                event_category: "pwa",
+                event_label: "User dismissed installation"
+            });
+        }
     }
 
-    if (!deferredPromptt) return;
-    deferredPromptt.prompt();
-
-    const result = await deferredPromptt.userChoice;
-    if (result.outcome === 'accepted') {
-        gtag('event', 'pwa_installed', {
-            event_category: 'pwa',
-            event_label: 'User accepted installation'
-        });
-    } else {
-        gtag('event', 'pwa_install_rejected', {
-            event_category: 'pwa',
-            event_label: 'User dismissed installation'
-        });
-    }
-    deferredPromptt = null;
+    // Ховаємо кнопку та очищаємо подію
+    deferredPrompt = null;
+    installBtn.style.display = "none";
 });
 
 
 
+// Реєстрація SW та обробка offline блоку
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./service-worker.js') // абсолютний шлях
+        navigator.serviceWorker
+            .register('./service-worker.js', { updateViaCache: 'none' })
             .then(reg => {
                 console.log('SW registered:', reg.scope);
 
                 // Слухаємо появу нового SW
                 reg.addEventListener('updatefound', () => {
                     const newSW = reg.installing;
+                    if (!newSW) return;
+
                     newSW.addEventListener('statechange', () => {
                         if (newSW.state === 'installed' && navigator.serviceWorker.controller) {
-                            // Показати банер оновлення
-                            console.log("New SW installed, showing banner!");
-                            const banner = document.getElementById('updateBanner');
-                            if (banner) banner.style.display = 'block';
-
-                            // Кнопка для активації нового SW
-                            const btn = document.getElementById('reloadBtn');
-                            if (btn) {
-                                btn.onclick = () => {
-                                    newSW.postMessage({ type: 'SKIP_WAITING' });
-                                };
-                            }
+                            newSW.postMessage({ type: 'SKIP_WAITING' });
                         }
                     });
                 });
             })
-            .catch(err => {
-                console.error('SW registration failed:', err);
-            });
+            .catch(err => console.error('SW registration failed:', err));
 
-        // Перезавантажуємо сторінку при зміні контролера
-        let refreshing = false;
-        navigator.serviceWorker.addEventListener('controllerchange', () => {
-            if (!refreshing) {
-                refreshing = true;
-                window.location.reload();
+        // Offline блок
+        navigator.serviceWorker.addEventListener('message', event => {
+            const offlineBlock = document.querySelector('#offline p');
+            if (event.data.offline) {
+                offlineBlock.style.display = 'block';
+            } else {
+                offlineBlock.style.display = 'none';
             }
         });
     });
-}
 
+    // Автоперезавантаження при активації нового SW
+    let refreshing = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (refreshing) return;
+        refreshing = true;
+        window.location.reload();
+    });
+}
 
 
 // -------- Функція відтворення звуку і виклику розрахунку --------
