@@ -1,4 +1,4 @@
-const CACHE_NAME = "calk-cache-v19";
+const CACHE_NAME = "calk-cache-v20";
 
 const CORE_ASSETS = [
   "./",
@@ -13,7 +13,7 @@ const CORE_ASSETS = [
   "./images/clock144.png",
   "./images/clock152.png",
   "./images/clock192.png",
-  "./images/face384.png",
+  "./images/face38401.png",
   "./images/face.png",
   "./images/faceIOS.png",
   "./images/hat.png",
